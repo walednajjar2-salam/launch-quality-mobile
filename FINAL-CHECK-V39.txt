@@ -1,0 +1,10 @@
+Jawdah Cloud v39 Railway Fixed
+
+Checked:
+- Python syntax OK
+- Root route / returns 200
+- /api/health returns OK
+- /favicon.ico returns 204
+- Fallback index/css/js embedded in server.py
+- Railway PORT supported
+- SQLite data directory supported
