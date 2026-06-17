@@ -7,8 +7,8 @@
 | **Backend (Production)** | https://web-production-08d73.up.railway.app |
 | **API Health** | https://web-production-08d73.up.railway.app/api/health |
 | **Package ID** | `com.launchquality.staff` |
-| **APK output** | `Launch-Quality-Staff.apk` |
-| **Backend repo** | [walednajjar2-salam/jawdah-cloud-v47](https://github.com/walednajjar2-salam/jawdah-cloud-v47) |
+| **APK download** | [Launch-Quality-Staff.apk v1.0.0-staff](https://github.com/walednajjar2-salam/-/releases/download/v1.0.0-staff/Launch-Quality-Staff.apk) |
+| **Source repo** | [walednajjar2-salam/-](https://github.com/walednajjar2-salam/-) (rename to `launch-quality-mobile` optional) |
 
 ## ما يفعله التطبيق
 
@@ -20,7 +20,7 @@
 
 1. **Node.js** 18+
 2. **Android Studio** + Android SDK
-3. **Java** 17
+3. **Java** 21 (للبناء من المصدر)
 
 ```bash
 npm install
