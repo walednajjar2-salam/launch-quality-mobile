@@ -1,0 +1,25 @@
+{
+  "appId": "com.launchquality.staff",
+  "appName": "Launch Quality Staff",
+  "webDir": "www",
+  "server": {
+    "url": "https://web-production-08d73.up.railway.app",
+    "cleartext": false,
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#06111f"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#06111f",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#06111f"
+    }
+  }
+}

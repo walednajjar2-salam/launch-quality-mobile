@@ -1,0 +1,26 @@
+{
+  "name": "launch-quality-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Launch Quality LLC staff Android app — connects to production API",
+  "scripts": {
+    "cap:sync": "npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:debug": "cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.4.0"
+  },
+  "capacitor": {
+    "android": {
+      "path": "android"
+    }
+  }
+}
