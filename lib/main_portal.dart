@@ -1,2 +1,4 @@
-// Deprecated: tenant portal is served via web (portal.html) with portal_token.
-// Staff app entry point is lib/main.dart only.
+// Tenant portal is integrated in the main app at /portal?token=...
+// Entry point: lib/main.dart
+
+export 'main.dart';

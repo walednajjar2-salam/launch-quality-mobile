@@ -11,6 +11,20 @@ class AuthService {
   final ApiClient _api;
   AppUser? user;
 
+  AppUser userFromMe(Map<String, dynamic> me) {
+    final userJson = Map<String, dynamic>.from(me['user'] as Map<String, dynamic>);
+    final perms = (me['permissions'] as List<dynamic>? ?? [])
+        .map((e) => e.toString())
+        .toList();
+    userJson['permissions'] = perms;
+    return AppUser.fromJson(userJson);
+  }
+
+  Future<void> syncFromMe() async {
+    final me = await _api.get('me');
+    user = userFromMe(me);
+  }
+
   Future<AppUser> login(String username, String password) async {
     final res = await _api.post('login', body: {
       'username': username.trim(),
@@ -21,9 +35,9 @@ class AuthService {
       throw ApiException('تعذر تسجيل الدخول');
     }
     _api.setToken(token);
-    user = AppUser.fromJson(res['user'] as Map<String, dynamic>);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
+    await syncFromMe();
     return user!;
   }
 
@@ -32,8 +46,7 @@ class AuthService {
     final token = prefs.getString(_tokenKey);
     if (token == null || token.isEmpty) return null;
     _api.setToken(token);
-    final me = await _api.get('me');
-    user = AppUser.fromJson(me['user'] as Map<String, dynamic>);
+    await syncFromMe();
     return user;
   }
 

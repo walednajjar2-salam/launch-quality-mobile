@@ -92,7 +92,9 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (_, i) {
                     final m = items[i];
-                    return Card(
+                    return GlassCard(
+                      accent: BrandColors.tealDeep,
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: ListTile(
                         title: Text('${m['title'] ?? 'طلب صيانة'}'),
                         subtitle: Text(

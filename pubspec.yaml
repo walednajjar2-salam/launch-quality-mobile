@@ -1,7 +1,7 @@
 name: launch_quality_mobile
-description: Jawdah Cloud staff mobile app — operations dashboard against Railway API.
+description: Launch Quality native Flutter app — Android, Windows, and Chrome against Railway API.
 publish_to: "none"
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -16,6 +16,8 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.3.3
   intl: ^0.20.2
+  fl_chart: ^0.70.2
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -24,3 +26,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.png

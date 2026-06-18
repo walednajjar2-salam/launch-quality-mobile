@@ -3,25 +3,36 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/login_screen.dart';
+import 'screens/portal/portal_gate_screen.dart';
+import 'screens/portal/portal_shell.dart';
 import 'screens/staff_shell.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/bootstrap_service.dart';
+import 'services/portal_service.dart';
 import 'state/app_state.dart';
+import 'state/portal_state.dart';
 import 'theme/app_theme.dart';
 
-GoRouter createRouter(AppState app) {
+GoRouter createRouter(AppState app, PortalState portal) {
   return GoRouter(
-    refreshListenable: app,
+    refreshListenable: Listenable.merge([app, portal]),
     initialLocation: '/',
     redirect: (context, state) {
-      final loc = state.matchedLocation;
-      final ready = app.status == AppStatus.ready;
-      final needsLogin = app.status == AppStatus.login ||
-          app.status == AppStatus.booting ||
-          app.status == AppStatus.error;
-      if (needsLogin && loc != '/') return '/';
-      if (ready && loc == '/') return '/staff';
+      final loc = state.uri.path;
+      final staffNeedsLogin =
+          app.status == AppStatus.login || app.status == AppStatus.booting;
+
+      if (loc.startsWith('/portal')) {
+        if (loc == '/portal/app' && portal.status != PortalStatus.ready) {
+          return '/portal';
+        }
+        return null;
+      }
+
+      if (staffNeedsLogin && loc != '/') return '/';
+      if (app.status == AppStatus.ready && loc == '/') return '/staff';
+      if (app.status == AppStatus.error && loc != '/staff') return '/staff';
       return null;
     },
     routes: [
@@ -32,6 +43,17 @@ GoRouter createRouter(AppState app) {
       GoRoute(
         path: '/staff',
         builder: (_, __) => const StaffShell(),
+      ),
+      GoRoute(
+        path: '/portal',
+        builder: (context, state) => PortalGateScreen(
+          initialToken: state.uri.queryParameters['token'] ??
+              state.uri.queryParameters['t'],
+        ),
+      ),
+      GoRoute(
+        path: '/portal/app',
+        builder: (_, __) => const PortalShell(),
       ),
     ],
   );
@@ -48,7 +70,9 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
   late final ApiClient _api;
   late final AuthService _auth;
   late final BootstrapService _bootstrap;
+  late final PortalService _portalService;
   late final AppState _app;
+  late final PortalState _portal;
   late final GoRouter _router;
 
   @override
@@ -57,15 +81,19 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
     _api = ApiClient();
     _auth = AuthService(_api);
     _bootstrap = BootstrapService(_api);
+    _portalService = PortalService(_api);
     _app = AppState(api: _api, auth: _auth, bootstrap: _bootstrap);
-    _router = createRouter(_app);
+    _portal = PortalState(_portalService);
+    _router = createRouter(_app, _portal);
     _app.boot();
+    _portal.boot();
   }
 
   @override
   void dispose() {
     _api.dispose();
     _app.dispose();
+    _portal.dispose();
     super.dispose();
   }
 
@@ -74,28 +102,21 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: _app),
+        ChangeNotifierProvider.value(value: _portal),
         Provider.value(value: _bootstrap),
         Provider.value(value: _auth),
+        Provider.value(value: _portalService),
       ],
       child: MaterialApp.router(
-        title: 'Launch Quality Staff',
+        title: 'جودة الانطلاقة',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
+        theme: AppTheme.dark(),
+        themeMode: ThemeMode.dark,
         routerConfig: _router,
         builder: (context, child) {
           return Directionality(
             textDirection: TextDirection.rtl,
-            child: Consumer<AppState>(
-              builder: (_, app, __) {
-                if (app.status == AppStatus.loading ||
-                    app.status == AppStatus.booting) {
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                return child ?? const SizedBox.shrink();
-              },
-            ),
+            child: child ?? const SizedBox.shrink(),
           );
         },
       ),

@@ -65,7 +65,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                           style: TextStyle(
                             color: (c['balance'] ?? 0) > 0
                                 ? Colors.red.shade700
-                                : AppTheme.goldDark,
+                                : BrandColors.gold,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

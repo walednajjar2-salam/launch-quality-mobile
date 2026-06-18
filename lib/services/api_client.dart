@@ -103,9 +103,13 @@ class ApiClient {
       final err = data['error']?.toString() ??
           data['detail']?.toString() ??
           'Request failed';
-      final message = err == 'Permission denied'
-          ? 'لا تملك صلاحية تنفيذ هذا الإجراء'
-          : err;
+      final message = switch (err) {
+        'Permission denied' || 'لا تملك صلاحية تنفيذ هذا الإجراء' =>
+          'لا تملك صلاحية تنفيذ هذا الإجراء',
+        'Invalid username or password' => 'اسم المستخدم أو كلمة المرور غير صحيحة',
+        'Authentication required' => 'انتهت الجلسة — سجّل الدخول من جديد',
+        _ => err,
+      };
       throw ApiException(message, statusCode: res.statusCode);
     }
     return data;

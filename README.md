@@ -1,58 +1,50 @@
-# Launch Quality Mobile — Staff App (Phase 2)
+# Launch Quality — Flutter Native
 
-Flutter staff dashboard for **Jawdah Cloud** on Railway.
+**One app** for **Android + Windows + Chrome** · luxury dark UI · Railway API · no WebView.
 
-## API
+Full structure and roadmap: **[ROADMAP.md](ROADMAP.md)**
 
-Production default:
-
-`https://web-production-08d73.up.railway.app/api`
-
-Override:
-
-```bash
-flutter run -t lib/main.dart --dart-define=API_BASE_URL=https://your-host/api
-```
-
-## Run
+## Quick start
 
 ```bash
 cd launch-quality-mobile
 flutter pub get
-flutter run -t lib/main.dart
+
+flutter run -d chrome      # test in browser
+flutter run -d windows     # desktop
+flutter run -d android     # phone
 ```
 
-## Routes
+## API
 
-| Path | Screen |
-|------|--------|
-| `/` | Login |
-| `/staff` | StaffShell (bottom nav modules) |
-
-Portal is **web-only** (`portal.html` + `portal_token`). `lib/main_portal.dart` is deprecated.
-
-## Staff modules
-
-- **Dashboard** — KPIs + executive decisions from `/api/bootstrap`
-- **Properties** — list/search
-- **Clients** — list/search + balance
-- **Contracts** — list/search
-- **Invoices** — filters + collect payment (`/api/pay_invoice`)
-- **Maintenance** — open/tenant tickets + status updates
-- **Payment proofs** — pending portal proofs approve/reject
-
-Modules hide automatically based on `/api/me` permissions.
-
-## Test users (production)
+`https://web-production-08d73.up.railway.app/api`
 
 | User | Password |
 |------|----------|
-| operations | 1234 |
-| maintenance | 1234 |
-| razan.accounting | Jawdeh123 |
+| Najjar | Najjar2026 |
+| owner | owner2015 |
 
-## Notes
+## Routes
 
-- Token stored in `SharedPreferences` key `jawdah_cloud_token` (same as web)
-- No DB schema / backend changes required
-- Deep link intents removed from Android manifest (staff-only app)
+| Path | Purpose |
+|------|---------|
+| `/` | Staff login (`POST /login`, `GET /me`) |
+| `/staff` | Dashboard shell |
+| `/portal?token=XXX` | Tenant portal |
+
+## Build
+
+```powershell
+.\scripts\build-apk.ps1
+.\scripts\build-windows.ps1
+```
+
+## Features
+
+- Dark luxury theme · glass cards · 28px · RTL Arabic
+- Dashboard KPIs · Projects · Staff · Finance charts
+- Maintenance · Payment proofs
+- Tenant portal via `portal_token`
+- Responsive: phone bottom nav · desktop navigation rail
+
+No backend changes required.

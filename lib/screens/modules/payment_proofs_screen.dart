@@ -77,7 +77,9 @@ class _PaymentProofsScreenState extends State<PaymentProofsScreen> {
             separatorBuilder: (_, __) => const SizedBox(height: 8),
             itemBuilder: (_, i) {
               final p = items[i];
-              return Card(
+              return GlassCard(
+                accent: BrandColors.gold,
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: ListTile(
                   title: Text('${p['transfer_ref'] ?? p['id']}'),
                   subtitle: Text(

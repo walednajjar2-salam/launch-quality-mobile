@@ -28,6 +28,22 @@ class AppUser {
     );
   }
 
+  /// Mirrors backend `has_permission()` in server.py
+  bool can(String permission) {
+    if (permissions.contains('all')) return true;
+    if (permissions.contains(permission)) return true;
+    final base = permission.split(':').first;
+    if (permissions.contains(base) && !permission.endsWith(':delete')) {
+      return true;
+    }
+    if (permission.endsWith(':read')) {
+      if (permissions.contains(base) || permissions.contains('$base:read')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   String get roleLabel => {
         'owner': 'مالك المؤسسة',
         'admin': 'مدير النظام',
@@ -38,6 +54,4 @@ class AppUser {
         'viewer': 'مشاهد',
       }[role] ??
       role;
-
-  bool can(String permission) => permissions.contains(permission);
 }

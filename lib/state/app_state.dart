@@ -28,6 +28,20 @@ class AppState extends ChangeNotifier {
   AppUser? get user => _auth.user;
   ApiClient get api => _api;
 
+  String _friendlyError(Object e) {
+    final msg = e.toString();
+    if (msg.contains('Invalid username or password')) {
+      return 'اسم المستخدم أو كلمة المرور غير صحيحة';
+    }
+    if (msg.contains('Too many login attempts')) {
+      return 'محاولات كثيرة — انتظر قليلاً ثم أعد المحاولة';
+    }
+    if (msg.contains('Authentication required')) {
+      return 'انتهت الجلسة — سجّل الدخول من جديد';
+    }
+    return msg;
+  }
+
   Future<void> boot() async {
     status = AppStatus.booting;
     errorMessage = null;
@@ -42,7 +56,7 @@ class AppState extends ChangeNotifier {
     } catch (e) {
       await _auth.logout();
       status = AppStatus.login;
-      errorMessage = e.toString();
+      errorMessage = _friendlyError(e);
     }
     notifyListeners();
   }
@@ -56,7 +70,7 @@ class AppState extends ChangeNotifier {
       await loadBootstrap();
     } catch (e) {
       status = AppStatus.login;
-      errorMessage = e.toString();
+      errorMessage = _friendlyError(e);
       notifyListeners();
     }
   }
@@ -66,12 +80,12 @@ class AppState extends ChangeNotifier {
     notifyListeners();
     try {
       bootstrap = await _bootstrap.load();
-      _auth.user = bootstrap!.user;
+      await _auth.syncFromMe();
       status = AppStatus.ready;
       errorMessage = null;
     } catch (e) {
       status = AppStatus.error;
-      errorMessage = e.toString();
+      errorMessage = _friendlyError(e);
     }
     notifyListeners();
   }
@@ -83,6 +97,7 @@ class AppState extends ChangeNotifier {
     bootstrap = null;
     navIndex = 0;
     status = AppStatus.login;
+    errorMessage = null;
     notifyListeners();
   }
 
