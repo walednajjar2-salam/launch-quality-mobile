@@ -4,18 +4,23 @@
 from pathlib import Path
 
 from docx import Document
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Cm, Inches, Pt, RGBColor
+from docx.shared import Cm, Pt, RGBColor
 
-NAVY = RGBColor(0x0D, 0x17, 0x28)
-TEAL = RGBColor(0x05, 0xAA, 0xA1)
-GOLD = RGBColor(0xC9, 0xA2, 0x27)
+DOCS_DIR = Path(__file__).resolve().parent.parent / "documents"
+OUTPUT = DOCS_DIR / "مدير-إدارة-الضيافة.docx"
+HEADER_IMG = DOCS_DIR / "letterhead-header.png"
+FOOTER_IMG = DOCS_DIR / "letterhead-footer.png"
+LOGO_IMG = DOCS_DIR / "logo.png"
+
+NAVY = "0D1728"
+TEAL = "05AAA1"
+GOLD = "C9A227"
+CREAM = "F7EEDC"
 DARK = RGBColor(0x11, 0x18, 0x27)
-CREAM = RGBColor(0xF7, 0xEE, 0xDC)
-
-OUTPUT = Path(__file__).resolve().parent.parent / "documents" / "مدير-إدارة-الضيافة.docx"
 
 RESPONSIBILITIES = [
     "إدارة الحجوزات والفعاليات",
@@ -39,133 +44,220 @@ def set_rtl(paragraph) -> None:
     p_pr.append(bidi)
 
 
-def add_colored_paragraph(doc, text, *, size=11, bold=False, color=DARK, align=WD_ALIGN_PARAGRAPH.LEFT, rtl=False):
-    p = doc.add_paragraph()
-    if rtl:
-        set_rtl(p)
-    p.alignment = align
-    run = p.add_run(text)
+def set_cell_shading(cell, fill_hex: str) -> None:
+    shading = OxmlElement("w:shd")
+    shading.set(qn("w:fill"), fill_hex)
+    shading.set(qn("w:val"), "clear")
+    cell._tc.get_or_add_tcPr().append(shading)
+
+
+def set_cell_margins(cell, top=0, start=0, bottom=0, end=0) -> None:
+    tc_pr = cell._tc.get_or_add_tcPr()
+    margins = OxmlElement("w:tcMar")
+    for side, value in (("top", top), ("start", start), ("bottom", bottom), ("end", end)):
+        node = OxmlElement(f"w:{side}")
+        node.set(qn("w:w"), str(value))
+        node.set(qn("w:type"), "dxa")
+        margins.append(node)
+    tc_pr.append(margins)
+
+
+def remove_table_borders(table) -> None:
+    tbl = table._tbl
+    tbl_pr = tbl.tblPr
+    borders = OxmlElement("w:tblBorders")
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        element = OxmlElement(f"w:{edge}")
+        element.set(qn("w:val"), "nil")
+        borders.append(element)
+    tbl_pr.append(borders)
+
+
+def set_run_font(run, size=11, bold=False, color=DARK, name="Arial") -> None:
     run.bold = bold
     run.font.size = Pt(size)
-    run.font.name = "Arial"
-    run._element.rPr.rFonts.set(qn("w:ascii"), "Arial")
-    run._element.rPr.rFonts.set(qn("w:hAnsi"), "Arial")
-    run._element.rPr.rFonts.set(qn("w:cs"), "Arial")
+    run.font.name = name
     run.font.color.rgb = color
-    return p
+    r_pr = run._element.get_or_add_rPr()
+    r_fonts = r_pr.get_or_add_rFonts()
+    r_fonts.set(qn("w:ascii"), name)
+    r_fonts.set(qn("w:hAnsi"), name)
+    r_fonts.set(qn("w:cs"), name)
 
 
-def add_footer_line(doc, text, icon=""):
-    p = doc.add_paragraph()
-    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    run = p.add_run(f"{text}  {icon}".strip())
-    run.font.size = Pt(10)
-    run.font.name = "Arial"
-    run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-    p.paragraph_format.space_after = Pt(2)
+def set_page_background(doc, color_hex: str) -> None:
+    background = OxmlElement("w:background")
+    background.set(qn("w:color"), color_hex)
+    doc.element.insert(0, background)
+
+
+def create_letterhead_images() -> None:
+  try:
+    from PIL import Image, ImageDraw, ImageFont
+  except ImportError:
+    return
+
+  DOCS_DIR.mkdir(parents=True, exist_ok=True)
+
+  w, h = 1240, 220
+  header = Image.new("RGB", (w, h), f"#{CREAM}")
+  draw = ImageDraw.Draw(header)
+
+  navy = [(int(w * 0.48), 0), (w, 0), (w, int(h * 0.92)), (0, h)]
+  draw.polygon(navy, fill=f"#{NAVY}")
+  draw.polygon([(0, int(h * 0.64)), (int(w * 0.19), int(h * 0.64)), (0, h)], fill=f"#{TEAL}")
+  draw.polygon(
+      [(int(w * 0.73), 0), (int(w * 0.84), 0), (int(w * 0.79), int(h * 0.34)), (int(w * 0.68), int(h * 0.34))],
+      fill=f"#{GOLD}",
+  )
+  draw.polygon(
+      [(int(w * 0.66), 0), (int(w * 0.81), 0), (int(w * 0.76), int(h * 0.47)), (int(w * 0.61), int(h * 0.47))],
+      fill=f"#{TEAL}",
+  )
+
+  try:
+      title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 34)
+      sub_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
+      logo_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 42)
+      logo_sub_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 24)
+  except OSError:
+      title_font = ImageFont.load_default()
+      sub_font = title_font
+      logo_font = title_font
+      logo_sub_font = title_font
+
+  draw.text((48, 42), "QUALITY OF LAUNCH\nPROJECTS LLC", fill="#111827", font=title_font, spacing=4)
+  draw.text((48, 138), "REAL ESTATE • PROPERTY MANAGEMENT • HOSPITALITY", fill=f"#{GOLD}", font=sub_font)
+
+  # Logo area on navy block
+  cx, cy = int(w * 0.74), int(h * 0.46)
+  draw.ellipse([(cx - 70, cy - 55), (cx + 70, cy + 55)], outline=f"#{GOLD}", width=4)
+  draw.ellipse([(cx - 55, cy - 40), (cx + 55, cy + 40)], outline=f"#{TEAL}", width=3)
+  draw.text((cx - 38, cy - 30), "QLP", fill=f"#{GOLD}", font=logo_font)
+  draw.text((cx - 28, cy + 18), "LLC", fill="white", font=logo_sub_font)
+
+  header.save(HEADER_IMG)
+
+  fw, fh = 1240, 280
+  footer = Image.new("RGB", (fw, fh), f"#{CREAM}")
+  draw = ImageDraw.Draw(footer)
+  draw.rectangle([(0, fh - 56), (fw, fh)], fill=f"#{NAVY}")
+  draw.polygon([(int(fw * 0.28), 0), (fw, 0), (fw, fh - 56), (0, fh - 56)], fill=f"#{TEAL}")
+  for x_offset, color, width in ((455, GOLD, 35), (420, TEAL, 20), (395, CREAM, 8)):
+      draw.polygon(
+          [
+              (fw - x_offset, 0),
+              (fw - x_offset + width, 0),
+              (fw - x_offset + width - 18, fh - 56),
+              (fw - x_offset - 18, fh - 56),
+          ],
+          fill=f"#{color}",
+      )
+
+  contact_font = sub_font
+  contacts = [
+      ("info@qualitylaunch.om", 58),
+      ("+968 92120205", 98),
+      ("www.qualitylaunch.om", 138),
+      ("Nizwa, Sultanate of Oman", 178),
+  ]
+  for text, y in contacts:
+      draw.text((fw - 420, y), text, fill="white", font=contact_font)
+
+  footer.save(FOOTER_IMG)
+
+  if not LOGO_IMG.exists():
+      logo = header.crop((int(w * 0.58), 0, w, h))
+      logo.save(LOGO_IMG)
+
+
+def add_full_width_image(doc, image_path: Path, width_cm: float) -> None:
+    paragraph = doc.add_paragraph()
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    paragraph.paragraph_format.space_before = Pt(0)
+    paragraph.paragraph_format.space_after = Pt(0)
+    run = paragraph.add_run()
+    run.add_picture(str(image_path), width=Cm(width_cm))
 
 
 def build_document() -> Document:
-    doc = Document()
+    create_letterhead_images()
 
+    doc = Document()
     section = doc.sections[0]
     section.page_height = Cm(29.7)
     section.page_width = Cm(21.0)
-    section.top_margin = Cm(1.5)
-    section.bottom_margin = Cm(1.5)
-    section.left_margin = Cm(2.0)
-    section.right_margin = Cm(2.0)
+    section.top_margin = Cm(0)
+    section.bottom_margin = Cm(0)
+    section.left_margin = Cm(0)
+    section.right_margin = Cm(0)
 
-    # Company name
-    title = doc.add_paragraph()
-    title.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    run = title.add_run("QUALITY OF LAUNCH PROJECTS\nLLC")
-    run.bold = True
-    run.font.size = Pt(24)
-    run.font.name = "Arial"
-    run.font.color.rgb = DARK
+    set_page_background(doc, CREAM)
 
-    subtitle = add_colored_paragraph(
-        doc,
-        "REAL ESTATE • PROPERTY MANAGEMENT • HOSPITALITY",
-        size=10,
-        bold=True,
-        color=GOLD,
-    )
-    subtitle.paragraph_format.space_after = Pt(24)
+    if HEADER_IMG.exists():
+        add_full_width_image(doc, HEADER_IMG, 21.0)
 
-    # Arabic job title
-    job_title = add_colored_paragraph(
-        doc,
-        "مدير إدارة الضيافة وتنظيم الحفلات",
-        size=18,
-        bold=True,
-        color=NAVY,
-        align=WD_ALIGN_PARAGRAPH.RIGHT,
-        rtl=True,
-    )
-    job_title.paragraph_format.space_after = Pt(16)
+    # Content box
+    content_table = doc.add_table(rows=1, cols=1)
+    content_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    remove_table_borders(content_table)
+    content_cell = content_table.rows[0].cells[0]
+    set_cell_shading(content_cell, "FFFFFF")
+    set_cell_margins(content_cell, top=180, start=360, bottom=180, end=360)
 
-    # Responsibilities
+    # Light transparency effect via border
+    tc_pr = content_cell._tc.get_or_add_tcPr()
+    borders = OxmlElement("w:tcBorders")
+    for edge in ("top", "left", "bottom", "right"):
+        element = OxmlElement(f"w:{edge}")
+        element.set(qn("w:val"), "single")
+        element.set(qn("w:sz"), "4")
+        element.set(qn("w:color"), "E8DFC8")
+        borders.append(element)
+    tc_pr.append(borders)
+
+    job_p = content_cell.paragraphs[0]
+    set_rtl(job_p)
+    job_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    run = job_p.add_run("مدير إدارة الضيافة وتنظيم الحفلات")
+    set_run_font(run, size=16, bold=True, color=RGBColor(0x0D, 0x17, 0x28))
+    job_p.paragraph_format.space_after = Pt(14)
+
     for item in RESPONSIBILITIES:
-        p = doc.add_paragraph(style="List Bullet")
+        p = content_cell.add_paragraph(style="List Bullet")
         set_rtl(p)
         p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        p.paragraph_format.line_spacing = 1.8
-        p.paragraph_format.space_after = Pt(4)
+        p.paragraph_format.line_spacing = 1.9
+        p.paragraph_format.space_after = Pt(3)
         run = p.add_run(item)
-        run.font.size = Pt(13)
-        run.font.name = "Arial"
-        run._element.rPr.rFonts.set(qn("w:cs"), "Arial")
-        run.font.color.rgb = DARK
+        set_run_font(run, size=12, color=DARK)
 
-    doc.add_paragraph()
+    # Signature + spacer
+    sig_table = doc.add_table(rows=1, cols=1)
+    remove_table_borders(sig_table)
+    sig_cell = sig_table.rows[0].cells[0]
+    set_cell_margins(sig_cell, top=120, start=360, bottom=60, end=360)
 
-    # Signature
-    sig = doc.add_paragraph()
-    sig.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    lines = ["Regards,", "Signature", "QUALITY OF LAUNCH PROJECTS LLC"]
-    for i, line in enumerate(lines):
-        run = sig.add_run(line + ("\n" if i < len(lines) - 1 else ""))
-        run.font.size = Pt(11)
-        run.font.name = "Arial"
-        run.font.color.rgb = DARK
-        if line == "Signature":
-            run.bold = True
+    sig_p = sig_cell.paragraphs[0]
+    sig_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    for i, (text, bold) in enumerate(
+        [
+            ("Regards,", False),
+            ("Signature", True),
+            ("QUALITY OF LAUNCH PROJECTS LLC", False),
+        ]
+    ):
+        run = sig_p.add_run(text + ("\n" if i < 2 else ""))
+        set_run_font(run, size=10, bold=bold, color=DARK)
 
-    doc.add_paragraph()
-
-    # Contact footer block
-    footer_heading = add_colored_paragraph(
-        doc,
-        "—" * 40,
-        size=8,
-        color=TEAL,
-        align=WD_ALIGN_PARAGRAPH.CENTER,
-    )
-    footer_heading.paragraph_format.space_before = Pt(12)
-
-    contacts = [
-        ("info@qualitylaunch.om", "✉"),
-        ("+968 92120205", "☎"),
-        ("www.qualitylaunch.om", "🌐"),
-        ("Nizwa, Sultanate of Oman", "⌖"),
-    ]
-
-    for text, icon in contacts:
-        p = doc.add_paragraph()
-        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        run = p.add_run(f"{text}  {icon}")
-        run.font.size = Pt(10)
-        run.font.name = "Arial"
-        run.font.color.rgb = TEAL
-        p.paragraph_format.space_after = Pt(2)
+    if FOOTER_IMG.exists():
+        add_full_width_image(doc, FOOTER_IMG, 21.0)
 
     return doc
 
 
 def main() -> None:
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
     doc = build_document()
     doc.save(OUTPUT)
     print(f"Created: {OUTPUT}")
