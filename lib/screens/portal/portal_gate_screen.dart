@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../state/portal_state.dart';
-import '../theme/app_theme.dart';
+import '../../state/portal_state.dart';
+import '../../theme/app_theme.dart';
 
 class PortalGateScreen extends StatefulWidget {
   const PortalGateScreen({super.key, this.initialToken});
