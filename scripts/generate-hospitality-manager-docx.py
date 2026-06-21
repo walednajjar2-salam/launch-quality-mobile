@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate QUALITY OF LAUNCH PROJECTS LLC hospitality manager letter (.docx)."""
 
+import shutil
+import sys
 from pathlib import Path
 
 from docx import Document
@@ -10,10 +12,12 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
-DOCS_DIR = Path(__file__).resolve().parent.parent / "documents"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DOCS_DIR = REPO_ROOT / "documents"
 OUTPUT = DOCS_DIR / "مدير-إدارة-الضيافة.docx"
 HEADER_IMG = DOCS_DIR / "letterhead-header.png"
 FOOTER_IMG = DOCS_DIR / "letterhead-footer.png"
+LOGO_SRC = REPO_ROOT / "assets" / "logo.png"
 LOGO_IMG = DOCS_DIR / "logo.png"
 
 NAVY = "0D1728"
@@ -91,84 +95,110 @@ def set_page_background(doc, color_hex: str) -> None:
     doc.element.insert(0, background)
 
 
+def load_font(size: int, bold: bool = False):
+    from PIL import ImageFont
+
+    candidates = [
+        Path("C:/Windows/Fonts/arialbd.ttf") if bold else Path("C:/Windows/Fonts/arial.ttf"),
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
+        if bold
+        else Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+    ]
+    for path in candidates:
+        if path.exists():
+            return ImageFont.truetype(str(path), size)
+    return ImageFont.load_default()
+
+
+def sync_logo_copy() -> None:
+    if not LOGO_SRC.exists():
+        print(f"Error: official logo not found at {LOGO_SRC}", file=sys.stderr)
+        print("Place the official logo at assets/logo.png and re-run.", file=sys.stderr)
+        sys.exit(1)
+
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(LOGO_SRC, LOGO_IMG)
+
+
+def paste_logo_on_header(header) -> None:
+    from PIL import Image
+
+    logo = Image.open(LOGO_SRC).convert("RGBA")
+    w, h = header.size
+
+    logo_area_left = int(w * 0.52)
+    logo_area_right = w - 20
+    logo_area_top = 10
+    logo_area_bottom = h - 10
+    max_w = logo_area_right - logo_area_left
+    max_h = logo_area_bottom - logo_area_top
+
+    logo.thumbnail((max_w, max_h), Image.LANCZOS)
+    x = logo_area_left + (max_w - logo.width) // 2
+    y = logo_area_top + (max_h - logo.height) // 2
+    header.paste(logo, (x, y), logo)
+
+
 def create_letterhead_images() -> None:
-  try:
-    from PIL import Image, ImageDraw, ImageFont
-  except ImportError:
-    return
+    try:
+        from PIL import Image, ImageDraw
+    except ImportError:
+        return
 
-  DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    sync_logo_copy()
 
-  w, h = 1240, 220
-  header = Image.new("RGB", (w, h), f"#{CREAM}")
-  draw = ImageDraw.Draw(header)
+    w, h = 1240, 220
+    header = Image.new("RGB", (w, h), f"#{CREAM}")
+    draw = ImageDraw.Draw(header)
 
-  navy = [(int(w * 0.48), 0), (w, 0), (w, int(h * 0.92)), (0, h)]
-  draw.polygon(navy, fill=f"#{NAVY}")
-  draw.polygon([(0, int(h * 0.64)), (int(w * 0.19), int(h * 0.64)), (0, h)], fill=f"#{TEAL}")
-  draw.polygon(
-      [(int(w * 0.73), 0), (int(w * 0.84), 0), (int(w * 0.79), int(h * 0.34)), (int(w * 0.68), int(h * 0.34))],
-      fill=f"#{GOLD}",
-  )
-  draw.polygon(
-      [(int(w * 0.66), 0), (int(w * 0.81), 0), (int(w * 0.76), int(h * 0.47)), (int(w * 0.61), int(h * 0.47))],
-      fill=f"#{TEAL}",
-  )
+    navy = [(int(w * 0.48), 0), (w, 0), (w, int(h * 0.92)), (0, h)]
+    draw.polygon(navy, fill=f"#{NAVY}")
+    draw.polygon([(0, int(h * 0.64)), (int(w * 0.19), int(h * 0.64)), (0, h)], fill=f"#{TEAL}")
+    draw.polygon(
+        [(int(w * 0.73), 0), (int(w * 0.84), 0), (int(w * 0.79), int(h * 0.34)), (int(w * 0.68), int(h * 0.34))],
+        fill=f"#{GOLD}",
+    )
+    draw.polygon(
+        [(int(w * 0.66), 0), (int(w * 0.81), 0), (int(w * 0.76), int(h * 0.47)), (int(w * 0.61), int(h * 0.47))],
+        fill=f"#{TEAL}",
+    )
 
-  try:
-      title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 34)
-      sub_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 14)
-      logo_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 42)
-      logo_sub_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 24)
-  except OSError:
-      title_font = ImageFont.load_default()
-      sub_font = title_font
-      logo_font = title_font
-      logo_sub_font = title_font
+    title_font = load_font(34, bold=True)
+    sub_font = load_font(14, bold=True)
 
-  draw.text((48, 42), "QUALITY OF LAUNCH\nPROJECTS LLC", fill="#111827", font=title_font, spacing=4)
-  draw.text((48, 138), "REAL ESTATE • PROPERTY MANAGEMENT • HOSPITALITY", fill=f"#{GOLD}", font=sub_font)
+    draw.text((48, 42), "QUALITY OF LAUNCH\nPROJECTS LLC", fill="#111827", font=title_font, spacing=4)
+    draw.text((48, 138), "REAL ESTATE • PROPERTY MANAGEMENT • HOSPITALITY", fill=f"#{GOLD}", font=sub_font)
 
-  # Logo area on navy block
-  cx, cy = int(w * 0.74), int(h * 0.46)
-  draw.ellipse([(cx - 70, cy - 55), (cx + 70, cy + 55)], outline=f"#{GOLD}", width=4)
-  draw.ellipse([(cx - 55, cy - 40), (cx + 55, cy + 40)], outline=f"#{TEAL}", width=3)
-  draw.text((cx - 38, cy - 30), "QLP", fill=f"#{GOLD}", font=logo_font)
-  draw.text((cx - 28, cy + 18), "LLC", fill="white", font=logo_sub_font)
+    paste_logo_on_header(header)
+    header.save(HEADER_IMG)
 
-  header.save(HEADER_IMG)
+    fw, fh = 1240, 280
+    footer = Image.new("RGB", (fw, fh), f"#{CREAM}")
+    draw = ImageDraw.Draw(footer)
+    draw.rectangle([(0, fh - 56), (fw, fh)], fill=f"#{NAVY}")
+    draw.polygon([(int(fw * 0.28), 0), (fw, 0), (fw, fh - 56), (0, fh - 56)], fill=f"#{TEAL}")
+    for x_offset, color, width in ((455, GOLD, 35), (420, TEAL, 20), (395, CREAM, 8)):
+        draw.polygon(
+            [
+                (fw - x_offset, 0),
+                (fw - x_offset + width, 0),
+                (fw - x_offset + width - 18, fh - 56),
+                (fw - x_offset - 18, fh - 56),
+            ],
+            fill=f"#{color}",
+        )
 
-  fw, fh = 1240, 280
-  footer = Image.new("RGB", (fw, fh), f"#{CREAM}")
-  draw = ImageDraw.Draw(footer)
-  draw.rectangle([(0, fh - 56), (fw, fh)], fill=f"#{NAVY}")
-  draw.polygon([(int(fw * 0.28), 0), (fw, 0), (fw, fh - 56), (0, fh - 56)], fill=f"#{TEAL}")
-  for x_offset, color, width in ((455, GOLD, 35), (420, TEAL, 20), (395, CREAM, 8)):
-      draw.polygon(
-          [
-              (fw - x_offset, 0),
-              (fw - x_offset + width, 0),
-              (fw - x_offset + width - 18, fh - 56),
-              (fw - x_offset - 18, fh - 56),
-          ],
-          fill=f"#{color}",
-      )
+    contact_font = sub_font
+    contacts = [
+        ("info@qualitylaunch.om", 58),
+        ("+968 92120205", 98),
+        ("www.qualitylaunch.om", 138),
+        ("Nizwa, Sultanate of Oman", 178),
+    ]
+    for text, y in contacts:
+        draw.text((fw - 420, y), text, fill="white", font=contact_font)
 
-  contact_font = sub_font
-  contacts = [
-      ("info@qualitylaunch.om", 58),
-      ("+968 92120205", 98),
-      ("www.qualitylaunch.om", 138),
-      ("Nizwa, Sultanate of Oman", 178),
-  ]
-  for text, y in contacts:
-      draw.text((fw - 420, y), text, fill="white", font=contact_font)
-
-  footer.save(FOOTER_IMG)
-
-  if not LOGO_IMG.exists():
-      logo = header.crop((int(w * 0.58), 0, w, h))
-      logo.save(LOGO_IMG)
+    footer.save(FOOTER_IMG)
 
 
 def add_full_width_image(doc, image_path: Path, width_cm: float) -> None:
