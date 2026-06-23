@@ -195,7 +195,7 @@ class _PortalShellState extends State<PortalShell> {
               Text('رفع إثبات تحويل', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _selectedInvoiceId,
+                initialValue: _selectedInvoiceId,
                 decoration: const InputDecoration(labelText: 'الفاتورة'),
                 items: openInvoices
                     .map(
