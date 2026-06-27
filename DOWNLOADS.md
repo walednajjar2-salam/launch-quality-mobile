@@ -2,9 +2,8 @@
 
 | المنصة | الرابط المباشر |
 |--------|----------------|
-| **أندرويد (APK)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk |
-| **ويندوز (ZIP)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
-| **صفحة التحميل** | https://web-production-08d73.up.railway.app/download.html |
+| **أندرويد (APK)** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk |
+| **ويندوز (ZIP)** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip |
 
 > أيقونة التطبيق = شعار **جودة الانطلاقة** (`assets/logo.png`).
 

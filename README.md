@@ -7,10 +7,9 @@
 | **Backend (Production)** | https://web-production-08d73.up.railway.app |
 | **API Health** | https://web-production-08d73.up.railway.app/api/health |
 | **Package ID** | `com.launchquality.staff` |
-| **APK (Android)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk |
-| **Windows (ZIP)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
-| **صفحة التحميل** | https://web-production-08d73.up.railway.app/download.html |
-| **GitHub mirror** | https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/ |
+| **APK (Android)** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk |
+| **Windows (ZIP)** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip |
+| **صفحة التحميل (Railway)** | https://web-production-08d73.up.railway.app/download.html |
 | **Source repo** | https://github.com/walednajjar2-salam/launch-quality-mobile |
 
 ## ما يفعله التطبيق
@@ -23,15 +22,8 @@
 
 | المنصة | الرابط |
 |--------|--------|
-| **أندرويد** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk |
-| **ويندوز** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
-
-بعد مزامنة Railway:
-
-```powershell
-powershell -File scripts/sync-railway-downloads.ps1
-# ثم deploy على Railway
-```
+| **أندرويد** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk |
+| **ويندوز** | https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip |
 
 أيقونة التطبيق = شعار **جودة الانطلاقة** (`assets/logo.png`). لتوليد الأيقونات:
 
