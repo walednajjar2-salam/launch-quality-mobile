@@ -6,7 +6,7 @@
   "scripts": {
     "cap:sync": "npx cap sync android",
     "android:open": "npx cap open android",
-    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:build": "cd android && gradlew.bat assembleRelease",
     "android:debug": "cd android && ./gradlew assembleDebug"
   },
   "dependencies": {

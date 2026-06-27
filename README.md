@@ -7,14 +7,39 @@
 | **Backend (Production)** | https://web-production-08d73.up.railway.app |
 | **API Health** | https://web-production-08d73.up.railway.app/api/health |
 | **Package ID** | `com.launchquality.staff` |
-| **APK download** | [Launch-Quality-Staff.apk v1.0.0-staff](https://github.com/walednajjar2-salam/-/releases/download/v1.0.0-staff/Launch-Quality-Staff.apk) |
-| **Source repo** | [walednajjar2-salam/-](https://github.com/walednajjar2-salam/-) (rename to `launch-quality-mobile` optional) |
+| **APK (Android)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk |
+| **Windows (ZIP)** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
+| **صفحة التحميل** | https://web-production-08d73.up.railway.app/download.html |
+| **GitHub mirror** | https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/ |
+| **Source repo** | https://github.com/walednajjar2-salam/launch-quality-mobile |
 
 ## ما يفعله التطبيق
 
 - يفتح لوحة التحكم الإنتاجية داخل WebView (Capacitor).
 - يعمل مع نفس حسابات النظام على Railway (مثل `razan.accounting`).
 - مناسب للموظفين: عقارات، عقود، فواتير، صيانة، تقارير.
+
+## تنزيل التطبيق (روابط مباشرة)
+
+| المنصة | الرابط |
+|--------|--------|
+| **أندرويد** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk |
+| **ويندوز** | https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
+
+بعد مزامنة Railway:
+
+```powershell
+powershell -File scripts/sync-railway-downloads.ps1
+# ثم deploy على Railway
+```
+
+أيقونة التطبيق = شعار **جودة الانطلاقة** (`assets/logo.png`). لتوليد الأيقونات:
+
+```bash
+python scripts/generate-app-icons.py
+```
+
+صفحة التحميل داخل التطبيق: `www/download.html`
 
 ## متطلبات البناء (على الكمبيوتر)
 

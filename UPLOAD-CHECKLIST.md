@@ -9,17 +9,21 @@
 
 | البند | الحالة | الرابط |
 |--------|--------|--------|
-| **كود المصدر (main)** | ✅ مرفوع | https://github.com/walednajjar2-salam/- |
-| **APK Release v1.0.0-staff** | ✅ مرفوع | https://github.com/walednajjar2-salam/-/releases/tag/v1.0.0-staff |
+| **كود المصدر (main)** | ✅ مرفوع | https://github.com/walednajjar2-salam/launch-quality-mobile |
+| **Release v1.0.1-staff** | ⏳ رفع APK + Windows | https://github.com/walednajjar2-salam/launch-quality-mobile/releases/tag/v1.0.1-staff |
 | **Backend Production** | ✅ يعمل | https://web-production-08d73.up.railway.app/api/health |
 
 ---
 
 ## 📱 تنزيل التطبيق
 
-**Launch-Quality-Staff.apk** (3.1 MB — مبني من Cloud Agent):
+**Launch-Quality-Staff.apk** (أندرويد — أيقونة شعار المؤسسة):
 
-https://github.com/walednajjar2-salam/-/releases/download/v1.0.0-staff/Launch-Quality-Staff.apk
+https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/Launch-Quality-Staff.apk
+
+**Launch-Quality-Staff-Windows.zip** (ويندوز):
+
+https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/Launch-Quality-Staff-Windows.zip
 
 ---
 
@@ -50,7 +54,8 @@ launch-quality-mobile
 
 | الغرض | الرابط |
 |--------|--------|
-| كود الموبايل | https://github.com/walednajjar2-salam/- |
-| تنزيل APK | https://github.com/walednajjar2-salam/-/releases/tag/v1.0.0-staff |
+| كود الموبايل | https://github.com/walednajjar2-salam/launch-quality-mobile |
+| تنزيل APK | https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/Launch-Quality-Staff.apk |
+| تنزيل Windows | https://github.com/walednajjar2-salam/launch-quality-mobile/releases/download/v1.0.1-staff/Launch-Quality-Staff-Windows.zip |
 | Backend | https://web-production-08d73.up.railway.app |
 | Agent من الموبايل | https://cursor.com/agents |

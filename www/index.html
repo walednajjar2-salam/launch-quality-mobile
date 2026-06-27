@@ -1,63 +1,212 @@
 <!doctype html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <meta name="theme-color" content="#071426">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="apple-mobile-web-app-title" content="Launch Quality">
+
+  <link rel="manifest" href="https://web-production-08d73.up.railway.app/manifest.webmanifest">
+
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
   <title>Launch Quality Staff</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    :root { color-scheme: dark; }
+
+    :root { color-scheme: dark; --gold:#D4AF37; --gold-light:#F5D76E; --navy:#040914; }
+
     * { box-sizing: border-box; }
+
     body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: "Tajawal", "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #040914, #071426 52%, #0b1220);
-      color: #f6f2e8;
-      padding: 24px;
-      text-align: center;
+
+      margin: 0; min-height: 100vh; font-family: "Tajawal", "Segoe UI", Arial, sans-serif;
+
+      background: radial-gradient(circle at 20% 8%, rgba(212,175,55,.16), transparent 32%),
+
+        linear-gradient(160deg, #040914, #071426 50%, #0b1220);
+
+      color: #f6f2e8; display: flex; flex-direction: column; align-items: center; justify-content: center;
+
+      padding: max(20px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+
     }
-    .card {
-      max-width: 420px;
-      border: 1px solid rgba(216, 177, 91, 0.35);
-      border-radius: 24px;
-      padding: 28px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-    h1 { margin: 0 0 8px; color: #fff1b8; font-size: 1.4rem; }
-    p { margin: 0 0 16px; color: #a9b3c5; line-height: 1.7; }
+
+    .shell { width: min(100%, 420px); text-align: center; }
+
+    .logo-wrap { width: 108px; height: 108px; margin: 0 auto 18px; animation: pulse 3s ease-in-out infinite; }
+
+    @keyframes pulse { 50% { filter: drop-shadow(0 0 24px rgba(212,175,55,.35)); } }
+
+    .logo { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 12px 32px rgba(212,175,55,.35)); }
+
     .badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(216, 177, 91, 0.18);
-      border: 1px solid rgba(216, 177, 91, 0.45);
-      color: #fff1b8;
-      font-size: 0.85rem;
-      margin-bottom: 16px;
+
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+
+      background: rgba(212,175,55,.14); border: 1px solid rgba(212,175,55,.4);
+
+      color: var(--gold-light); font-size: .82rem; font-weight: 700; margin-bottom: 12px;
+
     }
-    a {
-      color: #f6d77f;
-      text-decoration: none;
-      font-weight: 700;
+
+    h1 { margin: 0 0 8px; font-size: 1.35rem; color: var(--gold-light); font-weight: 800; }
+
+    p { margin: 0 0 16px; color: #a9b3c5; line-height: 1.75; font-size: .95rem; }
+
+    .progress {
+
+      height: 4px; border-radius: 999px; background: rgba(255,255,255,.08);
+
+      overflow: hidden; margin: 18px 0 20px;
+
     }
+
+    .progress i {
+
+      display: block; height: 100%; width: 0; border-radius: inherit;
+
+      background: linear-gradient(90deg, var(--gold), #6D5DFC, #00D4FF);
+
+      animation: load 1.8s ease-in-out forwards;
+
+    }
+
+    @keyframes load { to { width: 100%; } }
+
+    .actions { display: grid; gap: 10px; margin-top: 8px; }
+
+    .btn {
+
+      display: block; padding: 14px 16px; border-radius: 16px; font-weight: 700;
+
+      text-decoration: none; font-size: .95rem; transition: transform .15s;
+
+    }
+
+    .btn:active { transform: scale(.98); }
+
+    .btn-primary {
+
+      background: linear-gradient(135deg, #6D5DFC, #7C4DFF); color: #fff;
+
+      border: 1px solid rgba(124,77,255,.45);
+
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,.05); color: var(--gold-light);
+      border: 1px solid rgba(212,175,55,.28);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, #3DDC84, #1FA463); color: #fff;
+      border: 1px solid rgba(61,220,132,.45);
+    }
+
+    .btn-windows {
+      background: linear-gradient(135deg, #0078D4, #005A9E); color: #fff;
+      border: 1px solid rgba(0,120,212,.45);
+    }
+
+    .hint {
+
+      margin-top: 16px; padding: 12px 14px; border-radius: 14px; text-align: right;
+
+      background: rgba(0,212,255,.07); border: 1px solid rgba(0,212,255,.22);
+
+      color: #b8e8ff; font-size: .82rem; line-height: 1.65;
+
+    }
+
   </style>
+
 </head>
+
 <body>
-  <section class="card">
-    <div class="badge">Launch Quality Staff</div>
-    <h1>جاري فتح النظام…</h1>
-    <p>
-      إذا لم يفتح التطبيق تلقائياً، افتح لوحة التحكم من
-      <a id="openLink" href="https://web-production-08d73.up.railway.app">الرابط الإنتاجي</a>.
-    </p>
-  </section>
+
+  <div class="shell">
+
+    <div class="logo-wrap">
+
+      <img class="logo" src="assets/logo.png" alt="Launch Quality" width="96" height="96">
+
+    </div>
+
+    <div class="badge">Launch Quality · Staff</div>
+
+    <h1 id="status">جاري فتح بوابة الدخول…</h1>
+
+    <p>منصة مشاريع الانطلاقة — ERP · عقارات · ضيافة · مالية</p>
+
+    <div class="progress" aria-hidden="true"><i></i></div>
+
+    <div class="actions">
+
+      <a id="openPrimary" class="btn btn-primary" href="https://web-production-08d73.up.railway.app/">بوابة الدخول</a>
+
+      <a class="btn btn-download" href="https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff.apk">تحميل أندرويد (APK)</a>
+
+      <a class="btn btn-windows" href="https://web-production-08d73.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip">تحميل ويندوز (ZIP)</a>
+
+      <a class="btn btn-ghost" href="download.html">صفحة التحميل</a>
+
+      <a id="openAlt" class="btn btn-ghost" href="https://web-production-08d73.up.railway.app/app.html">لوحة التحكم (بعد الدخول)</a>
+
+    </div>
+
+    <p class="hint">🧰 <b>وضع الميدان:</b> بعد الدخول اضغط 🧰 في الشريط العلوي لعرض الصيانة والفواتير والعقارات بسرعة.</p>
+
+  </div>
+
   <script>
-    const API_BASE = "https://web-production-08d73.up.railway.app";
-    const target = API_BASE + "/";
-    document.getElementById("openLink").href = target;
-    setTimeout(() => { window.location.replace(target); }, 600);
+
+    const API = "https://web-production-08d73.up.railway.app";
+
+    const token = localStorage.getItem("jawdah_cloud_token");
+
+    const target = token
+
+      ? API + "/app.html?v=" + Date.now()
+
+      : API + "/?v=" + Date.now();
+
+    document.getElementById("openPrimary").href = token ? API + "/app.html" : API + "/";
+
+    document.getElementById("openAlt").href = API + "/";
+
+    const params = new URLSearchParams(window.location.search);
+    const skipRedirect = params.has("stay") || params.has("download");
+
+    if (!skipRedirect) {
+      setTimeout(function () {
+        document.getElementById("status").textContent = "يتم التحويل الآن…";
+        window.location.replace(target);
+      }, 1400);
+    } else {
+      document.getElementById("status").textContent = "جودة الانطلاقة — Staff";
+    }
+
   </script>
+
 </body>
+
 </html>
+

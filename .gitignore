@@ -9,5 +9,8 @@ android/.idea/
 *.apk
 *.aab
 *.keystore
+release/
+www/downloads/*.apk
+www/downloads/*.zip
 .env
 .env.local
