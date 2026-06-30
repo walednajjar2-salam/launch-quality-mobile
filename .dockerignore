@@ -1,0 +1,12 @@
+.git
+.gitignore
+.metadata
+android
+ios
+linux
+macos
+windows
+test
+scripts
+*.md
+build
