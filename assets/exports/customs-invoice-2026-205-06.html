@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>فاتورة دفع جمرك سيارة – BAI-2026/205/06</title>
+<title>Tax Invoice 00139 – Vehicle Customs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
 <style>
     :root {
         --navy: #0b2d5e;
@@ -14,6 +14,7 @@
         --navy-mid: #164a82;
         --gold: #c9a227;
         --gold-light: #f5e6b8;
+        --red: #c0392b;
         --silver: #d4dce8;
         --text: #1a1a2e;
         --muted: #5a6478;
@@ -44,7 +45,6 @@
         box-shadow: 0 8px 40px rgba(11,45,94,.18);
     }
 
-    /* watermark */
     .page::before {
         content: '';
         position: absolute;
@@ -57,7 +57,6 @@
 
     .page > * { position: relative; z-index: 1; }
 
-    /* top band */
     .top-band {
         height: 6px;
         background: linear-gradient(90deg, var(--navy-dark), var(--navy-mid) 40%, var(--gold) 60%, var(--navy-mid) 80%, var(--navy-dark));
@@ -65,46 +64,59 @@
 
     .content { padding: 14mm 15mm 12mm; }
 
-    /* ── header ── */
     .header {
         display: grid;
         grid-template-columns: 1fr auto;
         gap: 16px;
         align-items: start;
-        padding-bottom: 14px;
+        padding-bottom: 12px;
         border-bottom: 2.5px solid var(--navy);
-        margin-bottom: 16px;
+        margin-bottom: 10px;
     }
 
-    .brand img { height: 82px; width: auto; display: block; }
+    .brand img { height: 78px; width: auto; display: block; }
 
-    .brand-tagline {
-        margin-top: 6px;
-        font-size: 11px;
-        color: var(--muted);
+    .company-address {
+        font-family: 'Tajawal', 'Cairo', sans-serif;
+        margin-top: 8px;
+        font-size: 12.5px;
         font-weight: 500;
+        color: #3a4560;
+        line-height: 1.5;
+        white-space: nowrap;
+        letter-spacing: .1px;
     }
 
     .invoice-badge {
         background: var(--navy);
         color: #fff;
         border-radius: 8px;
-        padding: 12px 18px;
-        min-width: 200px;
+        padding: 11px 16px;
+        min-width: 210px;
         text-align: center;
     }
 
-    .invoice-badge .label {
-        font-size: 10px;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        opacity: .75;
+    .invoice-badge .tax-label {
+        font-size: 11px;
+        font-weight: 700;
+        opacity: .9;
         margin-bottom: 2px;
     }
 
-    .invoice-badge .number {
-        font-size: 15px;
+    .invoice-badge .tax-no {
+        font-size: 26px;
         font-weight: 800;
+        color: #ff6b6b;
+        letter-spacing: 2px;
+        line-height: 1.1;
+        text-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+
+    .invoice-badge .tax-sub {
+        font-size: 10px;
+        color: #ffb3b3;
+        font-weight: 600;
+        margin-top: 2px;
         letter-spacing: .5px;
     }
 
@@ -112,41 +124,52 @@
         margin-top: 8px;
         padding-top: 8px;
         border-top: 1px solid rgba(255,255,255,.25);
-        font-size: 11.5px;
-        line-height: 1.7;
+        font-size: 11px;
+        line-height: 1.75;
         font-weight: 500;
+        text-align: right;
+        direction: rtl;
     }
 
-    /* ── title banner ── */
+    .invoice-badge .due-today {
+        margin-top: 6px;
+        background: var(--red);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 4px;
+        letter-spacing: .3px;
+    }
+
     .title-banner {
         background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
         color: #fff;
         border-radius: 8px;
-        padding: 14px 20px;
+        padding: 12px 20px;
         text-align: center;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
         border-right: 5px solid var(--gold);
     }
 
     .title-banner h1 {
-        font-size: 21px;
+        font-size: 19px;
         font-weight: 800;
-        letter-spacing: .2px;
     }
 
     .title-banner p {
-        font-size: 13px;
-        opacity: .85;
-        margin-top: 4px;
+        font-size: 12.5px;
+        opacity: .88;
+        margin-top: 3px;
         font-weight: 500;
+        direction: ltr;
     }
 
-    /* ── info cards ── */
     .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
     }
 
     .info-card {
@@ -159,24 +182,14 @@
         background: var(--row-alt);
         border-bottom: 1px solid var(--border);
         padding: 7px 14px;
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 700;
         color: var(--navy);
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        direction: ltr;
+        text-align: left;
     }
 
-    .info-card-head::before {
-        content: '';
-        width: 3px;
-        height: 14px;
-        background: var(--gold);
-        border-radius: 2px;
-        flex-shrink: 0;
-    }
-
-    .info-card-body { padding: 10px 14px; }
+    .info-card-body { padding: 10px 14px; direction: ltr; text-align: left; }
 
     .info-row {
         display: flex;
@@ -184,59 +197,66 @@
         align-items: baseline;
         gap: 8px;
         padding: 4px 0;
-        font-size: 13px;
+        font-size: 12.5px;
         border-bottom: 1px dashed #e8edf4;
     }
 
     .info-row:last-child { border-bottom: none; }
 
-    .info-row .lbl { color: var(--muted); font-weight: 600; white-space: nowrap; }
-    .info-row .val { font-weight: 700; color: var(--text); text-align: left; }
+    .info-row .lbl {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        white-space: nowrap;
+    }
 
-    /* ── table ── */
+    .info-row .val { font-weight: 700; color: var(--text); }
+
     .section-label {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         color: var(--navy);
         margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .section-label::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: linear-gradient(to left, transparent, var(--border));
+        direction: ltr;
+        text-align: left;
+        letter-spacing: .5px;
+        text-transform: uppercase;
     }
 
     table.items {
         width: 100%;
         border-collapse: collapse;
-        font-size: 13.5px;
-        margin-bottom: 16px;
+        font-size: 12.5px;
+        margin-bottom: 14px;
+        direction: ltr;
     }
 
     table.items thead th {
         background: var(--navy);
         color: #fff;
-        padding: 9px 12px;
+        padding: 8px 10px;
         font-weight: 700;
-        font-size: 12.5px;
+        font-size: 11px;
         border: 1px solid var(--navy-dark);
         text-align: center;
+        letter-spacing: .3px;
+        text-transform: uppercase;
     }
 
-    table.items thead th:first-child { text-align: center; width: 36px; }
-    table.items thead th:nth-child(2) { text-align: right; width: 22%; }
-    table.items thead th:nth-child(3) { text-align: right; }
-    table.items thead th:last-child { width: 130px; }
+    table.items thead th:nth-child(2),
+    table.items thead th:nth-child(3) { text-align: left; }
+
+    table.items thead th:first-child { width: 32px; }
+    table.items thead th:nth-child(2) { width: 18%; }
+    table.items thead th:last-child { width: 110px; }
 
     table.items tbody td {
         border: 1px solid var(--border);
-        padding: 8px 12px;
+        padding: 7px 10px;
         vertical-align: middle;
+        text-align: left;
     }
 
     table.items tbody tr:nth-child(even) td { background: var(--row-alt); }
@@ -245,123 +265,124 @@
         text-align: center;
         color: var(--muted);
         font-weight: 700;
-        font-size: 12px;
+        font-size: 11px;
     }
 
-    table.items .cat { font-weight: 700; color: var(--navy); }
+    table.items .cat {
+        font-weight: 700;
+        color: var(--navy);
+        font-size: 11.5px;
+        text-transform: uppercase;
+    }
 
     .fill-box {
         display: block;
-        min-height: 22px;
+        min-height: 20px;
         border-bottom: 1.5px dashed #aab4c4;
         text-align: center;
-        color: #b0bac8;
-        font-size: 12px;
-        padding: 2px 4px;
     }
 
-    .dash { text-align: center; color: var(--muted); font-weight: 600; }
-
-    tr.subtotal td { background: #edf2f9 !important; font-weight: 600; }
+    tr.subtotal td { background: #edf2f9 !important; font-weight: 600; font-size: 12px; }
     tr.grand-total td {
         background: linear-gradient(135deg, var(--navy-dark), var(--navy)) !important;
         color: #fff !important;
         font-weight: 800;
-        font-size: 15px;
+        font-size: 13.5px;
         border-color: var(--navy-dark) !important;
     }
 
-    tr.grand-total .fill-box {
-        border-bottom-color: rgba(255,255,255,.4);
-        color: rgba(255,255,255,.6);
-    }
+    tr.grand-total .fill-box { border-bottom-color: rgba(255,255,255,.4); }
 
-    /* ── payment box ── */
     .payment-box {
         border: 2px solid var(--navy);
         border-radius: 10px;
         overflow: hidden;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }
 
     .payment-box-head {
         background: var(--navy);
         color: #fff;
-        padding: 9px 16px;
-        font-size: 14px;
+        padding: 8px 16px;
+        font-size: 12.5px;
         font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        direction: ltr;
+        text-align: left;
+        letter-spacing: .3px;
     }
-
-    .payment-box-head svg { flex-shrink: 0; opacity: .85; }
 
     .payment-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        direction: ltr;
     }
 
     .pay-item {
-        padding: 10px 16px;
+        padding: 9px 14px;
         border-bottom: 1px solid var(--border);
         border-left: 1px solid var(--border);
+        text-align: left;
     }
 
     .pay-item:nth-child(odd) { border-left: none; }
     .pay-item:nth-last-child(-n+2) { border-bottom: none; }
 
     .pay-item .plbl {
-        font-size: 11px;
+        font-size: 10px;
         color: var(--muted);
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
     }
 
     .pay-item .pval {
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 700;
         color: var(--text);
+        font-family: 'Courier New', monospace;
+        letter-spacing: .5px;
     }
 
-    .pay-item .pval.empty {
-        color: #aab4c4;
-        border-bottom: 1.5px dashed #aab4c4;
-        min-height: 20px;
+    .pay-item .pval.name {
+        font-family: 'Cairo', sans-serif;
+        letter-spacing: 0;
     }
 
-    /* ── notes ── */
+    .pay-item.full { grid-column: 1 / -1; }
+
     .notes {
-        background: var(--gold-light);
-        border: 1px solid #e8d490;
-        border-right: 4px solid var(--gold);
+        background: #fff5f5;
+        border: 1px solid #f5c6c6;
+        border-right: 4px solid var(--red);
         border-radius: 6px;
-        padding: 10px 14px;
+        padding: 9px 14px;
         font-size: 11.5px;
-        color: #5a4a10;
+        color: #7a2020;
         line-height: 1.75;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
+        direction: rtl;
+        text-align: right;
     }
 
-    .notes strong { color: #3d3208; }
+    .notes strong { color: var(--red); }
 
-    /* ── footer ── */
     .footer {
         display: grid;
         grid-template-columns: 1fr auto;
         gap: 20px;
         align-items: end;
-        padding-top: 14px;
+        padding-top: 12px;
         border-top: 2px solid var(--silver);
     }
 
-    .sig-block { font-size: 12.5px; color: var(--muted); }
+    .sig-block { font-size: 12px; direction: ltr; text-align: left; color: var(--muted); }
 
     .sig-block h4 {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         color: var(--navy);
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         text-transform: uppercase;
         letter-spacing: .5px;
     }
@@ -370,53 +391,53 @@
         display: flex;
         align-items: baseline;
         gap: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
-    .sig-line span:first-child { white-space: nowrap; font-weight: 600; }
+    .sig-line span:first-child { white-space: nowrap; font-weight: 600; font-size: 11px; }
 
     .sig-line .line {
         flex: 1;
         border-bottom: 1px solid #999;
         min-width: 120px;
-        height: 18px;
+        height: 16px;
     }
 
     .sig-name {
-        margin-top: 6px;
+        margin-top: 4px;
         font-weight: 700;
         color: var(--text);
-        font-size: 13px;
+        font-size: 12.5px;
     }
 
     .stamp-wrap { text-align: center; }
 
-    .stamp-wrap img {
-        width: 130px;
-        height: auto;
-        display: block;
-    }
+    .stamp-wrap img { width: 120px; height: auto; display: block; }
 
     .stamp-wrap .stamp-caption {
-        font-size: 9.5px;
+        font-size: 9px;
         color: var(--muted);
-        margin-top: 4px;
+        margin-top: 3px;
         font-weight: 600;
     }
 
     .doc-footer {
-        margin-top: 14px;
-        padding-top: 10px;
+        margin-top: 12px;
+        padding-top: 8px;
         border-top: 1px dashed var(--border);
         text-align: center;
-        font-size: 10px;
+        font-size: 9.5px;
         color: #8892a4;
         line-height: 1.6;
     }
 
     .doc-footer strong { color: var(--navy); }
 
-    /* bottom band */
+    .tax-ref-red {
+        color: var(--red);
+        font-weight: 800;
+    }
+
     .bottom-band {
         height: 4px;
         background: linear-gradient(90deg, var(--navy-dark), var(--gold), var(--navy-dark));
@@ -436,158 +457,156 @@
 
     <div class="content">
 
-        <!-- Header -->
         <header class="header">
             <div class="brand">
-                <img src="Barq_Al_Bihar_Logo.png" alt="برق البحار للإستيراد والتصدير" />
-                <div class="brand-tagline">برق البحار للإستيراد والتصدير · Sultanate of Oman</div>
+                <img src="Barq_Al_Bihar_Logo.png" alt="Barq Al-Bihar Import &amp; Export" />
+                <div class="company-address">سلطنة عُمان · مسقط · برق البحار للإستيراد والتصدير · Al Barq Logistics Services</div>
             </div>
             <div class="invoice-badge">
-                <div class="label">Tax Invoice / فاتورة</div>
-                <div class="number">BAI-2026/205/06</div>
+                <div class="tax-label">TAX INVOICE / فاتورة ضريبية</div>
+                <div class="tax-no">00139</div>
+                <div class="tax-sub">Ref: BAI-2026/205/06</div>
                 <div class="meta">
-                    التاريخ: 06 / 07 / 2026<br />
-                    نوع المستند: جمرك سيارات
+                    Date: 06 / 07 / 2026<br />
+                    Due: <strong>Today — Same Day</strong>
                 </div>
+                <div class="due-today">⚠ السداد خلال اليوم</div>
             </div>
         </header>
 
-        <!-- Title -->
         <div class="title-banner">
-            <h1>فاتورة دفع جمرك سيارة</h1>
-            <p>ملحق رقم 2026/205/06 – عبد الملك شفيق</p>
+            <h1>فاتورة دفع جمرك سيارة · Vehicle Customs Payment Invoice</h1>
+            <p>Appendix No. 2026/205/06 — Shafiq Abdul Malik</p>
         </div>
 
-        <!-- Client & Vehicle info -->
         <div class="info-grid">
             <div class="info-card">
-                <div class="info-card-head">بيانات العميل</div>
+                <div class="info-card-head">CLIENT INFO</div>
                 <div class="info-card-body">
                     <div class="info-row">
-                        <span class="lbl">الاسم</span>
-                        <span class="val">وليد نجار / شفيق عبد الملك</span>
+                        <span class="lbl">Name</span>
+                        <span class="val">Waleed Najjar / Shafiq Abdul Malik</span>
                     </div>
                     <div class="info-row">
-                        <span class="lbl">الملحق</span>
-                        <span class="val">2026/205/06 – عبد الملك شفيق</span>
+                        <span class="lbl">Appendix</span>
+                        <span class="val">2026/205/06 — Shafiq Abdul Malik</span>
                     </div>
                 </div>
             </div>
             <div class="info-card">
-                <div class="info-card-head">بيانات المركبة</div>
+                <div class="info-card-head">VEHICLE INFO</div>
                 <div class="info-card-body">
                     <div class="info-row">
-                        <span class="lbl">النوع</span>
-                        <span class="val">Land Rover Defender</span>
+                        <span class="lbl">Make / Model</span>
+                        <span class="val">Land Rover Defender 2025</span>
                     </div>
                     <div class="info-row">
-                        <span class="lbl">الموديل</span>
-                        <span class="val">2025</span>
+                        <span class="lbl">Inv. No.</span>
+                        <span class="val tax-ref-red">Tax Invoice 00139</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Line items -->
-        <div class="section-label">تفاصيل الرسوم</div>
+        <div class="section-label">Fee Breakdown / تفاصيل الرسوم</div>
         <table class="items">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>البند</th>
-                    <th>التفاصيل</th>
-                    <th>المبلغ (ر.ع)</th>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Amt (OMR)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="num">1</td>
-                    <td class="cat">الجمرك</td>
-                    <td>رسوم تخليص جمركي</td>
+                    <td class="cat">Customs</td>
+                    <td>Customs Clearance Fees</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
                 <tr>
                     <td class="num">2</td>
-                    <td class="cat">الضريبة</td>
-                    <td>ضريبة القيمة المضافة</td>
+                    <td class="cat">VAT</td>
+                    <td>Value Added Tax (VAT)</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
                 <tr>
                     <td class="num">3</td>
-                    <td class="cat">الفحص</td>
-                    <td>فحص المركبة قبل التسجيل</td>
+                    <td class="cat">Insp.</td>
+                    <td>Pre-Registration Vehicle Inspection</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
                 <tr>
                     <td class="num">4</td>
-                    <td class="cat">التأمين</td>
-                    <td>تغيير عقد التأمين الشامل — إصدار عقد جديد + تعديل بيانات</td>
+                    <td class="cat">Ins.</td>
+                    <td>Comprehensive Policy Amendment — New Issue + Data Update</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
                 <tr class="subtotal">
-                    <td colspan="3" style="text-align:left; padding-right:16px;">المجموع الفرعي</td>
+                    <td colspan="3">Subtotal</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
                 <tr class="grand-total">
-                    <td colspan="3" style="text-align:left; padding-right:16px;">الإجمالي المستحق</td>
+                    <td colspan="3">Total Due / الإجمالي المستحق</td>
                     <td><span class="fill-box">&nbsp;</span></td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Payment -->
         <div class="payment-box">
-            <div class="payment-box-head">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                بيانات الدفع — يرجى التحويل إلى الحساب التالي
-            </div>
+            <div class="payment-box-head">PAYMENT DETAILS — Transfer to Account Below</div>
             <div class="payment-grid">
                 <div class="pay-item">
-                    <div class="plbl">الشركة</div>
-                    <div class="pval">البرق للخدمات اللوجستية</div>
+                    <div class="plbl">Company</div>
+                    <div class="pval name">Al Barq Logistics Services</div>
                 </div>
                 <div class="pay-item">
-                    <div class="plbl">البنك</div>
-                    <div class="pval">بنك ظفار</div>
+                    <div class="plbl">Bank</div>
+                    <div class="pval name">Sohar Islamic Bank · صحار الإسلامي</div>
                 </div>
                 <div class="pay-item">
-                    <div class="plbl">صاحب الحساب</div>
-                    <div class="pval">مازن بن سعيد الريامي</div>
+                    <div class="plbl">Account Holder</div>
+                    <div class="pval name">Mazen bin Saeed Al Riyami</div>
                 </div>
                 <div class="pay-item">
-                    <div class="plbl">رقم الحساب</div>
-                    <div class="pval empty">&nbsp;</div>
+                    <div class="plbl">Acct. No.</div>
+                    <div class="pval">70202010390101</div>
                 </div>
-                <div class="pay-item" style="grid-column: 1 / -1;">
+                <div class="pay-item">
+                    <div class="plbl">SWIFT Code</div>
+                    <div class="pval">BSHROMRUISL</div>
+                </div>
+                <div class="pay-item">
                     <div class="plbl">IBAN</div>
-                    <div class="pval empty">&nbsp;</div>
+                    <div class="pval">OM39 0380 0702 0201 0390 101</div>
                 </div>
             </div>
         </div>
 
-        <!-- Notes -->
         <div class="notes">
-            <strong>ملاحظة:</strong> يرجى إرفاق إيصال التحويل البنكي مع ذكر رقم الفاتورة <strong>BAI-2026/205/06</strong> في خانة البيان. جميع المبالغ بالريال العُماني (OMR). هذه الفاتورة صادرة عن برق البحار للإستيراد والتصدير.
+            <strong>تنبيه:</strong> يرجى السداد <strong>خلال اليوم 06/07/2026</strong>. أرفق إيصال التحويل مع ذكر
+            <strong class="tax-ref-red">Tax Invoice 00139</strong> في خانة البيان.
+            جميع المبالغ بالريال العُماني (OMR).
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <div class="sig-block">
-                <h4>التفويض والتوقيع</h4>
-                <div class="sig-line"><span>التوقيع:</span><span class="line"></span></div>
-                <div class="sig-line"><span>التاريخ:</span><span class="line"></span></div>
-                <div class="sig-name">مازن بن سعيد الريامي</div>
-                <div style="font-size:11px; margin-top:2px;">المفوّض بالتوقيع</div>
+                <h4>Authorized Signature</h4>
+                <div class="sig-line"><span>Signature:</span><span class="line"></span></div>
+                <div class="sig-line"><span>Date:</span><span class="line">06 / 07 / 2026</span></div>
+                <div class="sig-name">Mazen bin Saeed Al Riyami</div>
+                <div style="font-size:10px; margin-top:2px;">Authorized Signatory</div>
             </div>
             <div class="stamp-wrap">
-                <img src="Barq_Al_Bihar_Stamp_Clean.png" alt="ختم برق البحار" />
-                <div class="stamp-caption">ختم رسمي · Official Seal</div>
+                <img src="Barq_Al_Bihar_Stamp_Clean.png" alt="Official Seal" />
+                <div class="stamp-caption">Official Seal · ختم رسمي</div>
             </div>
         </footer>
 
         <div class="doc-footer">
-            <strong>برق البحار للإستيراد والتصدير</strong> · BARQ AL-BIHAR IMPORT &amp; EXPORT<br />
-            Sultanate of Oman · فاتورة رقم BAI-2026/205/06 · تاريخ الإصدار 06/07/2026
+            <strong>BARQ AL-BIHAR IMPORT &amp; EXPORT</strong> · Sultanate of Oman<br />
+            <span class="tax-ref-red">Tax Invoice No. 00139</span> · Ref BAI-2026/205/06 · Issued 06/07/2026 · Due Today
         </div>
 
     </div>
