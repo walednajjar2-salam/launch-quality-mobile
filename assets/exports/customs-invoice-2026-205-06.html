@@ -13,13 +13,14 @@
         --navy-dark: #061e3f;
         --navy-mid: #164a82;
         --gold: #c9a227;
-        --gold-light: #f5e6b8;
         --red: #c0392b;
         --silver: #d4dce8;
         --text: #1a1a2e;
         --muted: #5a6478;
         --row-alt: #f4f7fb;
         --border: #c5d0df;
+        --edit-bg: #fffde7;
+        --edit-border: #f9a825;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,6 +34,62 @@
         direction: rtl;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+    }
+
+    /* ── Edit toolbar (screen only) ── */
+    .edit-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: #1a2332;
+        color: #fff;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 13px;
+        box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+
+    .edit-toolbar .hint { opacity: .85; font-size: 12px; }
+
+    .edit-toolbar button {
+        background: var(--gold);
+        color: #1a1a2e;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 6px;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .edit-toolbar button:hover { filter: brightness(1.08); }
+
+    .edit-toolbar button.secondary {
+        background: #3a4a62;
+        color: #fff;
+    }
+
+    /* Editable fields highlight on screen */
+    [contenteditable="true"] {
+        outline: none;
+        border-radius: 3px;
+        transition: background .15s, box-shadow .15s;
+    }
+
+    body.edit-mode [contenteditable="true"]:hover {
+        background: var(--edit-bg);
+        box-shadow: inset 0 0 0 1px var(--edit-border);
+        cursor: text;
+    }
+
+    body.edit-mode [contenteditable="true"]:focus {
+        background: #fff;
+        box-shadow: inset 0 0 0 2px var(--edit-border);
     }
 
     .page {
@@ -50,7 +107,7 @@
         position: absolute;
         inset: 0;
         background: url('Barq_Al_Bihar_Logo.png') center 42% / 55% no-repeat;
-        opacity: .035;
+        opacity: .03;
         pointer-events: none;
         z-index: 0;
     }
@@ -62,263 +119,231 @@
         background: linear-gradient(90deg, var(--navy-dark), var(--navy-mid) 40%, var(--gold) 60%, var(--navy-mid) 80%, var(--navy-dark));
     }
 
-    .content { padding: 14mm 15mm 12mm; }
+    .content { padding: 12mm 14mm 10mm; }
 
     .header {
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: 16px;
+        gap: 14px;
         align-items: start;
-        padding-bottom: 12px;
+        padding-bottom: 10px;
         border-bottom: 2.5px solid var(--navy);
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
-    .brand img { height: 78px; width: auto; display: block; }
+    .brand img {
+        height: 130px;
+        width: auto;
+        display: block;
+        max-width: 100%;
+    }
 
     .company-address {
         font-family: 'Tajawal', 'Cairo', sans-serif;
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #2a3550;
+        line-height: 1.55;
+    }
+
+    .company-desc {
+        font-family: 'Tajawal', 'Cairo', sans-serif;
         margin-top: 8px;
-        font-size: 12.5px;
+        padding: 8px 12px;
+        background: var(--row-alt);
+        border-right: 3px solid var(--navy-mid);
+        border-radius: 0 6px 6px 0;
+        font-size: 11.5px;
         font-weight: 500;
         color: #3a4560;
-        line-height: 1.5;
-        white-space: nowrap;
-        letter-spacing: .1px;
+        line-height: 1.85;
+        text-align: justify;
+    }
+
+    .company-location {
+        font-family: 'Tajawal', sans-serif;
+        margin-top: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .company-location span {
+        color: var(--gold);
+        font-size: 11px;
+        font-weight: 600;
     }
 
     .invoice-badge {
         background: var(--navy);
         color: #fff;
         border-radius: 8px;
-        padding: 11px 16px;
-        min-width: 210px;
+        padding: 10px 14px;
+        min-width: 195px;
         text-align: center;
     }
 
-    .invoice-badge .tax-label {
-        font-size: 11px;
-        font-weight: 700;
-        opacity: .9;
-        margin-bottom: 2px;
-    }
-
+    .invoice-badge .tax-label { font-size: 10px; font-weight: 700; opacity: .9; }
     .invoice-badge .tax-no {
         font-size: 26px;
         font-weight: 800;
         color: #ff6b6b;
         letter-spacing: 2px;
         line-height: 1.1;
-        text-shadow: 0 1px 2px rgba(0,0,0,.25);
     }
-
-    .invoice-badge .tax-sub {
-        font-size: 10px;
-        color: #ffb3b3;
-        font-weight: 600;
-        margin-top: 2px;
-        letter-spacing: .5px;
-    }
-
+    .invoice-badge .tax-sub { font-size: 10px; color: #ffb3b3; font-weight: 600; margin-top: 2px; }
     .invoice-badge .meta {
-        margin-top: 8px;
-        padding-top: 8px;
+        margin-top: 7px;
+        padding-top: 7px;
         border-top: 1px solid rgba(255,255,255,.25);
-        font-size: 11px;
-        line-height: 1.75;
+        font-size: 10.5px;
+        line-height: 1.7;
         font-weight: 500;
         text-align: right;
-        direction: rtl;
     }
-
     .invoice-badge .due-today {
-        margin-top: 6px;
+        margin-top: 5px;
         background: var(--red);
         color: #fff;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 800;
-        padding: 4px 10px;
+        padding: 3px 8px;
         border-radius: 4px;
-        letter-spacing: .3px;
     }
 
     .title-banner {
-        background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+        background: linear-gradient(135deg, var(--navy-dark), var(--navy) 55%, var(--navy-mid));
         color: #fff;
         border-radius: 8px;
-        padding: 12px 20px;
+        padding: 10px 18px;
         text-align: center;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         border-right: 5px solid var(--gold);
     }
 
-    .title-banner h1 {
-        font-size: 19px;
-        font-weight: 800;
-    }
-
-    .title-banner p {
-        font-size: 12.5px;
-        opacity: .88;
-        margin-top: 3px;
-        font-weight: 500;
-        direction: ltr;
-    }
+    .title-banner h1 { font-size: 17px; font-weight: 800; }
+    .title-banner p { font-size: 12px; opacity: .88; margin-top: 2px; direction: ltr; }
 
     .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 16px;
+        gap: 10px;
+        margin-bottom: 12px;
     }
 
-    .info-card {
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-    }
+    .info-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 
     .info-card-head {
         background: var(--row-alt);
         border-bottom: 1px solid var(--border);
-        padding: 7px 14px;
-        font-size: 11.5px;
+        padding: 6px 12px;
+        font-size: 11px;
         font-weight: 700;
         color: var(--navy);
         direction: ltr;
         text-align: left;
     }
 
-    .info-card-body { padding: 10px 14px; direction: ltr; text-align: left; }
+    .info-card-body { padding: 8px 12px; direction: ltr; text-align: left; }
 
     .info-row {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
         gap: 8px;
-        padding: 4px 0;
-        font-size: 12.5px;
+        padding: 3px 0;
+        font-size: 12px;
         border-bottom: 1px dashed #e8edf4;
     }
 
     .info-row:last-child { border-bottom: none; }
-
-    .info-row .lbl {
-        color: var(--muted);
-        font-weight: 600;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: .4px;
-        white-space: nowrap;
-    }
-
-    .info-row .val { font-weight: 700; color: var(--text); }
+    .info-row .lbl { color: var(--muted); font-weight: 600; font-size: 10px; text-transform: uppercase; white-space: nowrap; }
+    .info-row .val { font-weight: 700; }
 
     .section-label {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         color: var(--navy);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         direction: ltr;
         text-align: left;
-        letter-spacing: .5px;
         text-transform: uppercase;
+        letter-spacing: .4px;
     }
 
     table.items {
         width: 100%;
         border-collapse: collapse;
-        font-size: 12.5px;
-        margin-bottom: 14px;
+        font-size: 12px;
+        margin-bottom: 12px;
         direction: ltr;
     }
 
     table.items thead th {
         background: var(--navy);
         color: #fff;
-        padding: 8px 10px;
+        padding: 7px 9px;
         font-weight: 700;
-        font-size: 11px;
+        font-size: 10.5px;
         border: 1px solid var(--navy-dark);
         text-align: center;
-        letter-spacing: .3px;
         text-transform: uppercase;
     }
 
     table.items thead th:nth-child(2),
     table.items thead th:nth-child(3) { text-align: left; }
 
-    table.items thead th:first-child { width: 32px; }
-    table.items thead th:nth-child(2) { width: 18%; }
-    table.items thead th:last-child { width: 110px; }
-
     table.items tbody td {
         border: 1px solid var(--border);
-        padding: 7px 10px;
+        padding: 6px 9px;
         vertical-align: middle;
         text-align: left;
     }
 
     table.items tbody tr:nth-child(even) td { background: var(--row-alt); }
+    table.items .num { text-align: center; color: var(--muted); font-weight: 700; font-size: 10.5px; }
+    table.items .cat { font-weight: 700; color: var(--navy); font-size: 11px; text-transform: uppercase; }
 
-    table.items .num {
+    .amt-cell {
         text-align: center;
-        color: var(--muted);
-        font-weight: 700;
-        font-size: 11px;
-    }
-
-    table.items .cat {
         font-weight: 700;
         color: var(--navy);
-        font-size: 11.5px;
-        text-transform: uppercase;
-    }
-
-    .fill-box {
-        display: block;
         min-height: 20px;
-        border-bottom: 1.5px dashed #aab4c4;
-        text-align: center;
+        font-family: 'Courier New', monospace;
     }
 
-    tr.subtotal td { background: #edf2f9 !important; font-weight: 600; font-size: 12px; }
+    tr.subtotal td { background: #edf2f9 !important; font-weight: 600; }
     tr.grand-total td {
         background: linear-gradient(135deg, var(--navy-dark), var(--navy)) !important;
         color: #fff !important;
         font-weight: 800;
-        font-size: 13.5px;
+        font-size: 13px;
         border-color: var(--navy-dark) !important;
     }
 
-    tr.grand-total .fill-box { border-bottom-color: rgba(255,255,255,.4); }
+    tr.grand-total .amt-cell { color: #fff; }
 
     .payment-box {
         border: 2px solid var(--navy);
         border-radius: 10px;
         overflow: hidden;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
     }
 
     .payment-box-head {
         background: var(--navy);
         color: #fff;
-        padding: 8px 16px;
-        font-size: 12.5px;
+        padding: 7px 14px;
+        font-size: 12px;
         font-weight: 800;
         direction: ltr;
         text-align: left;
-        letter-spacing: .3px;
     }
 
-    .payment-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        direction: ltr;
-    }
+    .payment-grid { display: grid; grid-template-columns: 1fr 1fr; direction: ltr; }
 
     .pay-item {
-        padding: 9px 14px;
+        padding: 8px 12px;
         border-bottom: 1px solid var(--border);
         border-left: 1px solid var(--border);
         text-align: left;
@@ -328,115 +353,65 @@
     .pay-item:nth-last-child(-n+2) { border-bottom: none; }
 
     .pay-item .plbl {
-        font-size: 10px;
+        font-size: 9.5px;
         color: var(--muted);
         font-weight: 700;
-        margin-bottom: 2px;
         text-transform: uppercase;
-        letter-spacing: .4px;
+        margin-bottom: 2px;
     }
 
     .pay-item .pval {
-        font-size: 13px;
+        font-size: 12.5px;
         font-weight: 700;
-        color: var(--text);
         font-family: 'Courier New', monospace;
-        letter-spacing: .5px;
+        letter-spacing: .4px;
     }
 
-    .pay-item .pval.name {
-        font-family: 'Cairo', sans-serif;
-        letter-spacing: 0;
-    }
-
-    .pay-item.full { grid-column: 1 / -1; }
+    .pay-item .pval.name { font-family: 'Cairo', sans-serif; letter-spacing: 0; }
 
     .notes {
         background: #fff5f5;
         border: 1px solid #f5c6c6;
         border-right: 4px solid var(--red);
         border-radius: 6px;
-        padding: 9px 14px;
-        font-size: 11.5px;
+        padding: 8px 12px;
+        font-size: 11px;
         color: #7a2020;
         line-height: 1.75;
-        margin-bottom: 14px;
-        direction: rtl;
+        margin-bottom: 12px;
         text-align: right;
     }
-
-    .notes strong { color: var(--red); }
 
     .footer {
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: 20px;
+        gap: 16px;
         align-items: end;
-        padding-top: 12px;
+        padding-top: 10px;
         border-top: 2px solid var(--silver);
     }
 
-    .sig-block { font-size: 12px; direction: ltr; text-align: left; color: var(--muted); }
+    .sig-block { font-size: 11.5px; direction: ltr; text-align: left; color: var(--muted); }
+    .sig-block h4 { font-size: 10.5px; font-weight: 800; color: var(--navy); margin-bottom: 6px; text-transform: uppercase; }
 
-    .sig-block h4 {
-        font-size: 11px;
-        font-weight: 800;
-        color: var(--navy);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-    }
+    .sig-line { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+    .sig-line .line { flex: 1; border-bottom: 1px solid #999; min-width: 100px; height: 14px; }
+    .sig-name { margin-top: 3px; font-weight: 700; color: var(--text); font-size: 12px; }
 
-    .sig-line {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        margin-bottom: 6px;
-    }
-
-    .sig-line span:first-child { white-space: nowrap; font-weight: 600; font-size: 11px; }
-
-    .sig-line .line {
-        flex: 1;
-        border-bottom: 1px solid #999;
-        min-width: 120px;
-        height: 16px;
-    }
-
-    .sig-name {
-        margin-top: 4px;
-        font-weight: 700;
-        color: var(--text);
-        font-size: 12.5px;
-    }
-
-    .stamp-wrap { text-align: center; }
-
-    .stamp-wrap img { width: 120px; height: auto; display: block; }
-
-    .stamp-wrap .stamp-caption {
-        font-size: 9px;
-        color: var(--muted);
-        margin-top: 3px;
-        font-weight: 600;
-    }
+    .stamp-wrap img { width: 110px; height: auto; display: block; }
+    .stamp-wrap .stamp-caption { font-size: 8.5px; color: var(--muted); margin-top: 2px; font-weight: 600; }
 
     .doc-footer {
-        margin-top: 12px;
-        padding-top: 8px;
+        margin-top: 10px;
+        padding-top: 7px;
         border-top: 1px dashed var(--border);
         text-align: center;
-        font-size: 9.5px;
+        font-size: 9px;
         color: #8892a4;
         line-height: 1.6;
     }
 
-    .doc-footer strong { color: var(--navy); }
-
-    .tax-ref-red {
-        color: var(--red);
-        font-weight: 800;
-    }
+    .tax-ref-red { color: var(--red); font-weight: 800; }
 
     .bottom-band {
         height: 4px;
@@ -444,13 +419,25 @@
     }
 
     @media print {
+        .edit-toolbar { display: none !important; }
         body { background: #fff; }
-        .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; }
-        .content { padding: 12mm 14mm 10mm; }
+        body.edit-mode [contenteditable="true"]:hover,
+        body.edit-mode [contenteditable="true"]:focus { background: transparent; box-shadow: none; }
+        .page { margin: 0; box-shadow: none; width: 210mm; }
+        .content { padding: 10mm 12mm 8mm; }
     }
 </style>
 </head>
-<body>
+<body class="edit-mode">
+
+<!-- ═══ شريط التعديل — يختفي عند الطباعة ═══ -->
+<div class="edit-toolbar">
+    <span class="hint">✏️ اضغط على أي نص مظلل لتعديله مباشرة — ثم اطبع أو احفظ PDF</span>
+    <div>
+        <button type="button" onclick="window.print()">🖨️ طباعة / PDF</button>
+        <button type="button" class="secondary" onclick="toggleEdit()">🔒 قفل التعديل</button>
+    </div>
+</div>
 
 <div class="page">
     <div class="top-band"></div>
@@ -460,23 +447,32 @@
         <header class="header">
             <div class="brand">
                 <img src="Barq_Al_Bihar_Logo.png" alt="Barq Al-Bihar Import &amp; Export" />
-                <div class="company-address">سلطنة عُمان · مسقط · برق البحار للإستيراد والتصدير · Al Barq Logistics Services</div>
+                <div class="company-address" contenteditable="true">
+                    سلطنة عُمان · برق البحار للإستيراد والتصدير · Al Barq Logistics Services
+                </div>
+                <div class="company-desc" contenteditable="true">
+                    شركة تقوم بخدمات نقل السيارات من الولايات المتحدة الأمريكية والبضائع ومتابعتها حتى وصولها إلى وجهتها وتسليمها حسب الاتفاق
+                </div>
+                <div class="company-location" contenteditable="true">
+                    📍 الموقع: صحار — ميناء رقم ٣
+                    <span>· Sohar Port No. 3 — Correct Destination</span>
+                </div>
             </div>
             <div class="invoice-badge">
                 <div class="tax-label">TAX INVOICE / فاتورة ضريبية</div>
-                <div class="tax-no">00139</div>
-                <div class="tax-sub">Ref: BAI-2026/205/06</div>
+                <div class="tax-no" contenteditable="true">00139</div>
+                <div class="tax-sub" contenteditable="true">Ref: BAI-2026/205/06</div>
                 <div class="meta">
-                    Date: 06 / 07 / 2026<br />
-                    Due: <strong>Today — Same Day</strong>
+                    Date: <span contenteditable="true">06 / 07 / 2026</span><br />
+                    Due: <strong contenteditable="true">Today — Same Day</strong>
                 </div>
-                <div class="due-today">⚠ السداد خلال اليوم</div>
+                <div class="due-today" contenteditable="true">⚠ السداد خلال اليوم</div>
             </div>
         </header>
 
         <div class="title-banner">
-            <h1>فاتورة دفع جمرك سيارة · Vehicle Customs Payment Invoice</h1>
-            <p>Appendix No. 2026/205/06 — Shafiq Abdul Malik</p>
+            <h1 contenteditable="true">فاتورة دفع جمرك سيارة · Vehicle Customs Payment Invoice</h1>
+            <p contenteditable="true">Appendix No. 2026/205/06 — Shafiq Abdul Malik</p>
         </div>
 
         <div class="info-grid">
@@ -485,11 +481,11 @@
                 <div class="info-card-body">
                     <div class="info-row">
                         <span class="lbl">Name</span>
-                        <span class="val">Waleed Najjar / Shafiq Abdul Malik</span>
+                        <span class="val" contenteditable="true">Waleed Najjar / Shafiq Abdul Malik</span>
                     </div>
                     <div class="info-row">
                         <span class="lbl">Appendix</span>
-                        <span class="val">2026/205/06 — Shafiq Abdul Malik</span>
+                        <span class="val" contenteditable="true">2026/205/06 — Shafiq Abdul Malik</span>
                     </div>
                 </div>
             </div>
@@ -498,11 +494,11 @@
                 <div class="info-card-body">
                     <div class="info-row">
                         <span class="lbl">Make / Model</span>
-                        <span class="val">Land Rover Defender 2025</span>
+                        <span class="val" contenteditable="true">Land Rover Defender 2025</span>
                     </div>
                     <div class="info-row">
-                        <span class="lbl">Inv. No.</span>
-                        <span class="val tax-ref-red">Tax Invoice 00139</span>
+                        <span class="lbl">Destination</span>
+                        <span class="val" contenteditable="true">Sohar Port No. 3 · صحار ميناء ٣</span>
                     </div>
                 </div>
             </div>
@@ -521,35 +517,35 @@
             <tbody>
                 <tr>
                     <td class="num">1</td>
-                    <td class="cat">Customs</td>
-                    <td>Customs Clearance Fees</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="cat" contenteditable="true">Customs</td>
+                    <td contenteditable="true">Customs Clearance Fees</td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
                 <tr>
                     <td class="num">2</td>
-                    <td class="cat">VAT</td>
-                    <td>Value Added Tax (VAT)</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="cat" contenteditable="true">VAT</td>
+                    <td contenteditable="true">Value Added Tax (VAT)</td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
                 <tr>
                     <td class="num">3</td>
-                    <td class="cat">Insp.</td>
-                    <td>Pre-Registration Vehicle Inspection</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="cat" contenteditable="true">Insp.</td>
+                    <td contenteditable="true">Pre-Registration Vehicle Inspection</td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
                 <tr>
                     <td class="num">4</td>
-                    <td class="cat">Ins.</td>
-                    <td>Comprehensive Policy Amendment — New Issue + Data Update</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="cat" contenteditable="true">Ins.</td>
+                    <td contenteditable="true">Comprehensive Policy Amendment — New Issue + Data Update</td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
                 <tr class="subtotal">
                     <td colspan="3">Subtotal</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
                 <tr class="grand-total">
                     <td colspan="3">Total Due / الإجمالي المستحق</td>
-                    <td><span class="fill-box">&nbsp;</span></td>
+                    <td class="amt-cell" contenteditable="true">&nbsp;</td>
                 </tr>
             </tbody>
         </table>
@@ -559,32 +555,32 @@
             <div class="payment-grid">
                 <div class="pay-item">
                     <div class="plbl">Company</div>
-                    <div class="pval name">Al Barq Logistics Services</div>
+                    <div class="pval name" contenteditable="true">Al Barq Logistics Services</div>
                 </div>
                 <div class="pay-item">
                     <div class="plbl">Bank</div>
-                    <div class="pval name">Sohar Islamic Bank · صحار الإسلامي</div>
+                    <div class="pval name" contenteditable="true">Sohar Islamic Bank · صحار الإسلامي</div>
                 </div>
                 <div class="pay-item">
                     <div class="plbl">Account Holder</div>
-                    <div class="pval name">Mazen bin Saeed Al Riyami</div>
+                    <div class="pval name" contenteditable="true">Mazen bin Saeed Al Riyami</div>
                 </div>
                 <div class="pay-item">
                     <div class="plbl">Acct. No.</div>
-                    <div class="pval">70202010390101</div>
+                    <div class="pval" contenteditable="true">70202010390101</div>
                 </div>
                 <div class="pay-item">
                     <div class="plbl">SWIFT Code</div>
-                    <div class="pval">BSHROMRUISL</div>
+                    <div class="pval" contenteditable="true">BSHROMRUISL</div>
                 </div>
                 <div class="pay-item">
                     <div class="plbl">IBAN</div>
-                    <div class="pval">OM39 0380 0702 0201 0390 101</div>
+                    <div class="pval" contenteditable="true">OM39 0380 0702 0201 0390 101</div>
                 </div>
             </div>
         </div>
 
-        <div class="notes">
+        <div class="notes" contenteditable="true">
             <strong>تنبيه:</strong> يرجى السداد <strong>خلال اليوم 06/07/2026</strong>. أرفق إيصال التحويل مع ذكر
             <strong class="tax-ref-red">Tax Invoice 00139</strong> في خانة البيان.
             جميع المبالغ بالريال العُماني (OMR).
@@ -593,9 +589,9 @@
         <footer class="footer">
             <div class="sig-block">
                 <h4>Authorized Signature</h4>
-                <div class="sig-line"><span>Signature:</span><span class="line"></span></div>
-                <div class="sig-line"><span>Date:</span><span class="line">06 / 07 / 2026</span></div>
-                <div class="sig-name">Mazen bin Saeed Al Riyami</div>
+                <div class="sig-line"><span>Signature:</span><span class="line" contenteditable="true">&nbsp;</span></div>
+                <div class="sig-line"><span>Date:</span><span class="line" contenteditable="true">06 / 07 / 2026</span></div>
+                <div class="sig-name" contenteditable="true">Mazen bin Saeed Al Riyami</div>
                 <div style="font-size:10px; margin-top:2px;">Authorized Signatory</div>
             </div>
             <div class="stamp-wrap">
@@ -605,14 +601,27 @@
         </footer>
 
         <div class="doc-footer">
-            <strong>BARQ AL-BIHAR IMPORT &amp; EXPORT</strong> · Sultanate of Oman<br />
-            <span class="tax-ref-red">Tax Invoice No. 00139</span> · Ref BAI-2026/205/06 · Issued 06/07/2026 · Due Today
+            <strong contenteditable="true">BARQ AL-BIHAR IMPORT &amp; EXPORT</strong> · Sultanate of Oman<br />
+            <span class="tax-ref-red" contenteditable="true">Tax Invoice No. 00139</span>
+            · Ref BAI-2026/205/06 · Issued 06/07/2026 · Due Today
         </div>
 
     </div>
 
     <div class="bottom-band"></div>
 </div>
+
+<script>
+function toggleEdit() {
+    document.body.classList.toggle('edit-mode');
+    const btn = document.querySelector('.edit-toolbar button.secondary');
+    const locked = !document.body.classList.contains('edit-mode');
+    btn.textContent = locked ? '✏️ تفعيل التعديل' : '🔒 قفل التعديل';
+    document.querySelectorAll('[contenteditable]').forEach(el => {
+        el.contentEditable = locked ? 'false' : 'true';
+    });
+}
+</script>
 
 </body>
 </html>
