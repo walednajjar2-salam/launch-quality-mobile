@@ -1,136 +1,299 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<title>فاتورة دفع جمرك سيارة</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>فاتورة دفع جمرك سيارة – ملحق 2026/205/06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
+    :root {
+        --navy: #0a2d5c;
+        --navy-light: #1a4a7a;
+        --silver: #c0c8d4;
+        --gold-accent: #b8860b;
+        --bg-total: #f0f4fa;
+        --border: #0a2d5c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-        font-family: Arial, sans-serif;
-        margin: 40px;
-        background: #ffffff;
+        font-family: 'Cairo', Arial, sans-serif;
+        background: #e8ecf2;
+        color: #111;
         direction: rtl;
         text-align: right;
-        color: #000;
     }
 
-    h1 {
-        color: #b8860b;
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 20px auto;
+        background: #fff;
+        padding: 18mm 16mm 14mm;
+        box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    }
+
+    /* ── Header ── */
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 3px solid var(--navy);
+        padding-bottom: 14px;
         margin-bottom: 20px;
-        font-size: 26px;
     }
 
+    .header-logo img {
+        height: 90px;
+        width: auto;
+    }
+
+    .header-meta {
+        text-align: left;
+        direction: ltr;
+        font-size: 13px;
+        color: #444;
+        line-height: 1.8;
+    }
+
+    .header-meta strong { color: var(--navy); }
+
+    /* ── Title ── */
+    .doc-title {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+        color: #fff;
+        text-align: center;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: .3px;
+        margin-bottom: 22px;
+    }
+
+    .doc-subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #555;
+        margin-top: -14px;
+        margin-bottom: 22px;
+    }
+
+    /* ── Tables ── */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 25px;
-        font-size: 18px;
+        font-size: 15px;
+        margin-bottom: 6px;
     }
 
     table th {
-        background: #b8860b;
+        background: var(--navy);
         color: #fff;
-        padding: 12px;
-        font-size: 18px;
+        padding: 10px 14px;
+        font-weight: 600;
+        font-size: 15px;
+        border: 1px solid var(--navy);
     }
 
     table td {
-        border: 1px solid #b8860b;
-        padding: 12px;
-        background: #fff;
+        border: 1px solid #b0bdd0;
+        padding: 9px 14px;
+        vertical-align: middle;
     }
 
-    .total {
-        background: #fff7d1;
-        font-weight: bold;
-        font-size: 20px;
-        border: 2px solid #b8860b;
+    table tr:nth-child(even) td { background: #f7f9fc; }
+
+    .amount-col {
+        text-align: center;
+        font-weight: 600;
+        color: var(--navy);
+        min-width: 120px;
     }
 
-    .stamp {
-        width: 220px;
+    .blank {
+        color: #aaa;
+        letter-spacing: 2px;
+    }
+
+    tr.total-row td {
+        background: var(--bg-total) !important;
+        font-weight: 700;
+        font-size: 17px;
+        border: 2px solid var(--navy);
+        color: var(--navy);
+    }
+
+    /* ── Section heading ── */
+    .section-title {
+        color: var(--navy);
+        font-size: 17px;
+        font-weight: 700;
+        border-right: 4px solid var(--gold-accent);
+        padding-right: 10px;
+        margin: 24px 0 12px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
         margin-top: 30px;
-        background: transparent !important;
+        padding-top: 16px;
+        border-top: 1px solid var(--silver);
     }
 
+    .signature-block {
+        font-size: 13px;
+        color: #555;
+        line-height: 2.2;
+    }
+
+    .signature-block .line {
+        display: inline-block;
+        width: 180px;
+        border-bottom: 1px solid #999;
+    }
+
+    .stamp img {
+        width: 160px;
+        height: auto;
+        opacity: .92;
+    }
+
+    .footer-note {
+        text-align: center;
+        font-size: 11px;
+        color: #888;
+        margin-top: 18px;
+        border-top: 1px dashed var(--silver);
+        padding-top: 10px;
+    }
+
+    /* ── Print ── */
+    @media print {
+        body { background: #fff; }
+        .page {
+            width: 100%;
+            margin: 0;
+            padding: 12mm 14mm;
+            box-shadow: none;
+        }
+        @page { size: A4; margin: 0; }
+    }
 </style>
 </head>
-
 <body>
 
-<h1>فاتورة دفع جمرك سيارة – ملحق رقم 2026/205/06</h1>
+<div class="page">
 
-<table>
-    <tr>
-        <th>البند</th>
-        <th>التفاصيل</th>
-        <th>المبلغ</th>
-    </tr>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-logo">
+            <img src="Barq_Al_Bihar_Logo.png" alt="برق البحار للإستيراد والتصدير" />
+        </div>
+        <div class="header-meta">
+            <div><strong>Ref:</strong> 2026/205/06</div>
+            <div><strong>Date:</strong> 06 / 07 / 2026</div>
+            <div><strong>Doc:</strong> Customs Invoice</div>
+        </div>
+    </div>
 
-    <tr>
-        <td>العميل</td>
-        <td>وليد نجار / شفيق عبد الملك</td>
-        <td>—</td>
-    </tr>
+    <!-- Title -->
+    <div class="doc-title">فاتورة دفع جمرك سيارة</div>
+    <div class="doc-subtitle">ملحق رقم 2026/205/06 – عبد الملك شفيق</div>
 
-    <tr>
-        <td>نوع المركبة</td>
-        <td>Land Rover Defender 2025</td>
-        <td>—</td>
-    </tr>
+    <!-- Invoice items -->
+    <table>
+        <thead>
+            <tr>
+                <th style="width:22%">البند</th>
+                <th>التفاصيل</th>
+                <th style="width:18%">المبلغ (ر.ع)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>العميل</td>
+                <td>وليد نجار / شفيق عبد الملك</td>
+                <td class="amount-col">—</td>
+            </tr>
+            <tr>
+                <td>نوع المركبة</td>
+                <td>Land Rover Defender 2025</td>
+                <td class="amount-col">—</td>
+            </tr>
+            <tr>
+                <td>الجمرك</td>
+                <td>رسوم تخليص جمركي</td>
+                <td class="amount-col blank">________________</td>
+            </tr>
+            <tr>
+                <td>الضريبة</td>
+                <td>ضريبة القيمة المضافة</td>
+                <td class="amount-col blank">________________</td>
+            </tr>
+            <tr>
+                <td>الفحص</td>
+                <td>فحص المركبة قبل التسجيل</td>
+                <td class="amount-col blank">________________</td>
+            </tr>
+            <tr>
+                <td>تغيير عقد التأمين الشامل</td>
+                <td>إصدار عقد جديد + تعديل بيانات</td>
+                <td class="amount-col blank">________________</td>
+            </tr>
+            <tr>
+                <td>ملحق رسمي</td>
+                <td>ملحق رقم 2026/205/06 – عبد الملك شفيق</td>
+                <td class="amount-col">—</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="2">الإجمالي المستحق</td>
+                <td class="amount-col blank">________________</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <tr>
-        <td>الجمرك</td>
-        <td>رسوم تخليص جمركي</td>
-        <td>________________</td>
-    </tr>
+    <!-- Payment details -->
+    <div class="section-title">بيانات الدفع</div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:30%">البند</th>
+                <th>التفاصيل</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>الشركة</td><td>البرق للخدمات اللوجستية</td></tr>
+            <tr><td>البنك</td><td>بنك ظفار</td></tr>
+            <tr><td>صاحب الحساب</td><td>مازن بن سعيد الريامي</td></tr>
+            <tr><td>رقم الحساب</td><td class="blank">________________</td></tr>
+            <tr><td>IBAN</td><td class="blank">________________</td></tr>
+        </tbody>
+    </table>
 
-    <tr>
-        <td>الضريبة</td>
-        <td>ضريبة القيمة المضافة</td>
-        <td>________________</td>
-    </tr>
+    <!-- Footer -->
+    <div class="footer">
+        <div class="signature-block">
+            <div>التوقيع: <span class="line"></span></div>
+            <div>التاريخ: <span class="line"></span></div>
+            <div>الاسم: مازن بن سعيد الريامي</div>
+        </div>
+        <div class="stamp">
+            <img src="Barq_Al_Bihar_Stamp_Official.png" alt="ختم برق البحار للإستيراد والتصدير" />
+        </div>
+    </div>
 
-    <tr>
-        <td>الفحص</td>
-        <td>فحص المركبة قبل التسجيل</td>
-        <td>________________</td>
-    </tr>
+    <div class="footer-note">
+        برق البحار للإستيراد والتصدير · BARQ AL-BIHAR IMPORT &amp; EXPORT · Sultanate of Oman
+    </div>
 
-    <tr>
-        <td>تغيير عقد التأمين الشامل</td>
-        <td>إصدار عقد جديد + تعديل بيانات</td>
-        <td>________________</td>
-    </tr>
-
-    <tr>
-        <td>ملحق رسمي</td>
-        <td>ملحق رقم 2026/205/06 – عبد الملك شفيق</td>
-        <td>—</td>
-    </tr>
-
-    <tr class="total">
-        <td colspan="2">الإجمالي المستحق</td>
-        <td>________________</td>
-    </tr>
-</table>
-
-<br><br>
-
-<h2 style="color:#b8860b;">بيانات الدفع</h2>
-
-<table>
-    <tr><th>البند</th><th>التفاصيل</th></tr>
-    <tr><td>الشركة</td><td>البرق للخدمات اللوجستية</td></tr>
-    <tr><td>البنك</td><td>بنك ظفار</td></tr>
-    <tr><td>صاحب الحساب</td><td>مازن بن سعيد الريامي</td></tr>
-    <tr><td>رقم الحساب</td><td>________________</td></tr>
-    <tr><td>IBAN</td><td>________________</td></tr>
-</table>
-
-<br><br>
-
-<img src="Barq_Al_Bihar_Stamp.png" class="stamp">
+</div>
 
 </body>
 </html>
