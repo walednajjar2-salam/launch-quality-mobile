@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تحميل فاتورة الجمرك</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(160deg, #061e3f 0%, #0b2d5e 60%, #164a82 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        direction: rtl;
+    }
+    .card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 32px 24px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    .icon {
+        width: 72px;
+        height: 72px;
+        background: #edf2f9;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 36px;
+    }
+    h1 {
+        font-size: 20px;
+        color: #0b2d5e;
+        margin-bottom: 6px;
+        font-weight: 800;
+    }
+    .sub {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 28px;
+        line-height: 1.6;
+    }
+    .ref {
+        background: #f0f4fa;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+        color: #0b2d5e;
+        font-weight: 700;
+        margin-bottom: 24px;
+        letter-spacing: .5px;
+    }
+    a.btn {
+        display: block;
+        padding: 16px 20px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        margin-bottom: 12px;
+        transition: opacity .15s;
+    }
+    a.btn:active { opacity: .75; }
+    .btn-primary {
+        background: #0b2d5e;
+        color: #fff;
+    }
+    .btn-secondary {
+        background: #f0f4fa;
+        color: #0b2d5e;
+        border: 2px solid #c5d0df;
+    }
+    .note {
+        margin-top: 20px;
+        font-size: 11px;
+        color: #999;
+        line-height: 1.7;
+    }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="icon">📄</div>
+    <h1>فاتورة دفع جمرك سيارة</h1>
+    <p class="sub">Land Rover Defender 2025<br />برق البحار للإستيراد والتصدير</p>
+    <div class="ref">BAI-2026/205/06</div>
+
+    <a class="btn btn-primary" href="customs-invoice-2026-205-06.pdf" download="فاتورة-جمرك-2026-205-06.pdf">
+        ⬇️ تحميل PDF
+    </a>
+    <a class="btn btn-secondary" href="customs-invoice-2026-205-06.html">
+        🌐 فتح في المتصفح
+    </a>
+
+    <p class="note">اضغط «تحميل PDF» لحفظ الفاتورة على هاتفك.<br />إذا لم يعمل، اضغط مطولاً على الزر واختر «تنزيل».</p>
+</div>
+</body>
+</html>
