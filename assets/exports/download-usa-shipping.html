@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تحميل — فاتورة شراء + بوليصة شحن</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(160deg, #061e3f, #0b2d5e);
+        min-height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        padding: 24px 16px; direction: rtl;
+    }
+    .card {
+        background: #fff; border-radius: 20px; padding: 32px 24px;
+        max-width: 420px; width: 100%; text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    h1 { font-size: 19px; color: #0b2d5e; margin-bottom: 4px; }
+    .sub { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+    .ref { background: #f0f4fa; border-radius: 10px; padding: 10px; font-size: 12px; color: #0b2d5e; font-weight: 700; margin-bottom: 20px; line-height: 1.8; }
+    .section { font-size: 12px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 16px 0 8px; text-align: right; }
+    a.btn {
+        display: block; padding: 14px 20px; border-radius: 14px;
+        font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px;
+    }
+    .btn-primary { background: #0b2d5e; color: #fff; }
+    .btn-secondary { background: #f0f4fa; color: #0b2d5e; border: 2px solid #c5d0df; }
+    .btn-edit { background: #fff8e1; color: #5a4a10; border: 2px solid #f9a825; }
+    .note { margin-top: 16px; font-size: 11px; color: #999; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="card">
+    <h1>🇺🇸 فاتورة شراء + بوليصة شحن</h1>
+    <p class="sub">Land Rover Defender 2025<br />USA → Sohar Port No. 3</p>
+    <div class="ref">
+        Invoice: BAI-PUR-2026-00140<br />
+        B/L: BAI-BOL-2026-00140<br />
+        VIN: SALEA7BW5S2123456
+    </div>
+
+    <div class="section">📄 فاتورة الشراء</div>
+    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download="Vehicle-Purchase-Invoice-USA.pdf">⬇️ PDF — فاتورة الشراء</a>
+    <a class="btn btn-edit" href="vehicle-purchase-invoice-usa.html">✏️ HTML — للتعديل</a>
+
+    <div class="section">🚢 بوليصة الشحن B/L</div>
+    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download="Bill-of-Lading-BAI-BOL-00140.pdf">⬇️ PDF — بوليصة الشحن</a>
+    <a class="btn btn-edit" href="bill-of-lading-shipping.html">✏️ HTML — للتعديل</a>
+
+    <p class="note">PDF = جاهز للإرسال · HTML = عدّل أي نص ثم اطبع PDF<br />المستندان متطابقان في VIN والمراجع</p>
+</div>
+</body>
+</html>

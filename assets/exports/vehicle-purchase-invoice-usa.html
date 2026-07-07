@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vehicle Purchase Invoice — USA Export | BAI-PUR-2026-00140</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+    :root {
+        --navy: #0b2d5e; --navy-dark: #061e3f; --navy-mid: #164a82;
+        --gold: #c9a227; --red: #c0392b; --border: #c5d0df;
+        --row-alt: #f4f7fb; --text: #1a1a2e; --muted: #5a6478;
+        --edit-bg: #fffde7; --edit-border: #f9a825;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    @page { size: A4 portrait; margin: 0; }
+    body { font-family: 'Cairo', Arial, sans-serif; background: #dde3ec; color: var(--text); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .edit-toolbar { position: sticky; top: 0; z-index: 999; background: #1a2332; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 13px; }
+    .edit-toolbar button { background: var(--gold); color: #1a1a2e; border: none; padding: 8px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .edit-toolbar button.secondary { background: #3a4a62; color: #fff; }
+    body.edit-mode [contenteditable="true"]:hover { background: var(--edit-bg); box-shadow: inset 0 0 0 1px var(--edit-border); cursor: text; }
+    body.edit-mode [contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--edit-border); outline: none; }
+    [contenteditable="true"] { border-radius: 2px; }
+    .page { width: 210mm; min-height: 297mm; margin: 16px auto; background: #fff; box-shadow: 0 8px 40px rgba(11,45,94,.15); position: relative; overflow: hidden; }
+    .page::before { content: ''; position: absolute; inset: 0; background: url('Barq_Al_Bihar_Logo.png') center 45% / 50% no-repeat; opacity: .025; pointer-events: none; }
+    .page > * { position: relative; z-index: 1; }
+    .top-band { height: 5px; background: linear-gradient(90deg, var(--navy-dark), var(--gold), var(--navy-dark)); }
+    .content { padding: 11mm 13mm 9mm; }
+    .header { display: grid; grid-template-columns: 1fr auto; gap: 14px; border-bottom: 2.5px solid var(--navy); padding-bottom: 10px; margin-bottom: 10px; align-items: start; }
+    .brand img { height: 120px; width: auto; display: block; }
+    .brand-desc { font-family: 'Tajawal', sans-serif; font-size: 10.5px; color: #3a4560; line-height: 1.75; margin-top: 6px; max-width: 420px; text-align: right; direction: rtl; }
+    .brand-loc { font-size: 11px; font-weight: 700; color: var(--navy); margin-top: 4px; direction: rtl; text-align: right; font-family: 'Tajawal', sans-serif; }
+    .doc-badge { background: var(--navy); color: #fff; border-radius: 8px; padding: 10px 14px; min-width: 200px; text-align: center; }
+    .doc-badge .lbl { font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; opacity: .8; }
+    .doc-badge .no { font-size: 14px; font-weight: 800; margin: 3px 0; }
+    .doc-badge .meta { font-size: 10px; line-height: 1.7; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.2); }
+    .doc-badge .bol-ref { font-size: 9.5px; color: #90caf9; margin-top: 4px; }
+    .title-bar { background: linear-gradient(135deg, var(--navy-dark), var(--navy-mid)); color: #fff; text-align: center; padding: 10px; border-radius: 6px; margin-bottom: 12px; border-left: 5px solid var(--gold); }
+    .title-bar h1 { font-size: 16px; font-weight: 800; }
+    .title-bar p { font-size: 11px; opacity: .85; margin-top: 2px; }
+    .parties { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .party { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .party-head { background: var(--row-alt); padding: 5px 10px; font-size: 9px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); }
+    .party-body { padding: 8px 10px; font-size: 11px; line-height: 1.65; }
+    .party-body strong { display: block; font-size: 11.5px; color: var(--navy); margin-bottom: 2px; }
+    .section { font-size: 10px; font-weight: 800; color: var(--navy); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; border-left: 3px solid var(--gold); padding-left: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px; }
+    table th { background: var(--navy); color: #fff; padding: 7px 9px; font-size: 9.5px; text-transform: uppercase; letter-spacing: .3px; border: 1px solid var(--navy-dark); text-align: left; }
+    table td { border: 1px solid var(--border); padding: 7px 9px; vertical-align: top; }
+    table tr:nth-child(even) td { background: var(--row-alt); }
+    .num { text-align: center; color: var(--muted); font-weight: 700; width: 28px; }
+    .amt { text-align: right; font-family: 'Courier New', monospace; font-weight: 700; width: 90px; }
+    tr.total td { background: var(--navy) !important; color: #fff; font-weight: 800; font-size: 12px; border-color: var(--navy-dark); }
+    tr.total .amt { color: #fff; }
+    .vehicle-box { border: 2px solid var(--navy); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .veh-item .vl { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+    .veh-item .vv { font-size: 12px; font-weight: 700; color: var(--navy); margin-top: 2px; font-family: 'Courier New', monospace; }
+    .terms { background: #f8f9fc; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 10px; line-height: 1.7; color: #444; margin-bottom: 12px; }
+    .footer { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end; border-top: 2px solid #d4dce8; padding-top: 10px; }
+    .sig { font-size: 11px; color: var(--muted); }
+    .sig .line { border-bottom: 1px solid #999; min-width: 160px; display: inline-block; height: 16px; }
+    .stamp-wrap img { width: 100px; }
+    .doc-foot { text-align: center; font-size: 9px; color: #8892a4; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); }
+    .match-tag { background: #e8f5e9; border: 1px solid #81c784; color: #2e7d32; font-size: 9.5px; font-weight: 700; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    @media print { .edit-toolbar { display: none !important; } body { background: #fff; } .page { margin: 0; box-shadow: none; } body.edit-mode [contenteditable]:hover, body.edit-mode [contenteditable]:focus { background: transparent; box-shadow: none; } }
+</style>
+</head>
+<body class="edit-mode">
+
+<div class="edit-toolbar">
+    <span>✏️ Click any text to edit · Matches B/L <strong>BAI-BOL-2026-00140</strong></span>
+    <div>
+        <button onclick="window.print()">🖨️ Print / PDF</button>
+        <button class="secondary" onclick="toggleEdit()">🔒 Lock</button>
+    </div>
+</div>
+
+<div class="page">
+<div class="top-band"></div>
+<div class="content">
+
+    <header class="header">
+        <div class="brand">
+            <img src="Barq_Al_Bihar_Logo.png" alt="Barq Al-Bihar" />
+            <div class="brand-desc" contenteditable="true">شركة تقوم بخدمات نقل السيارات من الولايات المتحدة الأمريكية والبضائع ومتابعتها حتى وصولها إلى وجهتها وتسليمها حسب الاتفاق</div>
+            <div class="brand-loc" contenteditable="true">📍 صحار — ميناء رقم ٣ · Sohar Port No. 3</div>
+        </div>
+        <div class="doc-badge">
+            <div class="lbl">Vehicle Purchase Invoice</div>
+            <div class="no" contenteditable="true">BAI-PUR-2026-00140</div>
+            <div class="meta">
+                Date: <span contenteditable="true">07 / 07 / 2026</span><br />
+                Currency: <strong>USD</strong><br />
+                Origin: <strong>United States</strong>
+            </div>
+            <div class="bol-ref">↔ B/L Ref: BAI-BOL-2026-00140</div>
+        </div>
+    </header>
+
+    <div class="match-tag">✓ Cross-referenced with Bill of Lading BAI-BOL-2026-00140</div>
+
+    <div class="title-bar">
+        <h1 contenteditable="true">COMMERCIAL INVOICE — US VEHICLE PURCHASE &amp; EXPORT</h1>
+        <p contenteditable="true">فاتورة شراء سيارة من أمريكا · For Customs &amp; Shipping Documentation</p>
+    </div>
+
+    <div class="parties">
+        <div class="party">
+            <div class="party-head">Seller / US Source</div>
+            <div class="party-body">
+                <strong contenteditable="true">Manheim Auto Auction — Houston, TX</strong>
+                <span contenteditable="true">9550 West Tidwell Road<br />Houston, TX 77086, USA<br />Tel: +1 (713) 682-2700</span>
+            </div>
+        </div>
+        <div class="party">
+            <div class="party-head">Buyer / Purchaser</div>
+            <div class="party-body">
+                <strong contenteditable="true">Waleed Najjar / Shafiq Abdul Malik</strong>
+                <span contenteditable="true">Sultanate of Oman<br />C/O Barq Al-Bihar Import &amp; Export<br />Sohar, Oman</span>
+            </div>
+        </div>
+        <div class="party">
+            <div class="party-head">Logistics Agent</div>
+            <div class="party-body">
+                <strong contenteditable="true">Barq Al-Bihar Import &amp; Export</strong>
+                <span contenteditable="true">Al Barq Logistics Services<br />Sohar Port No. 3, Oman<br />Agent for Buyer</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">Vehicle Identification</div>
+    <div class="vehicle-box">
+        <div class="veh-item"><div class="vl">Make / Model</div><div class="vv" contenteditable="true">Land Rover Defender</div></div>
+        <div class="veh-item"><div class="vl">Year</div><div class="vv" contenteditable="true">2025</div></div>
+        <div class="veh-item"><div class="vl">Color</div><div class="vv" contenteditable="true">Santorini Black</div></div>
+        <div class="veh-item"><div class="vl">VIN</div><div class="vv" contenteditable="true">SALEA7BW5S2123456</div></div>
+        <div class="veh-item"><div class="vl">Lot / Stock No.</div><div class="vv" contenteditable="true">MH-48291736</div></div>
+        <div class="veh-item"><div class="vl">Title Status</div><div class="vv" contenteditable="true">Clean Title — Exportable</div></div>
+        <div class="veh-item"><div class="vl">Engine</div><div class="vv" contenteditable="true">3.0L I6 Turbo</div></div>
+        <div class="veh-item"><div class="vl">Odometer</div><div class="vv" contenteditable="true">12,450 Miles</div></div>
+        <div class="veh-item"><div class="vl">HS Code</div><div class="vv" contenteditable="true">8703.23.01</div></div>
+    </div>
+
+    <div class="section">Invoice Line Items</div>
+    <table>
+        <thead>
+            <tr><th>#</th><th>Description</th><th>Ref</th><th>Qty</th><th>Unit Price</th><th>Amount (USD)</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="num">1</td>
+                <td contenteditable="true">Vehicle Purchase Price — Land Rover Defender 2025</td>
+                <td contenteditable="true">Lot MH-48291736</td>
+                <td>1</td>
+                <td class="amt" contenteditable="true">68,500.00</td>
+                <td class="amt" contenteditable="true">68,500.00</td>
+            </tr>
+            <tr>
+                <td class="num">2</td>
+                <td contenteditable="true">Auction Buyer's Fee &amp; Processing</td>
+                <td contenteditable="true">Manheim Fee</td>
+                <td>1</td>
+                <td class="amt" contenteditable="true">850.00</td>
+                <td class="amt" contenteditable="true">850.00</td>
+            </tr>
+            <tr>
+                <td class="num">3</td>
+                <td contenteditable="true">US Export Documentation (AES/ITN + Title)</td>
+                <td contenteditable="true">EXP-DOC</td>
+                <td>1</td>
+                <td class="amt" contenteditable="true">350.00</td>
+                <td class="amt" contenteditable="true">350.00</td>
+            </tr>
+            <tr>
+                <td class="num">4</td>
+                <td contenteditable="true">Inland Transport — Houston to Port of Baltimore</td>
+                <td contenteditable="true">INL-HTX-BWI</td>
+                <td>1</td>
+                <td class="amt" contenteditable="true">1,200.00</td>
+                <td class="amt" contenteditable="true">1,200.00</td>
+            </tr>
+            <tr>
+                <td class="num">5</td>
+                <td contenteditable="true">Barq Al-Bihar Logistics &amp; Handling Fee</td>
+                <td contenteditable="true">BAI-LOG</td>
+                <td>1</td>
+                <td class="amt" contenteditable="true">1,500.00</td>
+                <td class="amt" contenteditable="true">1,500.00</td>
+            </tr>
+            <tr class="total">
+                <td colspan="5" style="text-align:right; padding-right:14px;">TOTAL AMOUNT DUE (USD)</td>
+                <td class="amt" contenteditable="true">72,400.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="terms" contenteditable="true">
+        <strong>Payment Terms:</strong> Wire Transfer — Due upon confirmation. &nbsp;|&nbsp;
+        <strong>Incoterms:</strong> FOB Baltimore, USA (Port of Loading). &nbsp;|&nbsp;
+        <strong>Export Ref:</strong> BAI-PUR-2026-00140 / BAI-BOL-2026-00140. &nbsp;|&nbsp;
+        <strong>Destination:</strong> Sohar Port No. 3, Sultanate of Oman. &nbsp;|&nbsp;
+        Vehicle sold AS-IS per US auction terms. Title and export documents provided upon full payment.
+    </div>
+
+    <footer class="footer">
+        <div class="sig">
+            <div style="font-weight:800; color:var(--navy); font-size:10px; margin-bottom:6px;">AUTHORIZED SIGNATURE</div>
+            <div>Signature: <span class="line" contenteditable="true">&nbsp;</span></div>
+            <div style="margin-top:6px;">Name: <strong contenteditable="true">Mazen bin Saeed Al Riyami</strong></div>
+            <div>Title: <span contenteditable="true">Authorized Agent — Barq Al-Bihar Import &amp; Export</span></div>
+            <div>Date: <span contenteditable="true">07 / 07 / 2026</span></div>
+        </div>
+        <div class="stamp-wrap">
+            <img src="Barq_Al_Bihar_Stamp_Clean.png" alt="Seal" />
+        </div>
+    </footer>
+
+    <div class="doc-foot">
+        <strong>BARQ AL-BIHAR IMPORT &amp; EXPORT</strong> · BAI-PUR-2026-00140 ·
+        Linked B/L: BAI-BOL-2026-00140 · VIN: SALEA7BW5S2123456 · Issued 07/07/2026
+    </div>
+
+</div>
+<div class="top-band"></div>
+</div>
+
+<script>
+function toggleEdit() {
+    document.body.classList.toggle('edit-mode');
+    const locked = !document.body.classList.contains('edit-mode');
+    document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = locked ? 'false' : 'true');
+    document.querySelector('.edit-toolbar button.secondary').textContent = locked ? '✏️ Edit' : '🔒 Lock';
+}
+</script>
+</body>
+</html>
