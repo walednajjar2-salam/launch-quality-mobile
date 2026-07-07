@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>تحميل — فاتورة شراء + بوليصة شحن</title>
+<title>تحميل — فاتورة + بوليصة (قابلة للتعديل)</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -17,54 +17,53 @@
         max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }
     h1 { font-size: 18px; color: #0b2d5e; text-align: center; margin-bottom: 6px; }
-    .alert {
-        background: #fff3cd; border: 1px solid #ffc107; color: #856404;
-        border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.7;
-        margin-bottom: 16px; text-align: right;
+    .highlight {
+        background: #e8f5e9; border: 2px solid #66bb6a; color: #2e7d32;
+        border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.75;
+        margin-bottom: 16px; text-align: right; font-weight: 600;
     }
-    .sub { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; line-height: 1.6; }
+    .sub { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; }
     .section { font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; margin: 14px 0 8px; }
     a.btn {
         display: block; padding: 15px 18px; border-radius: 14px;
         font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; text-align: center;
     }
+    .btn-edit { background: #f9a825; color: #1a1a2e; border: 2px solid #f57f17; }
     .btn-primary { background: #0b2d5e; color: #fff; }
-    .btn-secondary { background: #e8f5e9; color: #2e7d32; border: 2px solid #81c784; }
-    .note { margin-top: 14px; font-size: 11px; color: #999; line-height: 1.75; text-align: center; }
+    .steps { background: #f0f4fa; border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.9; color: #444; margin-top: 14px; text-align: right; }
+    .steps strong { color: #0b2d5e; }
 </style>
 </head>
 <body>
 <div class="card">
-    <h1>🇺🇸 فاتورة شراء + بوليصة شحن</h1>
-    <div class="alert">
-        ⚠️ <strong>مهم:</strong> حمّل ملف <strong>PDF</strong> فقط — يفتح مباشرة على الهاتف ويحتوي كل المحتوى.
-        ملف HTML بدون PDF قد يظهر فارغاً إذا لم تُحمّل الصور معه.
+    <h1>✏️ فاتورة + بوليصة — قابلة للتعديل</h1>
+    <div class="highlight">
+        ✅ حمّل ملف <strong>-editable.html</strong><br />
+        يعمل على الهاتف بدون صور إضافية — عدّل أي نص مباشرة
     </div>
     <p class="sub">Barq Al-Bihar · USA → Sohar Port No. 3</p>
 
-    <div class="section">📄 1 — فاتورة شراء السيارة</div>
-    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download="Vehicle-Purchase-Invoice-USA.pdf">
-        ⬇️ تحميل PDF — فاتورة الشراء
+    <div class="section">📄 1 — فاتورة شراء (تعديل)</div>
+    <a class="btn btn-edit" href="vehicle-purchase-invoice-usa-editable.html">
+        ✏️ فتح فاتورة الشراء للتعديل
     </a>
 
-    <div class="section">🚢 2 — بوليصة الشحن B/L</div>
-    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download="Bill-of-Lading.pdf">
-        ⬇️ تحميل PDF — بوليصة الشحن
+    <div class="section">🚢 2 — بوليصة الشحن (تعديل)</div>
+    <a class="btn btn-edit" href="bill-of-lading-shipping-editable.html">
+        ✏️ فتح بوليصة الشحن للتعديل
     </a>
 
-    <div class="section">💻 للتعديل على الكمبيوتر</div>
-    <a class="btn btn-secondary" href="vehicle-purchase-invoice-usa.html">
-        فاتورة HTML (مع مجلد الصور)
-    </a>
-    <a class="btn btn-secondary" href="bill-of-lading-shipping.html">
-        بوليصة HTML (مع مجلد الصور)
-    </a>
+    <div class="section">📥 PDF جاهز (بدون تعديل)</div>
+    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download>⬇️ PDF فاتورة</a>
+    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download>⬇️ PDF بوليصة</a>
 
-    <p class="note">
-        بعد التحميل: Files → افتح PDF<br />
-        iPhone: Safari → مشاركة → حفظ في الملفات<br />
-        Android: Chrome → ⋮ → تنزيل
-    </p>
+    <div class="steps">
+        <strong>خطوات التعديل على الهاتف:</strong><br />
+        1. اضغط «فتح للتعديل»<br />
+        2. اضغط على أي نص (الاسم، VIN، المبلغ...)<br />
+        3. عدّل من لوحة المفاتيح<br />
+        4. اضغط 🖨️ طباعة / PDF → حفظ
+    </div>
 </div>
 </body>
 </html>

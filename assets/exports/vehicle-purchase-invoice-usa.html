@@ -21,7 +21,12 @@
     .edit-toolbar button.secondary { background: #3a4a62; color: #fff; }
     body.edit-mode [contenteditable="true"]:hover { background: var(--edit-bg); box-shadow: inset 0 0 0 1px var(--edit-border); cursor: text; }
     body.edit-mode [contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 2px var(--edit-border); outline: none; }
-    [contenteditable="true"] { border-radius: 2px; }
+    [contenteditable="true"] { border-radius: 2px; min-height: 1.1em; }
+    @media (max-width: 768px) {
+        body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(249,168,37,.45); padding: 1px 3px; }
+        .edit-toolbar { font-size: 12px; padding: 12px 14px; }
+        .edit-toolbar button { padding: 10px 16px; font-size: 14px; }
+    }
     .page { width: 210mm; min-height: 297mm; margin: 16px auto; background: #fefefe; box-shadow: 0 8px 40px rgba(11,45,94,.15); position: relative; overflow: hidden; }
     .page::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 15% 40%, rgba(0,0,0,.014) 0%, transparent 55%), radial-gradient(ellipse at 85% 75%, rgba(0,0,0,.01) 0%, transparent 45%); pointer-events: none; z-index: 0; }
     .page::after { content: ''; position: absolute; inset: 0; background: url('Barq_Al_Bihar_Logo.png') center 48% / 42% no-repeat; opacity: .022; pointer-events: none; z-index: 0; }
@@ -106,10 +111,10 @@
 <body class="edit-mode">
 
 <div class="edit-toolbar">
-    <span>✏️ Click any text to edit · Matches B/L <strong>BAI-BOL-2026-00140</strong></span>
+    <span>✏️ <strong>قابل للتعديل</strong> — اضغط أي نص → عدّل → 🖨️ طباعة PDF</span>
     <div>
-        <button onclick="window.print()">🖨️ Print / PDF</button>
-        <button class="secondary" onclick="toggleEdit()">🔒 Lock</button>
+        <button type="button" onclick="window.print()">🖨️ طباعة / PDF</button>
+        <button type="button" class="secondary" onclick="toggleEdit()">🔒 قفل</button>
     </div>
 </div>
 
@@ -131,11 +136,11 @@
                 Currency: <strong>USD</strong><br />
                 Origin: <strong>United States</strong>
             </div>
-            <div class="bol-ref">↔ B/L Ref: BAI-BOL-2026-00140</div>
+            <div class="bol-ref" contenteditable="true">↔ B/L Ref: BAI-BOL-2026-00140</div>
         </div>
     </header>
 
-    <div class="match-tag">✓ Cross-referenced with Bill of Lading BAI-BOL-2026-00140</div>
+    <div class="match-tag" contenteditable="true">✓ Cross-referenced with Bill of Lading BAI-BOL-2026-00140</div>
 
     <div class="title-bar">
         <h1 contenteditable="true">COMMERCIAL INVOICE — US VEHICLE PURCHASE &amp; EXPORT</h1>
@@ -186,42 +191,42 @@
         </thead>
         <tbody>
             <tr>
-                <td class="num">1</td>
+                <td class="num" contenteditable="true">1</td>
                 <td contenteditable="true">Vehicle Purchase Price — Land Rover Defender 2025</td>
                 <td contenteditable="true">Lot MH-48291736</td>
-                <td>1</td>
+                <td contenteditable="true">1</td>
                 <td class="amt" contenteditable="true">68,500.00</td>
                 <td class="amt" contenteditable="true">68,500.00</td>
             </tr>
             <tr>
-                <td class="num">2</td>
+                <td class="num" contenteditable="true">2</td>
                 <td contenteditable="true">Auction Buyer's Fee &amp; Processing</td>
                 <td contenteditable="true">Manheim Fee</td>
-                <td>1</td>
+                <td contenteditable="true">1</td>
                 <td class="amt" contenteditable="true">850.00</td>
                 <td class="amt" contenteditable="true">850.00</td>
             </tr>
             <tr>
-                <td class="num">3</td>
+                <td class="num" contenteditable="true">3</td>
                 <td contenteditable="true">US Export Documentation (AES/ITN + Title)</td>
                 <td contenteditable="true">EXP-DOC</td>
-                <td>1</td>
+                <td contenteditable="true">1</td>
                 <td class="amt" contenteditable="true">350.00</td>
                 <td class="amt" contenteditable="true">350.00</td>
             </tr>
             <tr>
-                <td class="num">4</td>
+                <td class="num" contenteditable="true">4</td>
                 <td contenteditable="true">Inland Transport — Houston to Port of Baltimore</td>
                 <td contenteditable="true">INL-HTX-BWI</td>
-                <td>1</td>
+                <td contenteditable="true">1</td>
                 <td class="amt" contenteditable="true">1,200.00</td>
                 <td class="amt" contenteditable="true">1,200.00</td>
             </tr>
             <tr>
-                <td class="num">5</td>
+                <td class="num" contenteditable="true">5</td>
                 <td contenteditable="true">Barq Al-Bihar Logistics &amp; Handling Fee</td>
                 <td contenteditable="true">BAI-LOG</td>
-                <td>1</td>
+                <td contenteditable="true">1</td>
                 <td class="amt" contenteditable="true">1,500.00</td>
                 <td class="amt" contenteditable="true">1,500.00</td>
             </tr>
@@ -254,7 +259,7 @@
         </div>
     </footer>
 
-    <div class="doc-foot">
+    <div class="doc-foot" contenteditable="true">
         <strong>BARQ AL-BIHAR IMPORT &amp; EXPORT</strong> · BAI-PUR-2026-00140 ·
         Linked B/L: BAI-BOL-2026-00140 · VIN: SALEA7BW5S2123456 · Issued 07/07/2026
     </div>
@@ -268,7 +273,7 @@ function toggleEdit() {
     document.body.classList.toggle('edit-mode');
     const locked = !document.body.classList.contains('edit-mode');
     document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = locked ? 'false' : 'true');
-    document.querySelector('.edit-toolbar button.secondary').textContent = locked ? '✏️ Edit' : '🔒 Lock';
+    document.querySelector('.edit-toolbar button.secondary').textContent = locked ? '✏️ تعديل' : '🔒 قفل';
 }
 </script>
 </body>

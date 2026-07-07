@@ -26,7 +26,7 @@ def embed(html_path: Path) -> Path:
         text = text.replace(f'src="{filename}"', f'src="{uri}"')
         text = text.replace(f"src='{filename}'", f"src='{uri}'")
         text = text.replace(f"url('{filename}')", f"url('{uri}')")
-    out = html_path.with_name(html_path.stem + "-standalone.html")
+    out = html_path.with_name(html_path.stem + "-editable.html")
     out.write_text(text, encoding="utf-8")
     print(f"Wrote {out.name} ({out.stat().st_size // 1024} KB)")
     return out

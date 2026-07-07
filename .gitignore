@@ -44,6 +44,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Generated invoice standalone builds
+# Generated invoice standalone builds (editable versions are committed)
 assets/exports/*-standalone.html
 assets/exports/*.b64.txt
