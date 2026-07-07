@@ -9,48 +9,62 @@
     body {
         font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
         background: linear-gradient(160deg, #061e3f, #0b2d5e);
-        min-height: 100vh;
-        display: flex; align-items: center; justify-content: center;
+        min-height: 100vh; display: flex; align-items: center; justify-content: center;
         padding: 24px 16px; direction: rtl;
     }
     .card {
-        background: #fff; border-radius: 20px; padding: 32px 24px;
-        max-width: 420px; width: 100%; text-align: center;
-        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+        background: #fff; border-radius: 20px; padding: 28px 22px;
+        max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }
-    h1 { font-size: 19px; color: #0b2d5e; margin-bottom: 4px; }
-    .sub { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.6; }
-    .ref { background: #f0f4fa; border-radius: 10px; padding: 10px; font-size: 12px; color: #0b2d5e; font-weight: 700; margin-bottom: 20px; line-height: 1.8; }
-    .section { font-size: 12px; font-weight: 800; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 16px 0 8px; text-align: right; }
+    h1 { font-size: 18px; color: #0b2d5e; text-align: center; margin-bottom: 6px; }
+    .alert {
+        background: #fff3cd; border: 1px solid #ffc107; color: #856404;
+        border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.7;
+        margin-bottom: 16px; text-align: right;
+    }
+    .sub { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; line-height: 1.6; }
+    .section { font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; margin: 14px 0 8px; }
     a.btn {
-        display: block; padding: 14px 20px; border-radius: 14px;
-        font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px;
+        display: block; padding: 15px 18px; border-radius: 14px;
+        font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; text-align: center;
     }
     .btn-primary { background: #0b2d5e; color: #fff; }
-    .btn-secondary { background: #f0f4fa; color: #0b2d5e; border: 2px solid #c5d0df; }
-    .btn-edit { background: #fff8e1; color: #5a4a10; border: 2px solid #f9a825; }
-    .note { margin-top: 16px; font-size: 11px; color: #999; line-height: 1.7; }
+    .btn-secondary { background: #e8f5e9; color: #2e7d32; border: 2px solid #81c784; }
+    .note { margin-top: 14px; font-size: 11px; color: #999; line-height: 1.75; text-align: center; }
 </style>
 </head>
 <body>
 <div class="card">
     <h1>🇺🇸 فاتورة شراء + بوليصة شحن</h1>
-    <p class="sub">Land Rover Defender 2025<br />USA → Sohar Port No. 3</p>
-    <div class="ref">
-        Invoice: BAI-PUR-2026-00140<br />
-        B/L: BAI-BOL-2026-00140<br />
-        VIN: SALEA7BW5S2123456
+    <div class="alert">
+        ⚠️ <strong>مهم:</strong> حمّل ملف <strong>PDF</strong> فقط — يفتح مباشرة على الهاتف ويحتوي كل المحتوى.
+        ملف HTML بدون PDF قد يظهر فارغاً إذا لم تُحمّل الصور معه.
     </div>
+    <p class="sub">Barq Al-Bihar · USA → Sohar Port No. 3</p>
 
-    <div class="section">📄 فاتورة الشراء</div>
-    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download="Vehicle-Purchase-Invoice-USA.pdf">⬇️ PDF — فاتورة الشراء</a>
-    <a class="btn btn-edit" href="vehicle-purchase-invoice-usa.html">✏️ HTML — للتعديل</a>
+    <div class="section">📄 1 — فاتورة شراء السيارة</div>
+    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download="Vehicle-Purchase-Invoice-USA.pdf">
+        ⬇️ تحميل PDF — فاتورة الشراء
+    </a>
 
-    <div class="section">🚢 بوليصة الشحن B/L</div>
-    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download="Bill-of-Lading-BAI-BOL-00140.pdf">⬇️ PDF — بوليصة الشحن</a>
-    <a class="btn btn-edit" href="bill-of-lading-shipping.html">✏️ HTML — للتعديل</a>
+    <div class="section">🚢 2 — بوليصة الشحن B/L</div>
+    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download="Bill-of-Lading.pdf">
+        ⬇️ تحميل PDF — بوليصة الشحن
+    </a>
 
-    <p class="note">PDF = جاهز للإرسال · HTML = عدّل أي نص ثم اطبع PDF<br />المستندان متطابقان في VIN والمراجع</p>
+    <div class="section">💻 للتعديل على الكمبيوتر</div>
+    <a class="btn btn-secondary" href="vehicle-purchase-invoice-usa.html">
+        فاتورة HTML (مع مجلد الصور)
+    </a>
+    <a class="btn btn-secondary" href="bill-of-lading-shipping.html">
+        بوليصة HTML (مع مجلد الصور)
+    </a>
+
+    <p class="note">
+        بعد التحميل: Files → افتح PDF<br />
+        iPhone: Safari → مشاركة → حفظ في الملفات<br />
+        Android: Chrome → ⋮ → تنزيل
+    </p>
 </div>
 </body>
 </html>
