@@ -1,6 +1,6 @@
 # Launch Quality Mobile - Development Roadmap
 
-**Version:** 1.1.0+2 | **Status:** Active Development
+**Version:** 1.1.1+3 | **Status:** Active Development
 
 ---
 

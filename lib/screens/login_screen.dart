@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _userCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   bool _obscure = true;
+  String? _validationError;
 
   @override
   void dispose() {
@@ -25,7 +27,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    await context.read<AppState>().login(_userCtrl.text, _passCtrl.text);
+    final username = _userCtrl.text.trim();
+    final password = _passCtrl.text;
+    if (username.isEmpty) {
+      setState(() => _validationError = 'اسم المستخدم مطلوب');
+      return;
+    }
+    if (password.isEmpty) {
+      setState(() => _validationError = 'كلمة المرور مطلوبة');
+      return;
+    }
+    setState(() => _validationError = null);
+    HapticFeedback.lightImpact();
+    await context.read<AppState>().login(username, password);
   }
 
   @override
@@ -99,9 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        if (app.errorMessage != null) ...[
+                        if (_validationError != null || app.errorMessage != null) ...[
                           const SizedBox(height: 12),
-                          Text(app.errorMessage!, style: const TextStyle(color: BrandColors.danger)),
+                          Text(
+                            _validationError ?? app.errorMessage!,
+                            style: const TextStyle(color: BrandColors.danger),
+                          ),
                         ],
                         const SizedBox(height: 20),
                         FilledButton(
@@ -110,7 +127,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 12),
                         TextButton(
-                          onPressed: loading ? null : () => context.go('/portal'),
+                          onPressed: loading
+                              ? null
+                              : () {
+                                  HapticFeedback.selectionClick();
+                                  context.go('/portal');
+                                },
                           child: const Text('بوابة المستأجر (portal_token)'),
                         ),
                       ],

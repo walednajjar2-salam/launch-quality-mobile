@@ -39,6 +39,10 @@ flutter run -d android     # phone
 .\scripts\build-windows.ps1
 ```
 
+```bash
+./scripts/build-ios.sh
+```
+
 ## Features
 
 - Dark luxury theme · glass cards · 28px · RTL Arabic

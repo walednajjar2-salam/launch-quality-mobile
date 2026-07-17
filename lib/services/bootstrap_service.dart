@@ -29,25 +29,32 @@ class BootstrapService {
   BootstrapService(this._api);
 
   final ApiClient _api;
+  BootstrapData? _cached;
 
   Future<BootstrapData> load() async {
-    final res = await _api.get('bootstrap', timeout: ApiConfig.bootstrapTimeout);
-    final rawData = res['data'] as Map<String, dynamic>? ?? {};
-    final parsed = <String, List<Map<String, dynamic>>>{};
-    rawData.forEach((key, value) {
-      parsed[key] = List<Map<String, dynamic>>.from(
-        (value as List? ?? []).map(
-          (e) => Map<String, dynamic>.from(e as Map),
-        ),
+    try {
+      final res = await _api.get('bootstrap', timeout: ApiConfig.bootstrapTimeout);
+      final rawData = res['data'] as Map<String, dynamic>? ?? {};
+      final parsed = <String, List<Map<String, dynamic>>>{};
+      rawData.forEach((key, value) {
+        parsed[key] = List<Map<String, dynamic>>.from(
+          (value as List? ?? []).map(
+            (e) => Map<String, dynamic>.from(e as Map),
+          ),
+        );
+      });
+      _cached = BootstrapData(
+        data: parsed,
+        dashboard: Map<String, dynamic>.from(res['dashboard'] as Map? ?? {}),
+        user: AppUser.fromJson(res['user'] as Map<String, dynamic>),
+        companySettings:
+            Map<String, dynamic>.from(res['company_settings'] as Map? ?? {}),
       );
-    });
-    return BootstrapData(
-      data: parsed,
-      dashboard: Map<String, dynamic>.from(res['dashboard'] as Map? ?? {}),
-      user: AppUser.fromJson(res['user'] as Map<String, dynamic>),
-      companySettings:
-          Map<String, dynamic>.from(res['company_settings'] as Map? ?? {}),
-    );
+      return _cached!;
+    } catch (_) {
+      if (_cached != null) return _cached!;
+      rethrow;
+    }
   }
 
   Future<Map<String, dynamic>> refreshDashboard() async {

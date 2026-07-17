@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -102,6 +103,7 @@ class StaffShell extends StatelessWidget {
                   if (phoneTabs.moreIndex != null && i == phoneTabs.moreIndex) {
                     _showMoreModules(context, tabs, app);
                   } else {
+                    HapticFeedback.selectionClick();
                     app.setNavIndex(phoneTabs.mapToRealIndex(i));
                   }
                 },
@@ -184,6 +186,7 @@ class StaffShell extends StatelessWidget {
                 leading: Icon(tabs[i].icon, color: BrandColors.goldBright),
                 title: Text(tabs[i].label),
                 onTap: () {
+                  HapticFeedback.selectionClick();
                   app.setNavIndex(i);
                   Navigator.pop(context);
                 },
@@ -246,9 +249,30 @@ class _TopBar extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(tooltip: 'تحديث', onPressed: onRefresh, icon: const Icon(Icons.refresh, color: BrandColors.goldBright)),
-            IconButton(tooltip: 'بوابة المستأجر', onPressed: onPortal, icon: const Icon(Icons.link, color: BrandColors.turquoise)),
-            IconButton(tooltip: 'خروج', onPressed: onLogout, icon: const Icon(Icons.logout, color: BrandColors.textMuted)),
+            IconButton(
+              tooltip: 'تحديث',
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onRefresh();
+              },
+              icon: const Icon(Icons.refresh, color: BrandColors.goldBright),
+            ),
+            IconButton(
+              tooltip: 'بوابة المستأجر',
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onPortal();
+              },
+              icon: const Icon(Icons.link, color: BrandColors.turquoise),
+            ),
+            IconButton(
+              tooltip: 'خروج',
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onLogout();
+              },
+              icon: const Icon(Icons.logout, color: BrandColors.textMuted),
+            ),
           ],
         ),
       ),
@@ -267,7 +291,10 @@ class _SideRail extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationRail(
       selectedIndex: index,
-      onDestinationSelected: onSelect,
+      onDestinationSelected: (value) {
+        HapticFeedback.selectionClick();
+        onSelect(value);
+      },
       labelType: NavigationRailLabelType.all,
       backgroundColor: BrandColors.panel.withValues(alpha: 0.92),
       destinations: tabs
