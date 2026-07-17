@@ -65,3 +65,20 @@ flutter run -d chrome
 ```
 
 Login: **Najjar** / **Najjar2026**
+
+---
+
+## 5) بناء iPhone (macOS + Xcode)
+
+**المطلوب:** Mac مع Xcode و CocoaPods و Flutter.
+
+```bash
+cd launch-quality-mobile
+chmod +x scripts/build-ios.sh
+./scripts/build-ios.sh
+open ios/Runner.xcworkspace
+```
+
+في Xcode: اختر فريق التوقيع (Signing Team) → Product → Archive → Distribute (TestFlight / جهاز).
+
+اسم التطبيق على الشاشة الرئيسية: **جودة الانطلاقة**
