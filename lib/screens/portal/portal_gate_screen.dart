@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -112,7 +113,10 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                         FilledButton(
                           onPressed: portal.status == PortalStatus.loading
                               ? null
-                              : () => portal.openWithToken(_tokenCtrl.text),
+                              : () async {
+                                  await HapticFeedback.lightImpact();
+                                  await portal.openWithToken(_tokenCtrl.text);
+                                },
                           child: Text(
                             portal.status == PortalStatus.loading
                                 ? 'جاري التحقق...'
@@ -120,7 +124,10 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => context.go('/'),
+                          onPressed: () async {
+                            await HapticFeedback.selectionClick();
+                            if (context.mounted) context.go('/');
+                          },
                           child: const Text('العودة لتسجيل الموظفين'),
                         ),
                       ],

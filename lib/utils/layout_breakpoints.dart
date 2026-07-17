@@ -4,8 +4,16 @@ abstract final class LayoutBreakpoints {
   static const phoneMax = 600.0;
   static const tabletMax = 900.0;
 
-  static bool isCompact(BuildContext context) =>
+  static bool isMobile(BuildContext context) =>
       MediaQuery.sizeOf(context).width < phoneMax;
+
+  static bool isTablet(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    return width >= phoneMax && width < tabletMax;
+  }
+
+  static bool isCompact(BuildContext context) =>
+      isMobile(context);
 
   static bool isDesktop(BuildContext context) =>
       MediaQuery.sizeOf(context).width >= tabletMax;

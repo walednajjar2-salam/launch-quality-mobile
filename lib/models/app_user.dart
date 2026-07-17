@@ -28,6 +28,17 @@ class AppUser {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'username': username,
+      'name': name,
+      'role': role,
+      'active': active,
+      'permissions': permissions,
+    };
+  }
+
   /// Mirrors backend `has_permission()` in server.py
   bool can(String permission) {
     if (permissions.contains('all')) return true;
@@ -54,4 +65,50 @@ class AppUser {
         'viewer': 'مشاهد',
       }[role] ??
       role;
+
+  bool get hasValidRole => {
+        'owner',
+        'admin',
+        'executive_manager',
+        'accountant',
+        'operations',
+        'maintenance',
+        'viewer',
+      }.contains(role);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppUser &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          username == other.username &&
+          name == other.name &&
+          role == other.role &&
+          active == other.active &&
+          _listEquals(permissions, other.permissions);
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        username,
+        name,
+        role,
+        active,
+        Object.hashAll(permissions),
+      );
+
+  @override
+  String toString() {
+    return 'AppUser(id: $id, username: $username, name: $name, role: $role, active: $active, permissions: $permissions)';
+  }
+}
+
+bool _listEquals(List<String> a, List<String> b) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
 }
