@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
+import '../utils/haptic_feedback_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    await context.read<AppState>().login(_userCtrl.text, _passCtrl.text);
+    await HapticFeedbackHelper.lightTap();
+    final app = context.read<AppState>();
+    await app.login(_userCtrl.text, _passCtrl.text);
+    if (mounted) {
+      if (app.status == AppStatus.ready) {
+        await HapticFeedbackHelper.success();
+      } else if (app.status == AppStatus.login || app.status == AppStatus.error) {
+        // login → wrong credentials; error → server/network failure
+        await HapticFeedbackHelper.error();
+      }
+    }
   }
 
   @override
