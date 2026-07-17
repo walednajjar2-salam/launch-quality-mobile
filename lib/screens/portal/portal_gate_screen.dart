@@ -114,7 +114,7 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                           onPressed: portal.status == PortalStatus.loading
                               ? null
                               : () async {
-                                  await HapticFeedback.lightImpact();
+                                  HapticFeedback.lightImpact();
                                   await portal.openWithToken(_tokenCtrl.text);
                                 },
                           child: Text(
@@ -124,9 +124,9 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () async {
-                            await HapticFeedback.selectionClick();
-                            if (context.mounted) context.go('/');
+                          onPressed: () {
+                            HapticFeedback.selectionClick();
+                            context.go('/');
                           },
                           child: const Text('العودة لتسجيل الموظفين'),
                         ),

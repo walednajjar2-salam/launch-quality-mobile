@@ -25,17 +25,17 @@ void main() {
   }
 
   group('LayoutBreakpoints', () {
-    testWidgets('isMobile for widths < 600', (tester) async {
+    testWidgets('detects mobile layout for widths less than 600', (tester) async {
       await pumpWithWidth(tester, 599);
       expect(find.text('mobile:true'), findsOneWidget);
     });
 
-    testWidgets('isTablet for widths 600-900', (tester) async {
+    testWidgets('detects tablet layout for widths between 600 and 900', (tester) async {
       await pumpWithWidth(tester, 700);
       expect(find.text('tablet:true'), findsOneWidget);
     });
 
-    testWidgets('isDesktop for widths >= 900', (tester) async {
+    testWidgets('detects desktop layout for widths 900 and above', (tester) async {
       await pumpWithWidth(tester, 900);
       expect(find.text('desktop:true'), findsOneWidget);
     });

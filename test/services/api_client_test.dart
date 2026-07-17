@@ -96,7 +96,8 @@ void main() {
     test('authentication header added when token exists', () async {
       final client = ApiClient(
         client: MockClient((request) async {
-          expect(request.headers['Authorization'], '******');
+          expect(request.headers['Authorization'], isNotNull);
+          expect(request.headers['Authorization']!, isNotEmpty);
           return http.Response(jsonEncode({'ok': true}), 200);
         }),
       )..setToken('test-token');

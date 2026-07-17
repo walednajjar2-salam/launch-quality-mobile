@@ -268,7 +268,7 @@ class _TopBar extends StatelessWidget {
             IconButton(
               tooltip: 'خروج',
               onPressed: () {
-                HapticFeedback.lightImpact();
+                HapticFeedback.selectionClick();
                 onLogout();
               },
               icon: const Icon(Icons.logout, color: BrandColors.textMuted),

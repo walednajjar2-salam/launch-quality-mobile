@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class AppUser {
   AppUser({
     required this.id,
@@ -86,7 +88,7 @@ class AppUser {
           name == other.name &&
           role == other.role &&
           active == other.active &&
-          _listEquals(permissions, other.permissions);
+          listEquals(permissions, other.permissions);
 
   @override
   int get hashCode => Object.hash(
@@ -102,13 +104,4 @@ class AppUser {
   String toString() {
     return 'AppUser(id: $id, username: $username, name: $name, role: $role, active: $active, permissions: $permissions)';
   }
-}
-
-bool _listEquals(List<String> a, List<String> b) {
-  if (identical(a, b)) return true;
-  if (a.length != b.length) return false;
-  for (var i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
 }

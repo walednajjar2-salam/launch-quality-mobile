@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     setState(() => _validationError = null);
-    await HapticFeedback.lightImpact();
+    HapticFeedback.lightImpact();
     await context.read<AppState>().login(username, password);
   }
 
@@ -129,9 +129,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextButton(
                           onPressed: loading
                               ? null
-                              : () async {
-                                  await HapticFeedback.selectionClick();
-                                  if (context.mounted) context.go('/portal');
+                              : () {
+                                  HapticFeedback.selectionClick();
+                                  context.go('/portal');
                                 },
                           child: const Text('بوابة المستأجر (portal_token)'),
                         ),
