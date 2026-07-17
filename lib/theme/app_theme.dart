@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -37,14 +38,21 @@ class AppTheme {
         backgroundColor: Colors.transparent,
         foregroundColor: BrandColors.goldBright,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
         titleTextStyle: textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: BrandColors.goldBright,
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: BrandColors.panel.withValues(alpha: 0.95),
+        backgroundColor: BrandColors.panel.withValues(alpha: 0.98),
         indicatorColor: BrandColors.gold.withValues(alpha: 0.18),
+        height: 68,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStatePropertyAll(
           textTheme.labelSmall?.copyWith(color: BrandColors.textMuted),
         ),

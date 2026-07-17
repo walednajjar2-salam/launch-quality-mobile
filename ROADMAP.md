@@ -1,9 +1,10 @@
 # Launch Quality Flutter — Structure & Roadmap
 
-## One app · Three platforms
+## One app · Four platforms
 
 | Platform | Purpose |
 |----------|---------|
+| **iPhone / iOS** | Staff + Portal on iPhone (Xcode archive / TestFlight) |
 | **Android** | Staff + Portal in production |
 | **Windows** | Desktop operations dashboard |
 | **Chrome** | Fast API/UI testing |
@@ -55,12 +56,14 @@ launch-quality-mobile/
 │           ├── maintenance_screen.dart
 │           ├── payment_proofs_screen.dart
 │           └── properties/clients/contracts/invoices
+├── ios/                               # iPhone / iPad (Xcode)
 ├── android/                           # APK build
 ├── windows/                           # Desktop build
 ├── web/                               # Chrome testing
 └── scripts/
     ├── build-apk.ps1
-    └── build-windows.ps1
+    ├── build-windows.ps1
+    └── build-ios.sh
 ```
 
 ---
@@ -78,6 +81,7 @@ launch-quality-mobile/
 | 7 | Responsive shell (phone / desktop) | ✅ |
 | 8 | Android + Windows + Web targets | ✅ |
 | 9 | Build scripts + README | ✅ |
+| 10 | iPhone polish (Safe Area, dark launch, Arabic name, haptics, Podfile) | ✅ |
 
 ---
 
@@ -108,9 +112,11 @@ launch-quality-mobile/
 flutter pub get
 flutter run -d chrome          # test
 flutter run -d windows         # desktop
-flutter run -d android         # phone
+flutter run -d android         # Android phone
+flutter run -d ios             # iPhone / Simulator
 flutter build apk --release
 flutter build windows --release
+flutter build ios --release --no-codesign
 ```
 
 ## Test login (production)
