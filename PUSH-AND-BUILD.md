@@ -64,7 +64,7 @@ flutter pub get
 flutter run -d chrome
 ```
 
-Login: **Najjar** / **Najjar2026**
+Login: **waleed.najjar** / **Waleed2026!**
 
 ---
 

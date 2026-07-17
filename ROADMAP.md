@@ -123,9 +123,9 @@ flutter build ios --release --no-codesign
 
 | User | Password |
 |------|----------|
-| Najjar | Najjar2026 |
-| owner | owner2015 |
-| operations | 1234 |
+| waleed.najjar | Waleed2026! |
+
+> الحسابات القديمة في الوثائق (`Najjar` / `owner`) لم تعد صالحة على الإنتاج.
 
 ---
 

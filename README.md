@@ -22,8 +22,7 @@ flutter run -d ios         # iPhone / Simulator (macOS + Xcode)
 
 | User | Password |
 |------|----------|
-| Najjar | Najjar2026 |
-| owner | owner2015 |
+| waleed.najjar | Waleed2026! |
 
 ## Routes
 

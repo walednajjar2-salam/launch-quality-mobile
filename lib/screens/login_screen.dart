@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          'Najjar / Najjar2026 · owner / owner2015',
+                          'waleed.najjar / Waleed2026!',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: BrandColors.textMuted, fontSize: 12),
                         ),
