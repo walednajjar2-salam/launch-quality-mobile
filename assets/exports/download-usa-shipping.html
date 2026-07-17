@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تحميل — فاتورة + بوليصة (قابلة للتعديل)</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(160deg, #061e3f, #0b2d5e);
+        min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        padding: 24px 16px; direction: rtl;
+    }
+    .card {
+        background: #fff; border-radius: 20px; padding: 28px 22px;
+        max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    h1 { font-size: 18px; color: #0b2d5e; text-align: center; margin-bottom: 6px; }
+    .highlight {
+        background: #e8f5e9; border: 2px solid #66bb6a; color: #2e7d32;
+        border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.75;
+        margin-bottom: 16px; text-align: right; font-weight: 600;
+    }
+    .sub { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; }
+    .section { font-size: 11px; font-weight: 800; color: #888; text-transform: uppercase; margin: 14px 0 8px; }
+    a.btn {
+        display: block; padding: 15px 18px; border-radius: 14px;
+        font-size: 15px; font-weight: 700; text-decoration: none; margin-bottom: 10px; text-align: center;
+    }
+    .btn-edit { background: #f9a825; color: #1a1a2e; border: 2px solid #f57f17; }
+    .btn-primary { background: #0b2d5e; color: #fff; }
+    .steps { background: #f0f4fa; border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.9; color: #444; margin-top: 14px; text-align: right; }
+    .steps strong { color: #0b2d5e; }
+</style>
+</head>
+<body>
+<div class="card">
+    <h1>✏️ فاتورة + بوليصة — قابلة للتعديل</h1>
+    <div class="highlight">
+        ✅ حمّل ملف <strong>-editable.html</strong><br />
+        يعمل على الهاتف بدون صور إضافية — عدّل أي نص مباشرة
+    </div>
+    <p class="sub">Barq Al-Bihar · USA → Sohar Port No. 3</p>
+
+    <div class="section">📄 1 — فاتورة شراء (تعديل)</div>
+    <a class="btn btn-edit" href="vehicle-purchase-invoice-usa-editable.html">
+        ✏️ فتح فاتورة الشراء للتعديل
+    </a>
+
+    <div class="section">🚢 2 — بوليصة الشحن (تعديل)</div>
+    <a class="btn btn-edit" href="bill-of-lading-shipping-editable.html">
+        ✏️ فتح بوليصة الشحن للتعديل
+    </a>
+
+    <div class="section">📥 PDF جاهز (بدون تعديل)</div>
+    <a class="btn btn-primary" href="vehicle-purchase-invoice-usa.pdf" download>⬇️ PDF فاتورة</a>
+    <a class="btn btn-primary" href="bill-of-lading-shipping.pdf" download>⬇️ PDF بوليصة</a>
+
+    <div class="steps">
+        <strong>خطوات التعديل على الهاتف:</strong><br />
+        1. اضغط «فتح للتعديل»<br />
+        2. اضغط على أي نص (الاسم، VIN، المبلغ...)<br />
+        3. عدّل من لوحة المفاتيح<br />
+        4. اضغط 🖨️ طباعة / PDF → حفظ
+    </div>
+</div>
+</body>
+</html>
