@@ -84,7 +84,7 @@ class FinanceScreen extends StatelessWidget {
                   height: LayoutBreakpoints.isDesktop(context) ? 280 : 220,
                   child: series.isEmpty
                       ? const EmptyState(message: 'لا توجد بيانات شهرية')
-                      : _FinanceChart(series: series),
+                      : RepaintBoundary(child: _FinanceChart(series: series)),
                 ),
               ],
             ),

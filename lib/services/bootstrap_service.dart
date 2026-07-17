@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../config/api_config.dart';
 import '../models/app_user.dart';
 import 'api_client.dart';
@@ -30,8 +34,9 @@ class BootstrapService {
 
   final ApiClient _api;
 
-  Future<BootstrapData> load() async {
-    final res = await _api.get('bootstrap', timeout: ApiConfig.bootstrapTimeout);
+  static const _cacheKey = 'bootstrap_cache';
+
+  BootstrapData _parse(Map<String, dynamic> res) {
     final rawData = res['data'] as Map<String, dynamic>? ?? {};
     final parsed = <String, List<Map<String, dynamic>>>{};
     rawData.forEach((key, value) {
@@ -48,6 +53,40 @@ class BootstrapService {
       companySettings:
           Map<String, dynamic>.from(res['company_settings'] as Map? ?? {}),
     );
+  }
+
+  Future<BootstrapData> load({bool forceRefresh = false}) async {
+    if (!forceRefresh) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final cached = prefs.getString(_cacheKey);
+        if (cached != null) {
+          final json = jsonDecode(cached) as Map<String, dynamic>;
+          return _parse(json);
+        }
+      } catch (_) {
+        // Cache corrupted or unavailable – fall through to network fetch.
+      }
+    }
+
+    final res = await _api.get('bootstrap', timeout: ApiConfig.bootstrapTimeout);
+
+    // Persist to cache for next cold start.
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_cacheKey, jsonEncode(res));
+    } catch (_) {
+      // Non-fatal – caching is best-effort.
+    }
+
+    return _parse(res);
+  }
+
+  Future<void> clearCache() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_cacheKey);
+    } catch (_) {}
   }
 
   Future<Map<String, dynamic>> refreshDashboard() async {
