@@ -28,6 +28,15 @@ class AppUser {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'username': username,
+        'name': name,
+        'role': role,
+        'active': active,
+        'permissions': permissions,
+      };
+
   /// Mirrors backend `has_permission()` in server.py
   bool can(String permission) {
     if (permissions.contains('all')) return true;
