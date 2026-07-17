@@ -1,6 +1,18 @@
 # Launch Quality Mobile - Development Roadmap
 
-**Version:** 1.1.0+2 | **Status:** Active Development
+**Version:** 1.1.1+3 | **Status:** Active Development
+
+## One app · Four platforms
+
+| Platform | Purpose |
+|----------|---------|
+| **iPhone / iOS** | Staff + Portal on iPhone (Xcode archive / TestFlight) |
+| **Android** | Staff + Portal in production |
+| **Windows** | Desktop operations dashboard |
+| **Chrome** | Fast API/UI testing |
+
+**Entry:** `lib/main.dart` → `LaunchQualityApp`  
+**Backend:** `https://web-production-08d73.up.railway.app/api` (no backend changes)
 
 ---
 
@@ -86,16 +98,64 @@ launch-quality-mobile/
 │       ├── staff_shell.dart
 │       ├── portal/
 │       └── modules/
+│           ├── dashboard_screen.dart
+│           ├── projects_screen.dart
+│           ├── staff_screen.dart
+│           ├── finance_screen.dart    # fl_chart
+│           ├── maintenance_screen.dart
+│           ├── payment_proofs_screen.dart
+│           └── properties/clients/contracts/invoices
 ├── test/                          # الاختبارات
-├── android/                       # إعدادات Android
-├── ios/                          # إعدادات iOS
-├── windows/                      # إعدادات Windows
-├── web/                          # إعدادات Web
-├── scripts/                      # سكريبتات البناء
-├── assets/                       # الموارد (الشعار، الصور)
-├── pubspec.yaml                  # الحزم والتبعيات
-└── analysis_options.yaml         # قواعس الجودة
+├── ios/                           # iPhone / iPad (Xcode)
+├── android/                       # APK build
+├── windows/                       # Desktop build
+├── web/                           # Chrome testing
+├── scripts/
+│   ├── build-apk.ps1
+│   ├── build-windows.ps1
+│   └── build-ios.sh
+├── assets/                        # الموارد (الشعار، الصور)
+├── pubspec.yaml                   # الحزم والتبعيات
+└── analysis_options.yaml          # قواعس الجودة
 ```
+
+---
+
+## Roadmap (implementation status)
+
+| Phase | Task | Status |
+|-------|------|--------|
+| 1 | Luxury theme (dark, glass, 28px, RTL) | ✅ |
+| 2 | API: `POST /login` + `GET /me` + permissions | ✅ |
+| 3 | `GET /bootstrap` dashboard KPIs | ✅ |
+| 4 | Projects · Staff · Finance screens | ✅ |
+| 5 | Maintenance + Payment proofs | ✅ |
+| 6 | Portal `portal_token` in same app | ✅ |
+| 7 | Responsive shell (phone / desktop) | ✅ |
+| 8 | Android + Windows + Web targets | ✅ |
+| 9 | Build scripts + README | ✅ |
+| 10 | iPhone polish (Safe Area, dark launch, Arabic name, haptics, Podfile) | ✅ |
+
+---
+
+## Routes
+
+| Path | Screen |
+|------|--------|
+| `/` | Staff login |
+| `/staff` | Staff shell (all modules) |
+| `/portal` | Tenant gate (paste token) |
+| `/portal?token=XXX` | Auto-open portal |
+| `/portal/app` | Tenant dashboard |
+
+---
+
+## Responsive layout
+
+| Width | Layout |
+|-------|--------|
+| `< 600px` | Bottom nav (4 tabs + «المزيد») |
+| `≥ 900px` | NavigationRail + wide grids |
 
 ---
 
@@ -103,11 +163,11 @@ launch-quality-mobile/
 
 ### التطوير
 ```bash
-# جميع المنصات
-flutter run -d chrome      # Web
-flutter run -d windows     # Desktop
-flutter run -d android     # Mobile
-flutter run -d ios        # iPhone
+flutter pub get
+flutter run -d chrome          # Web
+flutter run -d windows         # Desktop
+flutter run -d android         # Mobile
+flutter run -d ios             # iPhone / Simulator
 
 # تحليل الكود
 flutter analyze

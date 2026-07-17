@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -65,8 +66,11 @@ class StaffShell extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        // On iPhone, keep bottom inset for the home indicator on NavigationBar only
+        // (avoid double padding under the body).
         body: LuxuryBackground(
           child: SafeArea(
+            bottom: desktop,
             child: Row(
               children: [
                 if (desktop) _SideRail(tabs: tabs, index: index, onSelect: app.setNavIndex),
@@ -99,6 +103,7 @@ class StaffShell extends StatelessWidget {
             : NavigationBar(
                 selectedIndex: phoneTabs.navIndex,
                 onDestinationSelected: (i) {
+                  HapticFeedback.selectionClick();
                   if (phoneTabs.moreIndex != null && i == phoneTabs.moreIndex) {
                     _showMoreModules(context, tabs, app);
                   } else {
