@@ -60,7 +60,9 @@ GoRouter createRouter(AppState app, PortalState portal) {
 }
 
 class LaunchQualityApp extends StatefulWidget {
-  const LaunchQualityApp({super.key});
+  const LaunchQualityApp({super.key, this.onReady});
+
+  final VoidCallback? onReady;
 
   @override
   State<LaunchQualityApp> createState() => _LaunchQualityAppState();
@@ -85,12 +87,24 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
     _app = AppState(api: _api, auth: _auth, bootstrap: _bootstrap);
     _portal = PortalState(_portalService);
     _router = createRouter(_app, _portal);
+    _app.addListener(_onAppStateChange);
     _app.boot();
     _portal.boot();
   }
 
+  bool _onReadyCalled = false;
+
+  void _onAppStateChange() {
+    if (!_onReadyCalled &&
+        (_app.status == AppStatus.ready || _app.status == AppStatus.login)) {
+      _onReadyCalled = true;
+      widget.onReady?.call();
+    }
+  }
+
   @override
   void dispose() {
+    _app.removeListener(_onAppStateChange);
     _api.dispose();
     _app.dispose();
     _portal.dispose();
