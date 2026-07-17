@@ -92,12 +92,12 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
     _portal.boot();
   }
 
-  bool _readyFired = false;
+  bool _onReadyCalled = false;
 
   void _onAppStateChange() {
-    if (!_readyFired &&
+    if (!_onReadyCalled &&
         (_app.status == AppStatus.ready || _app.status == AppStatus.login)) {
-      _readyFired = true;
+      _onReadyCalled = true;
       widget.onReady?.call();
     }
   }

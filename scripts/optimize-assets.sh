@@ -29,11 +29,13 @@ fi
 # Convert large PNG files to WebP (quality 80)
 if command -v cwebp &>/dev/null; then
   mkdir -p "$ASSETS_DIR/compressed"
-  for f in "$ASSETS_DIR"/*.png; do
-    [ -f "$f" ] || continue
+  while IFS= read -r -d '' f; do
     base="$(basename "$f" .png)"
-    cwebp -q 80 "$f" -o "$ASSETS_DIR/compressed/${base}.webp"
-  done
+    rel_dir="$(dirname "$f" | sed "s|$ASSETS_DIR/||")"
+    out_dir="$ASSETS_DIR/compressed/$rel_dir"
+    mkdir -p "$out_dir"
+    cwebp -q 80 "$f" -o "$out_dir/${base}.webp"
+  done < <(find "$ASSETS_DIR" -name "*.png" -not -path "*/compressed/*" -print0)
   echo "✅ PNG → WebP conversion complete"
 else
   echo "⚠️  cwebp not found – skipping WebP conversion"

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,8 +65,13 @@ class BootstrapService {
           final json = jsonDecode(cached) as Map<String, dynamic>;
           return _parse(json);
         }
-      } catch (_) {
-        // Cache corrupted or unavailable – fall through to network fetch.
+      } catch (e, st) {
+        developer.log(
+          'Bootstrap cache read failed – falling back to network',
+          name: 'BootstrapService',
+          error: e,
+          stackTrace: st,
+        );
       }
     }
 
@@ -75,8 +81,13 @@ class BootstrapService {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_cacheKey, jsonEncode(res));
-    } catch (_) {
-      // Non-fatal – caching is best-effort.
+    } catch (e, st) {
+      developer.log(
+        'Bootstrap cache write failed',
+        name: 'BootstrapService',
+        error: e,
+        stackTrace: st,
+      );
     }
 
     return _parse(res);
