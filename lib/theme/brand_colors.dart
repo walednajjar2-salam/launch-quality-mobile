@@ -34,4 +34,43 @@ abstract final class BrandColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+
+  // ── Enterprise Premium Palette ───────────────────────────────────────────
+  static const Color primaryGold = Color(0xFFD4AF37);
+  static const Color primaryDark = Color(0xFF0F2340);
+  static const Color primaryLight = Color(0xFF1A3A52);
+
+  static const Color accentBlue = Color(0xFF0066CC);
+  static const Color accentGreen = Color(0xFF00AA44);
+  static const Color accentRed = Color(0xFFCC0000);
+  static const Color accentOrange = Color(0xFFFF8800);
+
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color divider = Color(0xFFE8EBED);
+
+  static const Color textSecondary = Color(0xFF666666);
+  static const Color textTertiary = Color(0xFF999999);
+  static const Color textInverse = Color(0xFFFFFFFF);
+
+  static const Color error = Color(0xFFCC0000);
+  static const Color warning = Color(0xFFFF8800);
+  static const Color info = Color(0xFF0066CC);
+
+  static const LinearGradient gradientPremium = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [primaryGold, primaryDark],
+  );
+
+  static const LinearGradient gradientDark = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [primaryDark, primaryLight],
+  );
+
+  static const LinearGradient gradientAccent = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [accentBlue, Color(0xFF0052AA)],
+  );
 }

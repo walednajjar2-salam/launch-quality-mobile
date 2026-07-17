@@ -108,6 +108,85 @@ class AppTheme {
       ),
     );
   }
+
+  /// Enterprise light theme for iOS / premium design contexts.
+  static ThemeData lightTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      primaryColor: BrandColors.primaryDark,
+      scaffoldBackgroundColor: const Color(0xFFFAFBFC),
+      colorScheme: ColorScheme.light(
+        primary: BrandColors.primaryDark,
+        onPrimary: BrandColors.textInverse,
+        secondary: BrandColors.primaryGold,
+        onSecondary: const Color(0xFF1A1A1A),
+        tertiary: BrandColors.accentBlue,
+        surface: BrandColors.surface,
+        onSurface: const Color(0xFF1A1A1A),
+        error: BrandColors.error,
+      ),
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: BrandColors.primaryDark,
+        foregroundColor: BrandColors.textInverse,
+        titleTextStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: BrandColors.textInverse,
+        ),
+        toolbarHeight: 64,
+      ),
+      cardTheme: CardTheme(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        color: BrandColors.surface,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: BrandColors.primaryDark,
+          foregroundColor: BrandColors.textInverse,
+          elevation: 4,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: BrandColors.primaryDark,
+          side: const BorderSide(
+            color: BrandColors.primaryDark,
+            width: 2,
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: BrandColors.surface,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: BrandColors.divider, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: BrandColors.divider, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: BrandColors.primaryDark, width: 2),
+        ),
+      ),
+    );
+  }
+
+  /// Alias for [dark] — used in multi-theme contexts.
+  static ThemeData darkTheme() => dark();
 }
 
 String money(num? value) {
