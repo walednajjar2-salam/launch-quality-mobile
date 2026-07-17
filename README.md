@@ -46,6 +46,9 @@ chmod +x scripts/build-ios.sh
 # ثم: افتح ios/Runner.xcworkspace في Xcode → Archive
 ```
 
+## Deploy (Railway — Flutter Web)
+
+انظر **[RAILWAY.md](RAILWAY.md)** — Dockerfile جاهز للنشر على Railway.
 ## Features
 
 - Dark luxury theme · glass cards · 28px · RTL Arabic
