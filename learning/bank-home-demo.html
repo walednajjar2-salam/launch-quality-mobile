@@ -3,64 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>الصفحة الرئيسية</title>
+  <title>الرئيسية</title>
   <style>
     :root {
-      --bg: #071a33;
-      --bg-top: #0a2344;
-      --card: #1c2f4a;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --orange: #f28c28;
-      --orange-soft: #ff9a3c;
-      --brown: #8b5a2b;
-      --brown-2: #6e4520;
-      --nav: #061527;
+      --bg: #001a33;
+      --bg-2: #002447;
+      --card: rgba(255, 255, 255, 0.10);
+      --card-solid: #0d2b4a;
+      --tx-box: #0a2744;
+      --orange: #ff8c00;
+      --bronze: #6b4a2a;
+      --bronze-2: #5a3d22;
       --white: #ffffff;
-      --muted: rgba(255, 255, 255, 0.72);
-      --line: rgba(255, 255, 255, 0.12);
+      --muted: rgba(255, 255, 255, 0.75);
+      --link: #9ec9ff;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; }
+    html, body { height: 100%; margin: 0; }
     body {
-      margin: 0;
-      min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #020b16;
+      background: #000d1a;
       color: var(--white);
       display: flex;
       justify-content: center;
-      align-items: stretch;
     }
 
     .phone {
       width: 100%;
       max-width: 430px;
       min-height: 100vh;
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 42%, #061325 100%);
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
     }
 
-    /* iOS status bar */
+    /* Status bar (LTR) */
     .status {
       height: 44px;
-      padding: 12px 22px 0;
+      padding: 10px 20px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      direction: ltr;
+      color: #fff;
       font-size: 15px;
       font-weight: 600;
-      color: #fff;
-      direction: ltr;
     }
-    .status .time { letter-spacing: 0.2px; }
-    .status .right {
+    .status .meta {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       font-size: 12px;
       font-weight: 700;
     }
@@ -70,435 +65,467 @@
       gap: 1.5px;
       height: 11px;
     }
-    .bars i {
-      display: block;
-      width: 3px;
-      background: #fff;
-      border-radius: 1px;
-    }
+    .bars i { width: 3px; background: #fff; border-radius: 1px; display: block; }
     .bars i:nth-child(1) { height: 3px; }
     .bars i:nth-child(2) { height: 5px; }
-    .bars i:nth-child(3) { height: 7px; }
-    .bars i:nth-child(4) { height: 10px; opacity: 0.35; }
+    .bars i:nth-child(3) { height: 8px; }
+    .bars i:nth-child(4) { height: 11px; opacity: .35; }
     .battery {
-      width: 24px;
-      height: 11px;
-      border: 1px solid rgba(255,255,255,0.85);
-      border-radius: 3px;
-      position: relative;
-      padding: 1px;
+      width: 24px; height: 11px; border: 1px solid rgba(255,255,255,.9);
+      border-radius: 3px; padding: 1px; position: relative;
     }
     .battery::after {
-      content: "";
-      position: absolute;
-      right: -3px;
-      top: 3px;
-      width: 2px;
-      height: 4px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 0 1px 1px 0;
+      content: ""; position: absolute; right: -3px; top: 3px;
+      width: 2px; height: 4px; background: rgba(255,255,255,.9); border-radius: 0 1px 1px 0;
     }
-    .battery span {
-      display: block;
-      height: 100%;
-      width: 72%;
-      background: #fff;
-      border-radius: 1px;
-    }
+    .battery span { display: block; height: 100%; width: 40%; background: #fff; border-radius: 1px; }
 
     .content {
       flex: 1;
       overflow-y: auto;
-      padding: 6px 16px 18px;
+      padding: 4px 16px 20px;
       scrollbar-width: none;
     }
     .content::-webkit-scrollbar { display: none; }
 
+    /* Header: greeting right, orange avatar left */
     .header {
       display: flex;
       align-items: center;
       gap: 10px;
-      min-height: 40px;
-      margin-bottom: 14px;
+      margin: 4px 0 16px;
+      min-height: 42px;
     }
-    .header .name {
+    .header .greet {
       flex: 1;
       margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: right;
+    }
+    .header .greet .hi { color: #fff; }
+    .header .greet .name {
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
       font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: right;
     }
-    .header .icons {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 17px;
-      background: rgba(255,255,255,0.08);
-      border: 0;
-      color: #fff;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--orange);
       display: grid;
       place-items: center;
-      font-size: 15px;
-      cursor: pointer;
+      color: #fff;
+      font-size: 18px;
+      flex: 0 0 auto;
+      box-shadow: 0 2px 8px rgba(255, 140, 0, 0.35);
     }
 
+    /* Balance card */
     .balance-card {
-      background: linear-gradient(160deg, #243952 0%, #1a2d45 55%, #15263c 100%);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.11);
+      border-radius: 18px;
       padding: 16px 16px 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      margin-bottom: 14px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .balance-title {
-      color: rgba(255,255,255,0.82);
-      font-size: 13px;
-      margin-bottom: 8px;
-      text-align: right;
-    }
-    .balance-row {
+    .bal-top {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      direction: rtl;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
-    .balance-amount {
-      flex: 1;
-      color: var(--orange);
-      font-size: 34px;
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: 0.2px;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
+    .bal-top .title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.88);
+      font-weight: 600;
     }
-    .eye-btn {
+    .eye {
       border: 0;
       background: transparent;
-      color: rgba(255,255,255,0.75);
-      width: 34px;
-      height: 34px;
+      color: rgba(255,255,255,0.85);
       font-size: 18px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
-      display: grid;
-      place-items: center;
-      order: -1; /* left of amount in RTL */
+      padding: 0;
     }
-    .account-row {
+    .bal-amount {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 4px;
+      margin-bottom: 14px;
+      direction: ltr;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      user-select: none;
+    }
+    .bal-amount .int {
+      color: var(--orange);
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .bal-amount .rest {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .bal-amount.hidden .int,
+    .bal-amount.hidden .rest { letter-spacing: 2px; }
+
+    .bal-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+    .acc {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12.5px;
-      color: var(--muted);
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
     }
-    .account-row .doc {
-      width: 16px;
-      opacity: 0.8;
+    .acc .ico {
+      width: 18px; height: 18px;
+      display: grid; place-items: center;
+      opacity: 0.9; font-size: 13px;
     }
-    .account-row .acc {
-      flex: 1;
-      text-align: right;
-    }
-    .account-row .details {
-      color: var(--orange-soft);
-      font-size: 12px;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+    .details {
+      color: var(--link);
+      font-weight: 600;
       white-space: nowrap;
+      font-size: 12.5px;
     }
 
-    .actions {
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px 0 14px;
+    }
+    .dots span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+    }
+    .dots span.on { background: #fff; }
+
+    /* Bronze split bar: مالي | أهدافي */
+    .quick {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .action-btn {
-      height: 46px;
-      border: 0;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #9a6634 0%, var(--brown) 45%, var(--brown-2) 100%);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-    }
-
-    .promo {
-      background: #fff;
-      color: #13233a;
-      border-radius: 12px;
-      padding: 12px 12px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 18px;
-      min-height: 78px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-    }
-    .promo-card {
-      width: 78px;
-      height: 48px;
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.25), transparent 40%),
-        linear-gradient(135deg, #1a3355 0%, #2a4d78 45%, #f28c28 100%);
-      box-shadow: 0 4px 10px rgba(20,40,70,0.25);
-      position: relative;
-      flex: 0 0 auto;
+      background: linear-gradient(180deg, #7a5530 0%, var(--bronze) 40%, var(--bronze-2) 100%);
+      border-radius: 14px;
       overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      position: relative;
     }
-    .promo-card::before {
+    .quick::before {
       content: "";
       position: absolute;
-      inset: 8px 10px auto auto;
-      width: 18px;
-      height: 12px;
-      border-radius: 3px;
-      background: rgba(255,220,160,0.85);
+      top: 10px; bottom: 10px; left: 50%;
+      width: 1px; background: rgba(255,255,255,0.55);
+      transform: translateX(-50%);
     }
-    .promo-card::after {
-      content: "•••• 0101";
-      position: absolute;
-      left: 8px;
-      bottom: 6px;
-      font-size: 8px;
-      color: rgba(255,255,255,0.9);
-      letter-spacing: 0.5px;
-      direction: ltr;
-    }
-    .promo h3 {
-      margin: 0 0 4px;
-      font-size: 13.5px;
+    .quick button {
+      border: 0;
+      background: transparent;
+      color: #fff;
+      height: 52px;
+      font-size: 15px;
       font-weight: 800;
-      line-height: 1.3;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
     }
-    .promo p {
+    .quick .new {
+      position: absolute;
+      top: 4px;
+      left: 8px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+    }
+    .quick .ico { font-size: 16px; line-height: 1; }
+
+    /* Promo banner */
+    .promo-wrap { margin-bottom: 8px; }
+    .promo {
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px 12px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 88px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    }
+    .promo .cta {
+      border: 0;
+      background: var(--orange);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      border-radius: 18px;
+      padding: 8px 12px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .promo .card-art {
+      width: 86px;
+      height: 54px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.28), transparent 42%),
+        linear-gradient(135deg, #0b2a4d 0%, #1e4e82 50%, #ff8c00 120%);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .promo .card-art::before {
+      content: "";
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 16px; height: 12px;
+      border-radius: 3px;
+      background: rgba(255, 214, 140, 0.9);
+    }
+    .promo .card-art::after {
+      content: "BANK";
+      position: absolute;
+      left: 8px; bottom: 7px;
+      font-size: 8px; color: rgba(255,255,255,.85);
+      letter-spacing: 1px; direction: ltr;
+    }
+    .promo .copy { text-align: right; }
+    .promo .copy h3 {
+      margin: 0 0 4px;
+      color: #0d2340;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+    .promo .copy p {
       margin: 0;
-      font-size: 11.5px;
-      color: #5b6d82;
+      color: #5a6d82;
+      font-size: 11px;
       line-height: 1.35;
     }
 
-    .section-head {
+    /* Transactions box */
+    .tx-box {
+      background: var(--tx-box);
+      border-radius: 16px;
+      padding: 14px 14px 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 72px;
+    }
+    .tx-head {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      justify-content: space-between;
+      gap: 8px;
     }
-    .section-head h2 {
+    .tx-head h2 {
       margin: 0;
-      flex: 1;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
-      text-align: right;
     }
-    .section-head span {
+    .tx-head .all {
       color: var(--orange);
       font-size: 12.5px;
-      font-weight: 600;
-    }
-
-    .tx-empty {
-      color: rgba(255,255,255,0.45);
-      font-size: 13px;
-      text-align: center;
-      padding: 28px 8px 10px;
-    }
-
-    /* Hidden learning editor — open via long-press on balance */
-    .editor-sheet {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(2, 10, 20, 0.72);
-      z-index: 20;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .editor-sheet.open { display: flex; }
-    .editor {
-      width: 100%;
-      background: #12243c;
-      border-radius: 18px 18px 0 0;
-      padding: 16px 16px 28px;
-      border-top: 1px solid rgba(255,255,255,0.12);
-    }
-    .editor h4 {
-      margin: 0 0 12px;
-      font-size: 14px;
-      color: var(--orange);
-      text-align: center;
-    }
-    .editor label {
-      display: block;
-      font-size: 12px;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 6px;
-    }
-    .editor input {
-      width: 100%;
-      margin-bottom: 12px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(0,0,0,0.28);
-      color: white;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 18px;
       font-weight: 700;
-      outline: none;
-      direction: ltr;
-      text-align: center;
     }
-    .editor .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .editor button {
-      height: 44px;
-      border: 0;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .editor .apply { background: var(--orange); color: #12263f; }
-    .editor .cancel { background: rgba(255,255,255,0.1); color: #fff; }
 
+    /* Bottom nav */
     .nav {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      background: rgba(6, 21, 39, 0.96);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 2px calc(8px + env(safe-area-inset-bottom, 0px));
-      backdrop-filter: blur(10px);
+      background: #001528;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 0 calc(10px + env(safe-area-inset-bottom, 0px));
     }
     .nav button {
       border: 0;
       background: transparent;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.55);
       font-size: 10.5px;
-      cursor: pointer;
+      font-weight: 700;
       display: grid;
       gap: 3px;
       justify-items: center;
+      cursor: pointer;
       padding: 2px 0;
-      font-weight: 600;
     }
     .nav button.active { color: var(--orange); }
-    .nav .ico {
-      width: 22px;
-      height: 22px;
-      display: grid;
-      place-items: center;
-      font-size: 17px;
-      line-height: 1;
-    }
-    .home-indicator {
+    .nav .ico { font-size: 18px; line-height: 1; }
+
+    /* Editor sheet (long-press balance) */
+    .sheet {
+      display: none;
       position: absolute;
-      bottom: 6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 4px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.28);
-      pointer-events: none;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      z-index: 30;
+      align-items: flex-end;
     }
+    .sheet.open { display: flex; }
+    .sheet .panel {
+      width: 100%;
+      background: #0b243f;
+      border-radius: 18px 18px 0 0;
+      padding: 16px 16px 28px;
+    }
+    .sheet h4 {
+      margin: 0 0 12px;
+      text-align: center;
+      color: var(--orange);
+      font-size: 14px;
+    }
+    .sheet input {
+      width: 100%;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(0,0,0,.3);
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 20px;
+      font-weight: 800;
+      text-align: center;
+      direction: ltr;
+      outline: none;
+    }
+    .sheet .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sheet button {
+      height: 44px; border: 0; border-radius: 10px;
+      font-weight: 800; cursor: pointer; font-size: 14px;
+    }
+    .sheet .apply { background: var(--orange); color: #001a33; }
+    .sheet .cancel { background: rgba(255,255,255,.12); color: #fff; }
   </style>
 </head>
 <body>
   <script>
-    // بيانات تجريبية — غيّر الرصيد هنا أو اضغط مطوّلاً على المبلغ
+    // غيّر الرصيد هنا، أو اضغط مطوّلاً على المبلغ
     window.DEMO_DATA = {
       balance: 7034.340,
       currency: "OMR",
+      greeting: "مرحباً",
       userName: "WALEED MOHAMMED ABDUL HADI AL NAJJAR",
       balanceTitle: "الرصيد في الحساب",
       accountLabel: "حساب التوفير - 0101",
-      viewDetailsLabel: "مشاهدة التفاصيل",
-      moneyAction: "مالي",
-      goalsAction: "أهدافي",
-      promoTitle: "بطاقة الخصم المباشر",
-      promoSubtitle: "استمتع بخصومات مباشرة عند الدفع ببطاقتك",
-      transactionsTitle: "المعاملات المالية",
-      viewAllLabel: "مشاهدة الكل",
+      detailsLabel: "إظهار التفاصيل >",
+      moneyLabel: "مالي",
+      goalsLabel: "أهدافي",
+      promoTitle: "بطاقة مال للخصم المباشر",
+      promoSubtitle: "خصومات مباشرة عند الدفع ببطاقتك",
+      orderNow: "اطلب الآن",
+      txTitle: "المعاملات المالية",
+      viewAll: "مشاهدة الكل",
       statusTime: "6:37",
     };
   </script>
 
   <div class="phone">
     <div class="status">
-      <div class="time" id="statusTime">6:37</div>
-      <div class="right">
-        <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div id="statusTime">6:37</div>
+      <div class="meta">
+        <div class="bars"><i></i><i></i><i></i><i></i></div>
         <span>4G</span>
-        <div class="battery" aria-hidden="true"><span></span></div>
+        <div class="battery"><span></span></div>
       </div>
     </div>
 
     <div class="content">
-      <div class="header">
-        <h1 class="name" id="userName"></h1>
-        <div class="icons">
-          <button class="icon-btn" type="button" aria-label="إشعارات">🔔</button>
-          <button class="icon-btn" type="button" aria-label="الملف">👤</button>
+      <header class="header">
+        <div class="greet">
+          <div><span class="hi" id="greeting">مرحباً</span> <span class="name" id="userName"></span></div>
         </div>
-      </div>
+        <div class="avatar" aria-hidden="true">👤</div>
+      </header>
 
       <section class="balance-card">
-        <div class="balance-title" id="balanceTitle"></div>
-        <div class="balance-row">
-          <div class="balance-amount" id="balanceAmount" title="اضغط مطوّلاً للتعديل"></div>
-          <button class="eye-btn" id="toggleEye" type="button" aria-label="إظهار/إخفاء الرصيد">👁</button>
+        <div class="bal-top">
+          <div class="title" id="balanceTitle">الرصيد في الحساب</div>
+          <button class="eye" id="toggleEye" type="button" aria-label="إظهار/إخفاء">👁</button>
         </div>
-        <div class="account-row">
-          <span class="doc">📄</span>
-          <span class="acc" id="accountLabel"></span>
-          <span class="details" id="viewDetails"></span>
+        <div class="bal-amount" id="balanceAmount" title="اضغط مطوّلاً للتعديل">
+          <span class="int" id="balInt">7034</span><span class="rest" id="balRest">.340 OMR</span>
+        </div>
+        <div class="bal-bottom">
+          <div class="acc">
+            <span class="ico">⇩</span>
+            <span id="accountLabel">حساب التوفير - 0101</span>
+          </div>
+          <div class="details" id="detailsLabel">إظهار التفاصيل ></div>
         </div>
       </section>
 
-      <div class="actions">
-        <button class="action-btn" id="moneyAction" type="button"></button>
-        <button class="action-btn" id="goalsAction" type="button"></button>
+      <div class="dots" aria-hidden="true"><span class="on"></span><span></span></div>
+
+      <div class="quick">
+        <!-- RTL: الأول يمين = مالي ، الثاني يسار = أهدافي -->
+        <button type="button" id="moneyBtn">
+          <span class="ico">🛡</span>
+          <span id="moneyLabel">مالي</span>
+        </button>
+        <button type="button" id="goalsBtn">
+          <span class="new">NEW</span>
+          <span class="ico">🏆</span>
+          <span id="goalsLabel">أهدافي</span>
+        </button>
       </div>
 
-      <div class="promo">
-        <div class="promo-card" aria-hidden="true"></div>
-        <div>
-          <h3 id="promoTitle"></h3>
-          <p id="promoSubtitle"></p>
+      <div class="promo-wrap">
+        <div class="promo">
+          <!-- RTL: يمين نص ، وسط بطاقة ، يسار اطلب الآن -->
+          <div class="copy">
+            <h3 id="promoTitle">بطاقة مال للخصم المباشر</h3>
+            <p id="promoSubtitle">خصومات مباشرة عند الدفع ببطاقتك</p>
+          </div>
+          <div class="card-art" aria-hidden="true"></div>
+          <button class="cta" id="orderNow" type="button">اطلب الآن</button>
         </div>
+        <div class="dots" aria-hidden="true"><span class="on"></span><span></span></div>
       </div>
 
-      <div class="section-head">
-        <h2 id="transactionsTitle"></h2>
-        <span id="viewAll"></span>
-      </div>
-      <div class="tx-empty">لا توجد معاملات للعرض</div>
+      <section class="tx-box">
+        <div class="tx-head">
+          <h2 id="txTitle">المعاملات المالية</h2>
+          <div class="all" id="viewAll">مشاهدة الكل</div>
+        </div>
+      </section>
     </div>
 
     <nav class="nav" id="bottomNav">
       <button class="active" type="button"><span class="ico">⌂</span>الرئيسية</button>
       <button type="button"><span class="ico">▭</span>البطاقات</button>
       <button type="button"><span class="ico">⇄</span>التحويلات</button>
-      <button type="button"><span class="ico">﷼</span>المدفوعات</button>
-      <button type="button"><span class="ico">⋯</span>المزيد</button>
+      <button type="button"><span class="ico">☰</span>المدفوعات</button>
+      <button type="button"><span class="ico">≡</span>المزيد</button>
     </nav>
-    <div class="home-indicator"></div>
 
-    <div class="editor-sheet" id="editorSheet">
-      <div class="editor">
+    <div class="sheet" id="sheet">
+      <div class="panel">
         <h4>تعديل الرصيد (تعلّم)</h4>
-        <label for="balanceInput">الرصيد</label>
         <input id="balanceInput" type="number" step="0.001" min="0" />
         <div class="row">
           <button class="cancel" id="cancelEdit" type="button">إلغاء</button>
@@ -511,58 +538,45 @@
   <script>
     const data = window.DEMO_DATA;
     let visible = true;
-    const balanceInput = document.getElementById("balanceInput");
-    const sheet = document.getElementById("editorSheet");
     const amountEl = document.getElementById("balanceAmount");
+    const input = document.getElementById("balanceInput");
+    const sheet = document.getElementById("sheet");
 
-    function money(n) {
-      return Number(n).toLocaleString("en-US", {
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3,
-      });
+    function splitBalance(n) {
+      const fixed = Number(n).toFixed(3);
+      const [intPart, decPart] = fixed.split(".");
+      const intFmt = Number(intPart).toLocaleString("en-US");
+      return { intPart: intFmt, rest: `.${decPart} ${data.currency}` };
     }
 
     function renderBalance() {
-      amountEl.textContent = visible
-        ? `${money(data.balance)} ${data.currency}`
-        : `•••••• ${data.currency}`;
-      balanceInput.value = Number(data.balance).toFixed(3);
-    }
-
-    function openEditor() {
-      balanceInput.value = Number(data.balance).toFixed(3);
-      sheet.classList.add("open");
-      setTimeout(() => balanceInput.focus(), 50);
-    }
-
-    function closeEditor() {
-      sheet.classList.remove("open");
-    }
-
-    function applyBalanceFromInput() {
-      const next = Number(balanceInput.value);
-      if (!Number.isFinite(next) || next < 0) {
-        alert("أدخل رقماً صحيحاً للرصيد");
-        return;
+      const { intPart, rest } = splitBalance(data.balance);
+      if (visible) {
+        amountEl.classList.remove("hidden");
+        document.getElementById("balInt").textContent = intPart;
+        document.getElementById("balRest").textContent = rest;
+      } else {
+        amountEl.classList.add("hidden");
+        document.getElementById("balInt").textContent = "••••";
+        document.getElementById("balRest").textContent = ` ••• ${data.currency}`;
       }
-      data.balance = Math.round(next * 1000) / 1000;
-      visible = true;
-      renderBalance();
-      closeEditor();
+      input.value = Number(data.balance).toFixed(3);
     }
 
     function render() {
       document.getElementById("statusTime").textContent = data.statusTime;
+      document.getElementById("greeting").textContent = data.greeting;
       document.getElementById("userName").textContent = data.userName;
       document.getElementById("balanceTitle").textContent = data.balanceTitle;
       document.getElementById("accountLabel").textContent = data.accountLabel;
-      document.getElementById("viewDetails").textContent = data.viewDetailsLabel;
-      document.getElementById("moneyAction").textContent = data.moneyAction;
-      document.getElementById("goalsAction").textContent = data.goalsAction;
+      document.getElementById("detailsLabel").textContent = data.detailsLabel;
+      document.getElementById("moneyLabel").textContent = data.moneyLabel;
+      document.getElementById("goalsLabel").textContent = data.goalsLabel;
       document.getElementById("promoTitle").textContent = data.promoTitle;
       document.getElementById("promoSubtitle").textContent = data.promoSubtitle;
-      document.getElementById("transactionsTitle").textContent = data.transactionsTitle;
-      document.getElementById("viewAll").textContent = data.viewAllLabel;
+      document.getElementById("orderNow").textContent = data.orderNow;
+      document.getElementById("txTitle").textContent = data.txTitle;
+      document.getElementById("viewAll").textContent = data.viewAll;
       renderBalance();
     }
 
@@ -571,23 +585,34 @@
       renderBalance();
     });
 
-    // ضغط مطوّل على الرصيد لفتح التعديل (للتعلّم بدون تشويه الشكل)
     let pressTimer;
     amountEl.addEventListener("pointerdown", () => {
-      pressTimer = setTimeout(openEditor, 550);
+      pressTimer = setTimeout(() => {
+        input.value = Number(data.balance).toFixed(3);
+        sheet.classList.add("open");
+        setTimeout(() => input.focus(), 40);
+      }, 550);
     });
     ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => {
       amountEl.addEventListener(ev, () => clearTimeout(pressTimer));
     });
 
-    document.getElementById("applyBalance").addEventListener("click", applyBalanceFromInput);
-    document.getElementById("cancelEdit").addEventListener("click", closeEditor);
-    sheet.addEventListener("click", (e) => {
-      if (e.target === sheet) closeEditor();
-    });
-    balanceInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") applyBalanceFromInput();
-    });
+    function apply() {
+      const next = Number(input.value);
+      if (!Number.isFinite(next) || next < 0) {
+        alert("أدخل رقماً صحيحاً");
+        return;
+      }
+      data.balance = Math.round(next * 1000) / 1000;
+      visible = true;
+      renderBalance();
+      sheet.classList.remove("open");
+    }
+
+    document.getElementById("applyBalance").addEventListener("click", apply);
+    document.getElementById("cancelEdit").addEventListener("click", () => sheet.classList.remove("open"));
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) sheet.classList.remove("open"); });
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") apply(); });
 
     document.querySelectorAll("#bottomNav button").forEach((btn) => {
       btn.addEventListener("click", () => {

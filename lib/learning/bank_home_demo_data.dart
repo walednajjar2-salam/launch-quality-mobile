@@ -1,32 +1,23 @@
 /// بيانات تجريبية قابلة للتعديل — لأغراض التعلم فقط.
-/// غيّر القيم هنا ثم أعد تشغيل التطبيق لترى النتيجة.
-/// يمكنك أيضاً تعديل الرصيد من لوحة التعديل داخل الشاشة.
+/// غيّر القيم هنا، أو اضغط مطوّلاً على الرصيد داخل الشاشة.
 class BankHomeDemoData {
-  /// الرصيد الافتراضي المعروض على الشاشة الرئيسية.
   static const double balance = 7034.340;
-
-  /// اسم صاحب الحساب.
-  static const String userName = 'WALEED MOHAMMED ABDUL HADI AL NAJJAR';
-
-  /// نوع الحساب وآخر أرقام.
-  static const String accountLabel = 'حساب التوفير - 0101';
-
-  /// عنوان قسم الرصيد.
-  static const String balanceTitle = 'الرصيد في الحساب';
-
-  /// عملة العرض.
   static const String currency = 'OMR';
 
-  /// أزرار الإجراءات السريعة.
-  static const String moneyAction = 'مالي';
-  static const String goalsAction = 'أهدافي';
+  static const String greeting = 'مرحباً';
+  static const String userName = 'WALEED MOHAMMED ABDUL HADI AL NAJJAR';
 
-  /// نص البنر الترويجي.
-  static const String promoTitle = 'بطاقة الخصم المباشر';
-  static const String promoSubtitle = 'استمتع بخصومات مباشرة عند الدفع ببطاقتك';
+  static const String balanceTitle = 'الرصيد في الحساب';
+  static const String accountLabel = 'حساب التوفير - 0101';
+  static const String detailsLabel = 'إظهار التفاصيل >';
 
-  /// قسم المعاملات.
-  static const String transactionsTitle = 'المعاملات المالية';
-  static const String viewAllLabel = 'مشاهدة الكل';
-  static const String viewDetailsLabel = 'مشاهدة التفاصيل';
+  static const String moneyLabel = 'مالي';
+  static const String goalsLabel = 'أهدافي';
+
+  static const String promoTitle = 'بطاقة مال للخصم المباشر';
+  static const String promoSubtitle = 'خصومات مباشرة عند الدفع ببطاقتك';
+  static const String orderNow = 'اطلب الآن';
+
+  static const String txTitle = 'المعاملات المالية';
+  static const String viewAll = 'مشاهدة الكل';
 }
