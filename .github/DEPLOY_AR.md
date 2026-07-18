@@ -3,6 +3,10 @@
 > **لا** تنشئ repo باسم `RAILWAY_TOKEN`  
 > **لا** تضع التوken في `README.md` أو أي commit
 
+## الحالة
+
+- [x] `RAILWAY_TOKEN` مضاف في GitHub Actions Secrets (2026-07-18)
+
 ## الخطوات (دقيقة واحدة)
 
 1. افتح: https://github.com/walednajjar2-salam/launch-quality-mobile/settings/secrets/actions  
