@@ -4,8 +4,8 @@
  */
 window.ENDORSEMENT_DATA = {
   company: {
-    nameAr: "جي آي جي الخليج للتأمين — عُمان",
-    nameEn: "GIG Gulf Insurance",
+    nameAr: "جي آي جي الخليج للتأمين عُمان",
+    nameEn: "GIG Gulf Insurance Oman",
     addressEn:
       "Safeway Building, Al Khuwair, P.O. Box 1276, P.C. 112, Ruwi, Sultanate of Oman. Tel: (968) 24400100, Fax: (968) 24400120, C.R.No: 1112244",
     addressAr:

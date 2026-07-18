@@ -26,7 +26,7 @@
 
     document.getElementById("page").innerHTML = `
       <header class="header">
-        <img class="logo" src="assets/gig-oman-logo.svg" alt="GIG Gulf Insurance Oman" />
+        <img class="logo" src="assets/gig-oman-logo.png?v=2" alt="GIG Gulf Insurance Oman" />
         <div class="company">
           <div class="company-ar" contenteditable="false" data-key="company.nameAr">${e(
             d.company.nameAr
