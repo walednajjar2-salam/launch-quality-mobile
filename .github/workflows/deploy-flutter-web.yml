@@ -1,4 +1,4 @@
-name: Deploy Jawdah Cloud to Railway
+name: Deploy Flutter Web to Railway
 
 on:
   workflow_dispatch:
@@ -6,15 +6,18 @@ on:
     branches:
       - main
     paths:
-      - 'backend/jawdah-cloud-v47/**'
-      - '.github/workflows/deploy-jawdah-cloud.yml'
+      - 'lib/**'
+      - 'web/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'Dockerfile'
+      - 'nginx.conf'
+      - 'railway.toml'
+      - '.github/workflows/deploy-flutter-web.yml'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend/jawdah-cloud-v47
     steps:
       - uses: actions/checkout@v4
 
@@ -30,6 +33,6 @@ jobs:
             echo "Add it in GitHub → Settings → Secrets and variables → Actions → New repository secret"
             exit 0
           fi
-          railway up --detach --service "${RAILWAY_SERVICE:-Jawda-Al-Intilaqa}" \
+          railway up --detach --service "${RAILWAY_FLUTTER_SERVICE:-Launch-Quality-Mobile}" \
             -p "${RAILWAY_PROJECT_ID:-9239907c-96e9-4763-b2d3-2d57931f7bba}" \
             -e "${RAILWAY_ENVIRONMENT:-production}"
