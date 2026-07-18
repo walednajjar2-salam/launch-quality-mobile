@@ -124,7 +124,7 @@
               true
             )}</td>
             <td class="l-ar">اسم المشترك</td>
-            <td class="r-lbl mid-line">Vehicle Est Value<br/>R.O.</td>
+            <td class="r-lbl mid-line">Vehicle Est Value<br/>USD</td>
             <td class="r-val">${field("vehicleEstValue", d.vehicleEstValue)}</td>
             <td class="r-ar">قيمة المركبة</td>
           </tr>
