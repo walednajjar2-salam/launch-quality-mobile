@@ -52,6 +52,15 @@
         <div class="en" contenteditable="false" data-key="title.en">${e(
           d.title.en
         )}</div>
+        <div class="cover-type">
+          <span contenteditable="false" data-key="coverTypeEn">${e(
+            d.coverTypeEn
+          )}</span>
+          <span class="sep">|</span>
+          <span contenteditable="false" data-key="coverTypeAr">${e(
+            d.coverTypeAr
+          )}</span>
+        </div>
       </div>
 
       <table class="details">
@@ -65,31 +74,39 @@
         </thead>
         <tbody>
           <tr class="zebra">
+            <td class="lbl">Cover Type</td>
+            <td class="val">${field("coverTypeEn", d.coverTypeEn)} / ${field(
+              "coverTypeAr",
+              d.coverTypeAr
+            )}</td>
+            <td class="arlbl">نوع التغطية</td>
+          </tr>
+          <tr>
             <td class="lbl">Policy Number</td>
             <td class="val">${field("policyNumber", d.policyNumber)}</td>
             <td class="arlbl">رقم الوثيقة</td>
           </tr>
-          <tr>
+          <tr class="zebra">
             <td class="lbl">Period of Insurance</td>
             <td class="val">${field("periodOfInsurance", d.periodOfInsurance)}</td>
             <td class="arlbl">فترة التأمين</td>
           </tr>
-          <tr class="zebra">
+          <tr>
             <td class="lbl">Endorsement Number</td>
             <td class="val">${field("endorsementNumber", d.endorsementNumber)}</td>
             <td class="arlbl">رقم الملحق</td>
           </tr>
-          <tr>
+          <tr class="zebra">
             <td class="lbl">Endorsement Sequence</td>
             <td class="val">${field("endorsementSequence", d.endorsementSequence)}</td>
             <td class="arlbl">رقم تسلسلي للملحق</td>
           </tr>
-          <tr class="zebra">
+          <tr>
             <td class="lbl">Endorsement Period</td>
             <td class="val">${field("endorsementPeriod", d.endorsementPeriod)}</td>
             <td class="arlbl">الفترة التأمينية للملحق</td>
           </tr>
-          <tr>
+          <tr class="zebra">
             <td class="lbl">Issue Date &amp; Time</td>
             <td class="val">${field("issueDateTime", d.issueDateTime)}</td>
             <td class="arlbl">تاريخ اصدار الوثيقة والوقت</td>

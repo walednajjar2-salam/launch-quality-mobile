@@ -14,15 +14,18 @@ window.ENDORSEMENT_DATA = {
   },
 
   title: {
-    ar: "ملحق نقل وثيقة التأمين",
-    en: "ENDORSEMENT ANNEXURE FOR CHANGE OF OWNERSHIP",
+    ar: "ملحق نقل وثيقة التأمين — تأمين شامل",
+    en: "ENDORSEMENT ANNEXURE FOR CHANGE OF OWNERSHIP — COMPREHENSIVE",
   },
 
+  coverTypeEn: "Comprehensive Cover",
+  coverTypeAr: "تأمين شامل",
+
   policyNumber: "P/230/1010/2025/19394",
-  periodOfInsurance: "From:29/06/2026 18:56 To:17/08/2026 23:59",
+  periodOfInsurance: "From:29/06/2026 00:00 To:30/06/2027 23:59",
   endorsementNumber: "EN/02/P/230/1010/2025/19394",
   endorsementSequence: "EN/02/P/230/1010/2025/19394",
-  endorsementPeriod: "From:29/06/2026 14:56 To:17/08/2026 23:59",
+  endorsementPeriod: "From:29/06/2026 00:00 To:30/06/2027 23:59",
   issueDateTime: "29/06/2026 19:48",
 
   participantName: "ABDULMALIK SHAFEEK",
@@ -52,7 +55,7 @@ window.ENDORSEMENT_DATA = {
   declarationIntro:
     "Not with standing anything to the contrary contained, it is hereby declared and agreed that with effect from the date shown above the subject policy has been altered as indicated herein below:",
   declarationTransfer:
-    "The Interest on this insurance has been transferred to and vested in the name of ABDULMALIK SHAFEEK shall be deemed to be the insured",
+    "The Interest on this Comprehensive motor insurance has been transferred to and vested in the name of ABDULMALIK SHAFEEK shall be deemed to be the insured for the period From:29/06/2026 To:30/06/2027",
   declarationFooter: "All other terms and conditions remain unaltered.",
 
   signedAtText: "In witness thereof this policy has been signed at",
