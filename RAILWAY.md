@@ -41,3 +41,13 @@ railway up --detach
 - صورة البناء تستخدم `ghcr.io/cirruslabs/flutter:stable` ثم `nginx:alpine`
 - المنفذ يُضبط تلقائياً عبر متغير `PORT` من Railway
 - لا حاجة لمتغيرات بيئة إضافية للتشغيل الأساسي
+
+## Backend ERP (جودة الانطلاقة)
+
+| الخدمة | الرابط |
+|--------|--------|
+| API | https://jawda-al-intilaqa-production.up.railway.app/api |
+| ERP | https://jawda-al-intilaqa-production.up.railway.app/app.html |
+| Volume | `jawda-al-intilaqa-volume` → `/app/data` (البيانات محفوظة بعد إعادة النشر) |
+
+تفاصيل النشر: `backend/jawdah-cloud-v47/RAILWAY.md`
