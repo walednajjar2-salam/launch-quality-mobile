@@ -1,0 +1,373 @@
+diff --git a/server.py b/server.py
+index 27e6792..7677ed1 100644
+--- a/server.py
++++ b/server.py
+@@ -109,6 +109,7 @@ TABLES = {
+     "approvals": ["id", "entity", "entity_id", "request_type", "status", "requested_by", "approved_by", "requested_at", "approved_at", "notes"],
+     "bank_reconciliations": ["id", "bank_name", "period_name", "book_balance", "bank_balance", "difference", "status", "reconciled_by", "reconciled_at", "notes", "matched_count", "unmatched_count", "period_start", "period_end"],
+     "maintenance": ["id", "property_id", "title", "priority", "status", "request_date", "cost", "notes"],
++    "payment_proofs": ["id", "client_id", "invoice_id", "amount", "transfer_ref", "note", "proof_image", "status", "submitted_at", "reviewed_at", "reviewed_by", "review_note"],
+     "users": ["id", "username", "name", "role", "active", "email", "created_at", "last_login"],
+     "audit_log": ["id", "created_at", "username", "action", "entity", "entity_id", "details"],
+ }
+@@ -709,6 +710,22 @@ def init_db() -> None:
+                 notes TEXT,
+                 FOREIGN KEY(property_id) REFERENCES properties(id)
+             );
++            CREATE TABLE IF NOT EXISTS payment_proofs (
++                id TEXT PRIMARY KEY,
++                client_id TEXT NOT NULL,
++                invoice_id TEXT NOT NULL,
++                amount REAL NOT NULL,
++                transfer_ref TEXT,
++                note TEXT,
++                proof_image TEXT,
++                status TEXT NOT NULL DEFAULT 'pending',
++                submitted_at TEXT NOT NULL,
++                reviewed_at TEXT,
++                reviewed_by TEXT,
++                review_note TEXT,
++                FOREIGN KEY(client_id) REFERENCES clients(id),
++                FOREIGN KEY(invoice_id) REFERENCES invoices(id)
++            );
+             CREATE TABLE IF NOT EXISTS audit_log (
+                 id TEXT PRIMARY KEY,
+                 created_at TEXT NOT NULL,
+@@ -826,6 +843,11 @@ def init_db() -> None:
+             ("period_end", "TEXT"),
+         ]:
+             ensure_column(db, "bank_reconciliations", col, definition)
++        for col, definition in [
++            ("portal_token", "TEXT"),
++            ("portal_active", "INTEGER NOT NULL DEFAULT 1"),
++        ]:
++            ensure_column(db, "clients", col, definition)
+         migrate_property_statuses(db)
+         seed_branches_from_buildings(db)
+         seed_if_empty(db)
+@@ -1333,6 +1355,106 @@ def execute_invoice_payment(
+     return {"payment": payment, "status": status, "paid_amount": new_paid}
+ 
+ 
++def resolve_portal_client(db: sqlite3.Connection, token: str) -> sqlite3.Row:
++    clean = str(token or "").strip()
++    if not clean:
++        raise ValueError("Portal token required")
++    row = db.execute(
++        "SELECT * FROM clients WHERE portal_token=? AND COALESCE(portal_active, 1)=1",
++        (clean,),
++    ).fetchone()
++    if not row:
++        raise ValueError("Invalid portal token")
++    return row
++
++
++def portal_client_property_id(db: sqlite3.Connection, client_id: str) -> Optional[str]:
++    contract = db.execute(
++        "SELECT property_id FROM contracts WHERE client_id=? AND lower(status) LIKE '%active%' ORDER BY start_date DESC LIMIT 1",
++        (client_id,),
++    ).fetchone()
++    if contract:
++        return str(contract["property_id"])
++    invoice = db.execute(
++        "SELECT property_id FROM invoices WHERE client_id=? ORDER BY due_date DESC LIMIT 1",
++        (client_id,),
++    ).fetchone()
++    if invoice:
++        return str(invoice["property_id"])
++    return None
++
++
++def build_portal_dashboard(db: sqlite3.Connection, client: Dict[str, Any]) -> Dict[str, Any]:
++    client_id = str(client["id"])
++    invoices = rows_to_dicts(
++        db.execute("SELECT * FROM invoices WHERE client_id=? ORDER BY due_date DESC", (client_id,)).fetchall()
++    )
++    contracts = rows_to_dicts(
++        db.execute("SELECT * FROM contracts WHERE client_id=? ORDER BY start_date DESC", (client_id,)).fetchall()
++    )
++    payments = rows_to_dicts(
++        db.execute(
++            """
++            SELECT p.* FROM payments p
++            JOIN invoices i ON p.invoice_id = i.id
++            WHERE i.client_id=?
++            ORDER BY p.payment_date DESC
++            """,
++            (client_id,),
++        ).fetchall()
++    )
++    property_id = portal_client_property_id(db, client_id)
++    maintenance: List[Dict[str, Any]] = []
++    if property_id:
++        maintenance = rows_to_dicts(
++            db.execute(
++                "SELECT * FROM maintenance WHERE property_id=? ORDER BY request_date DESC",
++                (property_id,),
++            ).fetchall()
++        )
++    proofs = rows_to_dicts(
++        db.execute(
++            "SELECT * FROM payment_proofs WHERE client_id=? ORDER BY submitted_at DESC",
++            (client_id,),
++        ).fetchall()
++    )
++    billed = 0.0
++    paid = 0.0
++    for inv in invoices:
++        if int(inv.get("is_void") or 0):
++            continue
++        billed += float(inv.get("amount") or 0)
++        paid += float(inv.get("paid_amount") or 0)
++    property_row = None
++    if property_id:
++        property_row = db.execute("SELECT * FROM properties WHERE id=?", (property_id,)).fetchone()
++    return {
++        "client": client,
++        "summary": {
++            "billed": round(billed, 3),
++            "paid": round(paid, 3),
++            "balance": round(max(0.0, billed - paid), 3),
++            "open_invoices": sum(
++                1
++                for inv in invoices
++                if not int(inv.get("is_void") or 0)
++                and float(inv.get("amount") or 0) - float(inv.get("paid_amount") or 0) > 0.001
++            ),
++        },
++        "contracts": contracts,
++        "invoices": invoices,
++        "payments": payments,
++        "maintenance": maintenance,
++        "proofs": proofs,
++        "properties": dict(property_row) if property_row else {},
++        "company": {
++            "name": "Launch Quality LLC",
++            "support_phone": SUPPORT_PHONE,
++            "support_email": SUPPORT_EMAIL,
++        },
++    }
++
++
+ def next_invoice_no(db: sqlite3.Connection) -> tuple[str, int, int]:
+     year = date.today().year
+     prefix = f"INV-{year}-"
+@@ -1958,13 +2080,23 @@ class JawdahHandler(BaseHTTPRequestHandler):
+ 
+     def serve_static(self, path: str) -> None:
+         if path in ("/", ""):
++            landing = PUBLIC_DIR / "landing.html"
++            if landing.exists():
++                raw = landing.read_bytes()
++                self.send_response(200)
++                self.send_header("Content-Type", "text/html; charset=utf-8")
++                self.send_header("Content-Length", str(len(raw)))
++                self.send_header("Cache-Control", "no-cache, must-revalidate")
++                self.end_headers()
++                self.wfile.write(raw)
++                return
+             self.send_response(302)
+             self.send_header("Location", "/app.html")
+             self.end_headers()
+             return
+         if path == "/index.html":
+             self.send_response(302)
+-            self.send_header("Location", "/app.html")
++            self.send_header("Location", "/")
+             self.end_headers()
+             return
+         if path == "/favicon.ico":
+@@ -2276,6 +2408,22 @@ class JawdahHandler(BaseHTTPRequestHandler):
+                 ):
+                     user = self.require_user(db, "properties")
+                     return None if not user else self.api_property_photo(db, user, parts[1])
++                if parts[0] == "portal":
++                    if len(parts) >= 2 and parts[1] == "dashboard" and method == "GET":
++                        return self.api_portal_dashboard(db, query)
++                    if len(parts) >= 2 and parts[1] == "maintenance" and method == "POST":
++                        return self.api_portal_maintenance(db)
++                    if len(parts) >= 2 and parts[1] == "submit_proof" and method == "POST":
++                        return self.api_portal_submit_proof(db)
++                    if len(parts) >= 2 and parts[1] == "proofs" and method == "GET":
++                        user = self.require_user(db, "invoices:read")
++                        return None if not user else self.api_portal_proofs(db, user, query)
++                    if len(parts) >= 2 and parts[1] == "review_proof" and method == "POST":
++                        user = self.require_user(db, "invoices")
++                        return None if not user else self.api_portal_review_proof(db, user)
++                    if len(parts) >= 2 and parts[1] == "generate_token" and method == "POST":
++                        user = self.require_user(db, "clients")
++                        return None if not user else self.api_portal_generate_token(db, user)
+                 if parts[0] in TABLES:
+                     return self.api_crud(db, method, parts, query)
+                 self.send_json({"ok": False, "error": "Unknown endpoint"}, 404)
+@@ -2858,6 +3006,170 @@ class JawdahHandler(BaseHTTPRequestHandler):
+         db.commit()
+         self.send_json({"ok": True, "invoice_id": invoice_id, "status": "Void"})
+ 
++    def api_portal_dashboard(self, db: sqlite3.Connection, query: str) -> None:
++        params = urllib.parse.parse_qs(query or "")
++        token = (params.get("token") or [""])[0]
++        try:
++            client = dict(resolve_portal_client(db, token))
++        except ValueError as exc:
++            return self.send_json({"ok": False, "error": str(exc)}, 401)
++        payload = build_portal_dashboard(db, client)
++        self.send_json({"ok": True, **payload})
++
++    def api_portal_maintenance(self, db: sqlite3.Connection) -> None:
++        data = self.read_json()
++        try:
++            client = resolve_portal_client(db, str(data.get("token") or ""))
++        except ValueError as exc:
++            return self.send_json({"ok": False, "error": str(exc)}, 401)
++        title = str(data.get("title") or "").strip()
++        if not title:
++            return self.send_json({"ok": False, "error": "عنوان الطلب مطلوب"}, 400)
++        property_id = portal_client_property_id(db, str(client["id"]))
++        if not property_id:
++            return self.send_json({"ok": False, "error": "لا يوجد عقار مرتبط بالمستأجر"}, 400)
++        item = {
++            "id": uid("M"),
++            "property_id": property_id,
++            "title": title,
++            "priority": str(data.get("priority") or "Medium"),
++            "status": "Open",
++            "request_date": today(),
++            "cost": 0,
++            "notes": str(data.get("notes") or "Submitted via tenant portal"),
++        }
++        insert(db, "maintenance", item)
++        audit(
++            db,
++            {"username": client["name"], "name": client["name"], "role": "tenant"},
++            "create",
++            "maintenance",
++            item["id"],
++            "Portal maintenance request",
++        )
++        db.commit()
++        self.send_json({"ok": True, "item": item})
++
++    def api_portal_submit_proof(self, db: sqlite3.Connection) -> None:
++        data = self.read_json()
++        try:
++            client = resolve_portal_client(db, str(data.get("token") or ""))
++        except ValueError as exc:
++            return self.send_json({"ok": False, "error": str(exc)}, 401)
++        invoice_id = str(data.get("invoice_id") or "").strip()
++        amount = float(data.get("amount") or 0)
++        if not invoice_id or amount <= 0:
++            return self.send_json({"ok": False, "error": "الفاتورة والمبلغ مطلوبان"}, 400)
++        invoice = db.execute(
++            "SELECT * FROM invoices WHERE id=? AND client_id=?",
++            (invoice_id, client["id"]),
++        ).fetchone()
++        if not invoice:
++            return self.send_json({"ok": False, "error": "Invoice not found"}, 404)
++        if int(invoice["is_void"] or 0):
++            return self.send_json({"ok": False, "error": "Cannot submit proof for void invoice"}, 400)
++        remaining = float(invoice["amount"]) - float(invoice["paid_amount"])
++        if amount > remaining + 0.001:
++            return self.send_json({"ok": False, "error": "Amount exceeds invoice balance"}, 400)
++        proof = {
++            "id": uid("PP"),
++            "client_id": client["id"],
++            "invoice_id": invoice_id,
++            "amount": amount,
++            "transfer_ref": str(data.get("transfer_ref") or "").strip(),
++            "note": str(data.get("note") or "").strip(),
++            "proof_image": str(data.get("proof_image") or "").strip(),
++            "status": "pending",
++            "submitted_at": now_iso(),
++            "reviewed_at": None,
++            "reviewed_by": None,
++            "review_note": None,
++        }
++        insert(db, "payment_proofs", proof)
++        audit(
++            db,
++            {"username": client["name"], "name": client["name"], "role": "tenant"},
++            "submit",
++            "payment_proofs",
++            proof["id"],
++            f"Transfer proof {proof['transfer_ref'] or proof['id']}",
++        )
++        db.commit()
++        self.send_json({"ok": True, "item": proof})
++
++    def api_portal_proofs(self, db: sqlite3.Connection, user: Dict[str, Any], query: str) -> None:
++        params = urllib.parse.parse_qs(query or "")
++        status = (params.get("status") or ["pending"])[0].strip().lower()
++        sql = "SELECT * FROM payment_proofs"
++        args: List[Any] = []
++        if status and status != "all":
++            sql += " WHERE lower(status)=?"
++            args.append(status)
++        sql += " ORDER BY submitted_at DESC"
++        items = rows_to_dicts(db.execute(sql, args).fetchall())
++        self.send_json({"ok": True, "items": items})
++
++    def api_portal_review_proof(self, db: sqlite3.Connection, user: Dict[str, Any]) -> None:
++        data = self.read_json()
++        proof_id = str(data.get("proof_id") or "").strip()
++        action = str(data.get("action") or "").strip().lower()
++        review_note = str(data.get("review_note") or "").strip()
++        proof = db.execute("SELECT * FROM payment_proofs WHERE id=?", (proof_id,)).fetchone()
++        if not proof:
++            return self.send_json({"ok": False, "error": "Proof not found"}, 404)
++        if str(proof["status"] or "").lower() != "pending":
++            return self.send_json({"ok": False, "error": "Proof already reviewed"}, 400)
++        if action == "approve":
++            try:
++                execute_invoice_payment(
++                    db,
++                    user,
++                    str(proof["invoice_id"]),
++                    float(proof["amount"]),
++                    method="Bank Transfer",
++                    note=f"Transfer proof {proof['transfer_ref'] or proof_id}",
++                )
++            except ValueError as exc:
++                return self.send_json({"ok": False, "error": str(exc)}, 400)
++            db.execute(
++                """
++                UPDATE payment_proofs
++                SET status='approved', reviewed_at=?, reviewed_by=?, review_note=?
++                WHERE id=?
++                """,
++                (now_iso(), user.get("name") or user.get("username"), review_note or None, proof_id),
++            )
++            audit(db, user, "approve", "payment_proofs", proof_id, "Approved transfer proof")
++        elif action == "reject":
++            db.execute(
++                """
++                UPDATE payment_proofs
++                SET status='rejected', reviewed_at=?, reviewed_by=?, review_note=?
++                WHERE id=?
++                """,
++                (now_iso(), user.get("name") or user.get("username"), review_note or None, proof_id),
++            )
++            audit(db, user, "reject", "payment_proofs", proof_id, review_note or "Rejected transfer proof")
++        else:
++            return self.send_json({"ok": False, "error": "Invalid action"}, 400)
++        db.commit()
++        self.send_json({"ok": True, "proof_id": proof_id, "action": action})
++
++    def api_portal_generate_token(self, db: sqlite3.Connection, user: Dict[str, Any]) -> None:
++        data = self.read_json()
++        client_id = str(data.get("client_id") or "").strip()
++        client = db.execute("SELECT * FROM clients WHERE id=?", (client_id,)).fetchone()
++        if not client:
++            return self.send_json({"ok": False, "error": "Client not found"}, 404)
++        token = secrets.token_urlsafe(24)
++        db.execute(
++            "UPDATE clients SET portal_token=?, portal_active=1 WHERE id=?",
++            (token, client_id),
++        )
++        audit(db, user, "update", "clients", client_id, "Generated portal token")
++        db.commit()
++        self.send_json({"ok": True, "token": token, "client_id": client_id})
++
+     def api_audit_feed(self, db: sqlite3.Connection, user: Dict[str, Any], query: str) -> None:
+         params = urllib.parse.parse_qs(query or "")
+         limit = min(500, max(1, int((params.get("limit") or ["100"])[0] or 100)))
