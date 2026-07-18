@@ -27,3 +27,11 @@ See [RAILWAY.md](RAILWAY.md) or `DEPLOYMENT.txt`.
 
 - `admin` — password from `ADMIN_PASSWORD` environment variable (required for admin login)
 - `razan.accounting` / `Jawdeh123`
+
+## Production bootstrap script
+
+When running `scripts/setup_production.ps1`, provide credentials through environment variables (or script params):
+
+- `ADMIN_PASSWORD`
+- `OPERATIONS_PASSWORD`
+- `MAINTENANCE_PASSWORD`
