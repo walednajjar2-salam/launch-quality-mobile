@@ -191,6 +191,13 @@ def rows_to_dicts(rows: Iterable[sqlite3.Row]) -> List[Dict[str, Any]]:
 def build_backup_payload(db: sqlite3.Connection) -> Dict[str, Any]:
     payload = {"status": "production", "exported_at": now_iso(), "tables": {}}
     for table, cols in TABLES.items():
+        if table == "users":
+            rows = db.execute(
+                "SELECT id,username,name,role,active,email,created_at,last_login,password_hash,"
+                "must_change_password,password_changed_at FROM users"
+            ).fetchall()
+            payload["tables"][table] = rows_to_dicts(rows)
+            continue
         payload["tables"][table] = rows_to_dicts(db.execute(f"SELECT {','.join(cols)} FROM {table}").fetchall())
     return payload
 

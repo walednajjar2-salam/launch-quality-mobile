@@ -20,11 +20,43 @@ Railway sets `PORT` automatically — do not override it.
 
 ## Persistent database (recommended)
 
-1. Railway project → **+ New** → **Volume**
-2. Mount path: `/app/data`
-3. Redeploy
+Volume **jawda-al-intilaqa-volume** is attached to the backend service:
 
-SQLite database path: `/app/data/jawdah.sqlite3`
+| Setting | Value |
+|---------|-------|
+| Mount path | `/app/data` |
+| SQLite file | `/app/data/jawdah.sqlite3` |
+| Backups | `/app/data/backups/` |
+
+Configured in `railway.toml`:
+
+```toml
+[[deploy.mounts]]
+volumeName = "jawda-al-intilaqa-volume"
+mountPath = "/app/data"
+```
+
+To recreate via Railway GraphQL (project token):
+
+```bash
+curl -X POST https://backboard.railway.com/graphql/v2 \
+  -H "Project-Access-Token: $RAILWAY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"mutation { volumeCreate(input: { projectId: \"PROJECT_ID\", environmentId: \"ENV_ID\", serviceId: \"SERVICE_ID\", mountPath: \"/app/data\" }) { id name } }"}'
+```
+
+## Unified production URL
+
+| Service | URL |
+|---------|-----|
+| Landing | https://jawda-al-intilaqa-production.up.railway.app/ |
+| ERP | https://jawda-al-intilaqa-production.up.railway.app/app.html |
+| API | https://jawda-al-intilaqa-production.up.railway.app/api |
+| Flutter app | uses same API via `lib/config/api_config.dart` |
+
+Legacy v72 URL (`web-production-08d73.up.railway.app`) is a separate Railway project — retire it from the old project's dashboard when ready.
+
+## Persistent database (legacy section)
 
 ## Automatic daily backup (enabled by default)
 

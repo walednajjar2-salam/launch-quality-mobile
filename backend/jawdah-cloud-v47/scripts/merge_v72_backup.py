@@ -42,12 +42,13 @@ def enrich_users_from_sqlite(tables: dict) -> None:
         return
     conn = sqlite3.connect(SQLITE_PATH)
     conn.row_factory = sqlite3.Row
-    rows = {r["id"]: dict(r) for r in conn.execute("SELECT * FROM users")}
+    rows_by_id = {r["id"]: dict(r) for r in conn.execute("SELECT * FROM users")}
+    rows_by_user = {r["username"]: dict(r) for r in rows_by_id.values()}
     conn.close()
     users = tables.get("users") or []
     merged = 0
     for user in users:
-        src = rows.get(user.get("id"))
+        src = rows_by_id.get(user.get("id")) or rows_by_user.get(user.get("username"))
         if not src:
             continue
         if src.get("password_hash"):
@@ -102,7 +103,8 @@ def filter_merge_tables(tables: dict, prod_tables: dict) -> dict:
 def main() -> int:
     with open(BACKUP_JSON, encoding="utf-8") as f:
         payload = json.load(f)
-    tables = payload.get("tables", payload)
+    backup = payload.get("backup") or payload
+    tables = backup.get("tables", backup if isinstance(backup, dict) else payload)
     enrich_users_from_sqlite(tables)
 
     login = request("POST", "login", body={"username": USERNAME, "password": PASSWORD})
