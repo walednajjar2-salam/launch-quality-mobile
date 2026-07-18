@@ -12,7 +12,7 @@
 | **Chrome** | Fast API/UI testing |
 
 **Entry:** `lib/main.dart` → `LaunchQualityApp`  
-**Backend:** `https://web-production-08d73.up.railway.app/api` (no backend changes)
+**Backend:** `https://jawda-al-intilaqa-production.up.railway.app/api`
 
 ---
 

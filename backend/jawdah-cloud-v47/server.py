@@ -136,7 +136,7 @@ STAFF_DOWNLOAD_ZIP = os.environ.get(
     "LQ_STAFF_ZIP_URL",
     "https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip",
 ).strip()
-PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://web-production-08d73.up.railway.app").strip()
+PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://jawda-al-intilaqa-production.up.railway.app").strip()
 LQ_DATABASE_URL = (os.environ.get("LQ_DATABASE_URL") or os.environ.get("DATABASE_URL") or "").strip()
 
 APPROVAL_DECIDE_ROLES = {
@@ -320,13 +320,53 @@ def backup_table_counts(db: sqlite3.Connection) -> Dict[str, int]:
 
 
 def restore_backup_tables(db: sqlite3.Connection, tables: Dict[str, Any], mode: str = "merge") -> None:
+    db.execute("PRAGMA foreign_keys=OFF")
     if mode == "replace":
-        for table in ["audit_log", "maintenance", "accounts", "payments", "invoices", "contracts", "clients", "properties"]:
-            db.execute(f"DELETE FROM {table}")
+        for table in reversed(list(TABLES.keys())):
+            try:
+                db.execute(f"DELETE FROM {table}")
+            except sqlite3.Error:
+                pass
     for table, items in tables.items():
-        if table not in TABLES or table == "users":
+        if table not in TABLES:
+            continue
+        if not isinstance(items, list):
             continue
         for item in items:
+            if not isinstance(item, dict):
+                continue
+            if table == "users":
+                username = str(item.get("username") or "").strip()
+                if not username:
+                    continue
+                cols = [c for c in TABLES[table] if c in item]
+                for extra in ("password_hash", "must_change_password", "password_changed_at"):
+                    if extra in item and item[extra] is not None and extra not in cols:
+                        cols.append(extra)
+                if "password_hash" not in cols or not item.get("password_hash"):
+                    continue
+                existing = db.execute("SELECT id FROM users WHERE username=?", (username,)).fetchone()
+                if existing:
+                    target_id = existing[0]
+                    set_cols = [c for c in cols if c != "id"]
+                    if not set_cols:
+                        continue
+                    db.execute(
+                        f"UPDATE users SET {','.join(f'{c}=?' for c in set_cols)} WHERE id=?",
+                        [item[c] for c in set_cols] + [target_id],
+                    )
+                else:
+                    if not item.get("id"):
+                        continue
+                    values = [item[c] for c in cols]
+                    placeholders = ",".join(["?"] * len(cols))
+                    updates = ",".join([f"{c}=excluded.{c}" for c in cols if c != "id"])
+                    db.execute(
+                        f"INSERT INTO users ({','.join(cols)}) VALUES ({placeholders}) "
+                        f"ON CONFLICT(id) DO UPDATE SET {updates}",
+                        values,
+                    )
+                continue
             cols = [c for c in TABLES[table] if c in item]
             if not cols or not item.get("id"):
                 continue
@@ -338,6 +378,7 @@ def restore_backup_tables(db: sqlite3.Connection, tables: Dict[str, Any], mode: 
                 f"ON CONFLICT(id) DO UPDATE SET {updates}",
                 values,
             )
+    db.execute("PRAGMA foreign_keys=ON")
 
 
 def verify_backup_restore(db: sqlite3.Connection) -> Dict[str, Any]:

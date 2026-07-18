@@ -269,7 +269,7 @@ flutter format lib/ test/ --set-exit-if-changed
 ### Login Credentials
 
 ```
-API: https://web-production-08d73.up.railway.app/api
+API: https://jawda-al-intilaqa-production.up.railway.app/api
 
 User 1:
 - Username: Najjar
