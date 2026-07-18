@@ -128,6 +128,8 @@ class StaffShell extends StatelessWidget {
           ), app.canRead('maintenance')),
       _StaffTab('إثباتات', Icons.verified_user_outlined, (_) => PaymentProofsScreen(
             bootstrap: context.read<BootstrapService>(),
+            clients: bootstrap.table('clients'),
+            invoices: bootstrap.table('invoices'),
             onChanged: () => context.read<AppState>().refresh(),
           ), app.canRead('invoices')),
       _StaffTab('العقارات', Icons.home_work_outlined, (_) => PropertiesScreen(items: bootstrap.table('properties')), app.canRead('properties')),
