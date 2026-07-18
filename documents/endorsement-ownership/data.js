@@ -43,7 +43,7 @@ window.ENDORSEMENT_DATA = {
   vehicleEstValue: "29,000 USD",
   make: "LAND ROVER",
   model: "DEFENDER P400",
-  bodyType: "SUV — USED / مستخدمة",
+  bodyType: "مستخدمة",
   yearOfManufacture: "2025",
   seatingCapacity: "5",
   ccHp: "",
