@@ -9,14 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --blue: #0099ff;
-      --blue-text: #0099ff;
-      --sign-blue: #0d8cea;
+      --blue: #0b2348;
+      --blue-text: #0b2348;
+      --sign-blue: #0b2348;
+      --accent: #b08a4e;
       --row-gray: #f2f2f2;
       --line-gray: #a1a1a1;
       --divider: #7a7878;
-      --green-bar: #a6ce39;
-      --decl-bg: #f0fff0;
+      --green-bar: #b08a4e;
+      --decl-bg: #f8f4ec;
       --ink: #000;
       --page-w: 210mm;
       --page-h: 297mm;
@@ -55,7 +56,7 @@
       font-weight: 600;
     }
 
-    .toolbar .btn-print { background: var(--blue); color: #fff; }
+    .toolbar .btn-print { background: var(--accent); color: #fff; }
     .toolbar .btn-edit { background: #fff; color: #111; }
     .toolbar .btn-save { background: var(--green-bar); color: #111; }
     .toolbar .hint { opacity: 0.85; margin-inline-start: auto; }
@@ -77,16 +78,17 @@
     /* Header */
     .header {
       display: grid;
-      grid-template-columns: 72px 1fr;
+      grid-template-columns: 130px 1fr;
       gap: 10px;
       align-items: start;
       margin-bottom: 6px;
     }
 
     .logo {
-      width: 58px;
+      width: 118px;
       height: auto;
       display: block;
+      object-fit: contain;
     }
 
     .company {
@@ -102,11 +104,15 @@
     }
 
     .company-en {
-      font-size: 21pt;
+      font-size: 20pt;
       font-weight: 700;
       color: var(--blue-text);
       line-height: 1.15;
       margin-top: 2px;
+    }
+
+    .details th {
+      background: var(--blue);
     }
 
     .company-addr {
@@ -290,11 +296,11 @@
 
     .sign-right .co { margin-top: 2px; }
 
-    .signature {
-      display: block;
-      width: 110px;
-      height: auto;
-      margin: 6px 0 2px auto;
+    .signature-line {
+      width: 140px;
+      height: 48px;
+      margin: 10px 0 6px auto;
+      border-bottom: 1px solid var(--divider);
     }
 
     .auth {

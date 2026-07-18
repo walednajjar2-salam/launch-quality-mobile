@@ -26,7 +26,7 @@
 
     document.getElementById("page").innerHTML = `
       <header class="header">
-        <img class="logo" src="assets/takaful-logo.png" alt="Takaful Oman" />
+        <img class="logo" src="assets/gig-oman-logo.svg" alt="GIG Gulf Insurance Oman" />
         <div class="company">
           <div class="company-ar" contenteditable="false" data-key="company.nameAr">${e(
             d.company.nameAr
@@ -251,13 +251,17 @@
           <div class="co" contenteditable="false" data-key="company.nameEn">${e(
             d.company.nameEn
           )}</div>
-          <img class="signature" src="assets/signature.png" alt="Authorized signature" />
+          <div class="signature-line"></div>
           <div class="auth" contenteditable="false" data-key="authorizedSignatory">${e(
             d.authorizedSignatory
           )}</div>
-          <div class="tax">Tax Card No: <span contenteditable="false" data-key="company.taxCardNo">${e(
+          ${
             d.company.taxCardNo
-          )}</span></div>
+              ? `<div class="tax">Tax Card No: <span contenteditable="false" data-key="company.taxCardNo">${e(
+                  d.company.taxCardNo
+                )}</span></div>`
+              : ""
+          }
         </div>
       </div>
     `;

@@ -1,16 +1,16 @@
 /**
- * بيانات ملحق نقل وثيقة التأمين — عدّل القيم هنا ثم افتح index.html
- * Endorsement Annexure for Change of Ownership — edit values here
+ * بيانات ملحق نقل وثيقة التأمين — GIG Gulf Insurance Oman
+ * عدّل القيم هنا ثم افتح index.html
  */
 window.ENDORSEMENT_DATA = {
   company: {
-    nameAr: "تكافل عمان للتأمين ش.م.ع.ع",
-    nameEn: "Takaful Oman Insurance SAOG",
+    nameAr: "جي آي جي الخليج للتأمين — عُمان",
+    nameEn: "GIG Gulf Insurance",
     addressEn:
-      "P.O.Box 207, Postal Code 134, Sultanate of Oman. Tel: (968) 22701600, Fax: (968) 24699511, C.R.No: 1190750",
+      "Safeway Building, Al Khuwair, P.O. Box 1276, P.C. 112, Ruwi, Sultanate of Oman. Tel: (968) 24400100, Fax: (968) 24400120, C.R.No: 1112244",
     addressAr:
-      "ص.ب 207، الرمز البريدي 134، سلطنة عمان. هاتف: 968 22701600، فاكس: 968 24699511، رقم السجل التجاري: 1190750",
-    taxCardNo: "8062297",
+      "مبنى سيفوي، الخوير، ص.ب 1276، الرمز البريدي 112، روي، سلطنة عمان. هاتف: 968 24400100، فاكس: 968 24400120، رقم السجل التجاري: 1112244",
+    taxCardNo: "",
   },
 
   title: {

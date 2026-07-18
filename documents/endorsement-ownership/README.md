@@ -1,6 +1,6 @@
-# ملحق نقل وثيقة التأمين — قالب قابل للتعديل
+# ملحق نقل وثيقة التأمين — قالب GIG قابل للتعديل
 
-قالب HTML مطابق لوثيقة **ENDORSEMENT ANNEXURE FOR CHANGE OF OWNERSHIP** من تكافل عمان، مع شعار وتوقيع مستخرجين من الملف الأصلي.
+قالب HTML لوثيقة **ENDORSEMENT ANNEXURE FOR CHANGE OF OWNERSHIP** بهوية **GIG Gulf Insurance Oman** (تأمين شامل).
 
 ## التشغيل
 
