@@ -9,7 +9,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BASE = "https://web-production-08d73.up.railway.app/api"
+BASE = "https://jawda-al-intilaqa-production.up.railway.app/api"
 
 
 def call(method: str, path: str, body: dict | None = None, token: str | None = None) -> tuple[int, dict]:

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-API = os.environ.get("LQ_API", "https://web-production-08d73.up.railway.app/api").rstrip("/")
+API = os.environ.get("LQ_API", "https://jawda-al-intilaqa-production.up.railway.app/api").rstrip("/")
 USER = os.environ.get("LQ_ADMIN_USER", "waleed.najjar")
 PASSWORD = os.environ.get("LQ_ADMIN_PASS", "Waleed2026!")
 

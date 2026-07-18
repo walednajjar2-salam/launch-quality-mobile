@@ -1,6 +1,6 @@
 # Import Nizwa Al-Turath apartment roster into Launch Quality cloud
 param(
-  [string]$BaseUrl = "https://web-production-08d73.up.railway.app",
+  [string]$BaseUrl = "https://jawda-al-intilaqa-production.up.railway.app",
   [string]$AdminUser = "admin",
   [string]$AdminPass = $env:ADMIN_PASSWORD
 )
