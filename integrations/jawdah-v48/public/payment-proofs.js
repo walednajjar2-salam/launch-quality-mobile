@@ -1,19 +1,6 @@
 (function () {
   "use strict";
 
-  /**
-   * Launch Quality — إثباتات التحويل (v48)
-   * 1) أضف في app.html قبل app.js:
-   *    <script src="payment-proofs.js?v=pp1" defer></script>
-   * 2) أضف قسم:
-   *    <section id="sec-payment-proofs" class="section">...</section> (انظر LQ_PAYMENT_PROOFS.sectionHtml())
-   * 3) في app.js — NAV_SAAS_ITEMS بعد invoices:
-   *    ['payment-proofs','إثباتات التحويل','🧾']
-   * 4) SECTION_TITLES: 'payment-proofs':'إثباتات التحويل'
-   * 5) في showSection: if(resolved==='payment-proofs') LQ_PAYMENT_PROOFS.render();
-   * يتطلب API: GET portal/proofs?status=  POST portal/review_proof
-   */
-
   let _filter = "pending";
   let _counts = { pending: 0, approved: 0, rejected: 0 };
 
@@ -76,7 +63,6 @@
   }
 
   function kpiHtml() {
-    const m = typeof money === "function" ? money : (n) => n;
     return `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
       <div class="saas-glass saas-fin-card"><span>معلّقة</span><strong>${_counts.pending}</strong></div>
       <div class="saas-glass saas-fin-card"><span>موافق</span><strong>${_counts.approved}</strong></div>
@@ -179,21 +165,10 @@
     render();
   }
 
-  function sectionHtml() {
-    return `<section id="sec-payment-proofs" class="section">
-      <div class="card"><h3>🧾 إثباتات التحويل البنكي</h3>
-        <p class="mini">مراجعة إثباتات الدفع المرسلة من بوابة المستأجر — موافقة تسجّل التحصيل تلقائياً.</p>
-        <div id="paymentProofsBox"></div>
-        <div class="toolbar" style="margin-top:12px"><button type="button" class="ghost" onclick="LQ_PAYMENT_PROOFS.render()">تحديث</button></div>
-      </div>
-    </section>`;
-  }
-
   window.LQ_PAYMENT_PROOFS = {
     render,
     review,
     setFilter,
     previewImage,
-    sectionHtml,
   };
 })();
