@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>بنك تجريبي للتعلّم</title>
+  <style>
+    :root {
+      --bg: #0b1f3a;
+      --card: #1a3355;
+      --card-2: #12263f;
+      --orange: #ff8a3d;
+      --brown: #6b4e2e;
+      --nav: #0a1a30;
+      --white: #ffffff;
+      --muted: rgba(255, 255, 255, 0.7);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: #061224;
+      color: var(--white);
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 390px;
+      min-height: 720px;
+      background: var(--bg);
+      border-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .content {
+      flex: 1;
+      padding: 16px 16px 20px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      flex: 1;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, var(--card), var(--card-2));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 18px 16px 14px;
+      margin-bottom: 16px;
+    }
+
+    .balance-title {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .balance-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .balance-amount {
+      flex: 1;
+      color: var(--orange);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .eye-btn {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .account-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .account-row .details {
+      margin-inline-start: auto;
+      color: var(--orange);
+      text-decoration: underline;
+      font-size: 12px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .action-btn {
+      height: 48px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--brown);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .promo {
+      background: white;
+      color: #12263f;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .promo-card {
+      width: 64px;
+      height: 42px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1a3355, #ff8a3d);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .promo h3 {
+      margin: 0 0 2px;
+      font-size: 14px;
+    }
+
+    .promo p {
+      margin: 0;
+      font-size: 12px;
+      color: #5a6b7d;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      flex: 1;
+      font-size: 16px;
+    }
+
+    .section-head span {
+      color: var(--orange);
+      font-size: 13px;
+    }
+
+    .tx {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    .tx-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      display: grid;
+      place-items: center;
+    }
+
+    .tx-body { flex: 1; }
+    .tx-body strong { display: block; font-size: 14px; }
+    .tx-body small { color: rgba(255, 255, 255, 0.6); font-size: 12px; }
+    .tx-amount { font-weight: 700; font-size: 13px; }
+    .credit { color: #34d399; }
+    .debit { color: #f87171; }
+
+    .hint {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: var(--nav);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 0 10px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 11px;
+      cursor: pointer;
+      display: grid;
+      gap: 4px;
+      justify-items: center;
+    }
+
+    .nav button.active { color: var(--orange); }
+    .nav .ico { font-size: 18px; }
+
+    code {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    ============================================================
+    عدّل البيانات هنا لأغراض التعلّم
+    ============================================================
+  -->
+  <script>
+    window.DEMO_DATA = {
+      balance: 7034.340, // ← غيّر الرصيد من هنا
+      currency: "OMR",
+      userName: "WALEED MOHAMMED ABDUL HADI AL NAJJAR",
+      balanceTitle: "الرصيد في الحساب",
+      accountLabel: "حساب التوفير - 0101",
+      viewDetailsLabel: "مشاهدة التفاصيل",
+      moneyAction: "مالي",
+      goalsAction: "أهدافي",
+      promoTitle: "بطاقة الخصم المباشر",
+      promoSubtitle: "استمتع بخصومات حصرية عند الدفع",
+      transactionsTitle: "المعاملات المالية",
+      viewAllLabel: "مشاهدة الكل",
+      transactions: [
+        { title: "تحويل وارد", subtitle: "من حساب ادخار", amount: 50.0, credit: true, date: "18 يوليو" },
+        { title: "شراء نقطة بيع", subtitle: "متجر تجريبي", amount: 12.25, credit: false, date: "17 يوليو" },
+        { title: "دفعة فاتورة", subtitle: "خدمات", amount: 5.0, credit: false, date: "16 يوليو" },
+      ],
+    };
+  </script>
+
+  <div class="phone">
+    <div class="content">
+      <div class="header">
+        <h1 id="userName"></h1>
+        <div class="avatar">👤</div>
+      </div>
+
+      <section class="balance-card">
+        <div class="balance-title" id="balanceTitle"></div>
+        <div class="balance-row">
+          <div class="balance-amount" id="balanceAmount"></div>
+          <button class="eye-btn" id="toggleEye" type="button" aria-label="إظهار/إخفاء الرصيد">👁</button>
+        </div>
+        <div class="account-row">
+          <span>📄</span>
+          <span id="accountLabel"></span>
+          <span class="details" id="viewDetails"></span>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="action-btn" id="moneyAction" type="button"></button>
+        <button class="action-btn" id="goalsAction" type="button"></button>
+      </div>
+
+      <div class="promo">
+        <div class="promo-card">💳</div>
+        <div>
+          <h3 id="promoTitle"></h3>
+          <p id="promoSubtitle"></p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2 id="transactionsTitle"></h2>
+        <span id="viewAll"></span>
+      </div>
+      <div id="transactions"></div>
+
+      <p class="hint">
+        تجريبي للتعلّم فقط.<br />
+        عدّل <code>window.DEMO_DATA.balance</code> في أعلى الصفحة.
+      </p>
+    </div>
+
+    <nav class="nav" id="bottomNav">
+      <button class="active" type="button"><span class="ico">🏠</span>الرئيسية</button>
+      <button type="button"><span class="ico">💳</span>البطاقات</button>
+      <button type="button"><span class="ico">🔁</span>التحويلات</button>
+      <button type="button"><span class="ico">💵</span>المدفوعات</button>
+      <button type="button"><span class="ico">⋯</span>المزيد</button>
+    </nav>
+  </div>
+
+  <script>
+    const data = window.DEMO_DATA;
+    let visible = true;
+
+    function money(n) {
+      return Number(n).toLocaleString("en-US", {
+        minimumFractionDigits: 3,
+        maximumFractionDigits: 3,
+      });
+    }
+
+    function renderBalance() {
+      document.getElementById("balanceAmount").textContent = visible
+        ? `${money(data.balance)} ${data.currency}`
+        : `•••••• ${data.currency}`;
+    }
+
+    function render() {
+      document.getElementById("userName").textContent = data.userName;
+      document.getElementById("balanceTitle").textContent = data.balanceTitle;
+      document.getElementById("accountLabel").textContent = data.accountLabel;
+      document.getElementById("viewDetails").textContent = data.viewDetailsLabel;
+      document.getElementById("moneyAction").textContent = data.moneyAction;
+      document.getElementById("goalsAction").textContent = data.goalsAction;
+      document.getElementById("promoTitle").textContent = data.promoTitle;
+      document.getElementById("promoSubtitle").textContent = data.promoSubtitle;
+      document.getElementById("transactionsTitle").textContent = data.transactionsTitle;
+      document.getElementById("viewAll").textContent = data.viewAllLabel;
+      renderBalance();
+
+      const host = document.getElementById("transactions");
+      host.innerHTML = data.transactions
+        .map((tx) => {
+          const cls = tx.credit ? "credit" : "debit";
+          const sign = tx.credit ? "+" : "-";
+          const icon = tx.credit ? "↙" : "↗";
+          return `
+            <div class="tx">
+              <div class="tx-icon ${cls}">${icon}</div>
+              <div class="tx-body">
+                <strong>${tx.title}</strong>
+                <small>${tx.subtitle} · ${tx.date}</small>
+              </div>
+              <div class="tx-amount ${cls}">${sign}${money(tx.amount)} ${data.currency}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    document.getElementById("toggleEye").addEventListener("click", () => {
+      visible = !visible;
+      renderBalance();
+    });
+
+    document.querySelectorAll("#bottomNav button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#bottomNav button").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
