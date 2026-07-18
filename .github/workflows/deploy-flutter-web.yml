@@ -1,4 +1,5 @@
 name: Deploy Flutter Web to Railway
+# Requires repository secret: RAILWAY_TOKEN
 
 on:
   workflow_dispatch:
