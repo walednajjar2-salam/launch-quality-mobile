@@ -35,7 +35,7 @@ window.ENDORSEMENT_DATA = {
   customerVatReg: "Civil ID: 125556746",
   acCode: "BL0000128",
   acName: "M/S. Insurance House LLC (BIMA)",
-  registrationNumber: "NEW / جديدة",
+  registrationNumber: "",
   engineNumber: "",
   chassisNumber: "SALEWES2370787",
   usageType: "Private",
@@ -43,7 +43,7 @@ window.ENDORSEMENT_DATA = {
   vehicleEstValue: "29,000 USD",
   make: "LAND ROVER",
   model: "DEFENDER P400",
-  bodyType: "SUV — NEW",
+  bodyType: "SUV — USED / مستخدمة",
   yearOfManufacture: "2025",
   seatingCapacity: "5",
   ccHp: "",
@@ -55,7 +55,7 @@ window.ENDORSEMENT_DATA = {
   declarationIntro:
     "Not with standing anything to the contrary contained, it is hereby declared and agreed that with effect from the date shown above the subject policy has been altered as indicated herein below:",
   declarationTransfer:
-    "The Interest on this Comprehensive motor insurance has been transferred to and vested in the name of ABDULMALIK SHAFEEK shall be deemed to be the insured for the period From:29/06/2026 To:30/06/2027. The subject vehicle is a NEW Land Rover Defender P400 (2025), estimated value USD 29,000, currently located at Sohar Port (ميناء صحار), Sultanate of Oman.",
+    "The Interest on this Comprehensive motor insurance has been transferred to and vested in the name of ABDULMALIK SHAFEEK shall be deemed to be the insured for the period From:29/06/2026 To:30/06/2027. The subject vehicle is a USED Land Rover Defender P400 (2025), estimated value USD 29,000, currently located at Sohar Port (ميناء صحار), Sultanate of Oman.",
   declarationFooter: "All other terms and conditions remain unaltered.",
 
   signedAtText: "In witness thereof this policy has been signed at",
