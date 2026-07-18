@@ -1,0 +1,33 @@
+name: Deploy Jawdah Cloud to Railway
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/jawdah-cloud-v47/**'
+      - '.github/workflows/deploy-jawdah-cloud.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/jawdah-cloud-v47
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::RAILWAY_TOKEN secret is not configured on this repository."
+            echo "Add it in GitHub → Settings → Secrets → Actions, then re-run this workflow."
+            exit 1
+          fi
+          railway up --detach --service "${RAILWAY_SERVICE:-web-production-08d73}"
