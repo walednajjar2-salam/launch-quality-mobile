@@ -3,179 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>بنك تجريبي للتعلّم</title>
+  <title>الصفحة الرئيسية</title>
   <style>
     :root {
-      --bg: #0b1f3a;
-      --card: #1a3355;
-      --card-2: #12263f;
-      --orange: #ff8a3d;
-      --brown: #6b4e2e;
-      --nav: #0a1a30;
+      --bg: #071a33;
+      --bg-top: #0a2344;
+      --card: #1c2f4a;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --orange: #f28c28;
+      --orange-soft: #ff9a3c;
+      --brown: #8b5a2b;
+      --brown-2: #6e4520;
+      --nav: #061527;
       --white: #ffffff;
-      --muted: rgba(255, 255, 255, 0.7);
+      --muted: rgba(255, 255, 255, 0.72);
+      --line: rgba(255, 255, 255, 0.12);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #061224;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Tahoma, Arial, sans-serif;
+      background: #020b16;
       color: var(--white);
       display: flex;
       justify-content: center;
-      padding: 16px;
+      align-items: stretch;
     }
 
     .phone {
       width: 100%;
-      max-width: 390px;
-      min-height: 720px;
-      background: var(--bg);
-      border-radius: 28px;
-      overflow: hidden;
+      max-width: 430px;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 42%, #061325 100%);
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* iOS status bar */
+    .status {
+      height: 44px;
+      padding: 12px 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      direction: ltr;
+    }
+    .status .time { letter-spacing: 0.2px; }
+    .status .right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5px;
+      height: 11px;
+    }
+    .bars i {
+      display: block;
+      width: 3px;
+      background: #fff;
+      border-radius: 1px;
+    }
+    .bars i:nth-child(1) { height: 3px; }
+    .bars i:nth-child(2) { height: 5px; }
+    .bars i:nth-child(3) { height: 7px; }
+    .bars i:nth-child(4) { height: 10px; opacity: 0.35; }
+    .battery {
+      width: 24px;
+      height: 11px;
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 3px;
+      position: relative;
+      padding: 1px;
+    }
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 3px;
+      width: 2px;
+      height: 4px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 0 1px 1px 0;
+    }
+    .battery span {
+      display: block;
+      height: 100%;
+      width: 72%;
+      background: #fff;
+      border-radius: 1px;
     }
 
     .content {
       flex: 1;
-      padding: 16px 16px 20px;
       overflow-y: auto;
+      padding: 6px 16px 18px;
+      scrollbar-width: none;
     }
+    .content::-webkit-scrollbar { display: none; }
 
     .header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 10px;
+      min-height: 40px;
+      margin-bottom: 14px;
     }
-
-    .header h1 {
+    .header .name {
       flex: 1;
       margin: 0;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: right;
     }
-
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.14);
+    .header .icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 17px;
+      background: rgba(255,255,255,0.08);
+      border: 0;
+      color: #fff;
       display: grid;
       place-items: center;
-      font-size: 16px;
+      font-size: 15px;
+      cursor: pointer;
     }
 
     .balance-card {
-      background: linear-gradient(135deg, var(--card), var(--card-2));
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 18px;
-      padding: 18px 16px 14px;
-      margin-bottom: 16px;
+      background: linear-gradient(160deg, #243952 0%, #1a2d45 55%, #15263c 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      margin-bottom: 14px;
     }
-
     .balance-title {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 14px;
-      margin-bottom: 10px;
+      color: rgba(255,255,255,0.82);
+      font-size: 13px;
+      margin-bottom: 8px;
+      text-align: right;
     }
-
     .balance-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      direction: rtl;
     }
-
     .balance-amount {
       flex: 1;
       color: var(--orange);
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 700;
-      line-height: 1.1;
+      line-height: 1;
+      letter-spacing: 0.2px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
-
     .eye-btn {
       border: 0;
       background: transparent;
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 20px;
+      color: rgba(255,255,255,0.75);
+      width: 34px;
+      height: 34px;
+      font-size: 18px;
       cursor: pointer;
+      display: grid;
+      place-items: center;
+      order: -1; /* left of amount in RTL */
     }
-
     .account-row {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--muted);
     }
-
+    .account-row .doc {
+      width: 16px;
+      opacity: 0.8;
+    }
+    .account-row .acc {
+      flex: 1;
+      text-align: right;
+    }
     .account-row .details {
-      margin-inline-start: auto;
-      color: var(--orange);
-      text-decoration: underline;
+      color: var(--orange-soft);
       font-size: 12px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      white-space: nowrap;
     }
 
     .actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-
     .action-btn {
-      height: 48px;
+      height: 46px;
       border: 0;
-      border-radius: 12px;
-      background: var(--brown);
-      color: white;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #9a6634 0%, var(--brown) 45%, var(--brown-2) 100%);
+      color: #fff;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
     }
 
     .promo {
-      background: white;
-      color: #12263f;
-      border-radius: 14px;
-      padding: 14px;
+      background: #fff;
+      color: #13233a;
+      border-radius: 12px;
+      padding: 12px 12px;
       display: flex;
       gap: 12px;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+      min-height: 78px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
-
     .promo-card {
-      width: 64px;
-      height: 42px;
+      width: 78px;
+      height: 48px;
       border-radius: 8px;
-      background: linear-gradient(135deg, #1a3355, #ff8a3d);
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.25), transparent 40%),
+        linear-gradient(135deg, #1a3355 0%, #2a4d78 45%, #f28c28 100%);
+      box-shadow: 0 4px 10px rgba(20,40,70,0.25);
+      position: relative;
+      flex: 0 0 auto;
+      overflow: hidden;
     }
-
+    .promo-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px 10px auto auto;
+      width: 18px;
+      height: 12px;
+      border-radius: 3px;
+      background: rgba(255,220,160,0.85);
+    }
+    .promo-card::after {
+      content: "•••• 0101";
+      position: absolute;
+      left: 8px;
+      bottom: 6px;
+      font-size: 8px;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.5px;
+      direction: ltr;
+    }
     .promo h3 {
-      margin: 0 0 2px;
-      font-size: 14px;
+      margin: 0 0 4px;
+      font-size: 13.5px;
+      font-weight: 800;
+      line-height: 1.3;
     }
-
     .promo p {
       margin: 0;
-      font-size: 12px;
-      color: #5a6b7d;
+      font-size: 11.5px;
+      color: #5b6d82;
+      line-height: 1.35;
     }
 
     .section-head {
@@ -183,139 +296,129 @@
       align-items: center;
       margin-bottom: 10px;
     }
-
     .section-head h2 {
       margin: 0;
       flex: 1;
-      font-size: 16px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: right;
     }
-
     .section-head span {
       color: var(--orange);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tx-empty {
+      color: rgba(255,255,255,0.45);
       font-size: 13px;
-    }
-
-    .tx {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 8px;
-    }
-
-    .tx-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.12);
-      display: grid;
-      place-items: center;
-    }
-
-    .tx-body { flex: 1; }
-    .tx-body strong { display: block; font-size: 14px; }
-    .tx-body small { color: rgba(255, 255, 255, 0.6); font-size: 12px; }
-    .tx-amount { font-weight: 700; font-size: 13px; }
-    .credit { color: #34d399; }
-    .debit { color: #f87171; }
-
-    .hint {
       text-align: center;
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 12px;
-      margin-top: 12px;
-      line-height: 1.5;
+      padding: 28px 8px 10px;
     }
 
-    .nav {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      background: var(--nav);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 8px 0 10px;
+    /* Hidden learning editor — open via long-press on balance */
+    .editor-sheet {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 10, 20, 0.72);
+      z-index: 20;
+      align-items: flex-end;
+      justify-content: center;
     }
-
-    .nav button {
-      border: 0;
-      background: transparent;
-      color: rgba(255, 255, 255, 0.55);
-      font-size: 11px;
-      cursor: pointer;
-      display: grid;
-      gap: 4px;
-      justify-items: center;
-    }
-
-    .nav button.active { color: var(--orange); }
-    .nav .ico { font-size: 18px; }
-
-    code {
-      background: rgba(255, 255, 255, 0.12);
-      padding: 1px 5px;
-      border-radius: 4px;
-    }
-
+    .editor-sheet.open { display: flex; }
     .editor {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(255, 138, 61, 0.12);
-      border: 1px dashed rgba(255, 138, 61, 0.55);
+      width: 100%;
+      background: #12243c;
+      border-radius: 18px 18px 0 0;
+      padding: 16px 16px 28px;
+      border-top: 1px solid rgba(255,255,255,0.12);
     }
-
     .editor h4 {
-      margin: 0 0 10px;
-      font-size: 13px;
+      margin: 0 0 12px;
+      font-size: 14px;
       color: var(--orange);
+      text-align: center;
     }
-
     .editor label {
       display: block;
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 4px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 6px;
     }
-
     .editor input {
       width: 100%;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(0, 0, 0, 0.25);
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.28);
       color: white;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 14px;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 18px;
+      font-weight: 700;
       outline: none;
+      direction: ltr;
+      text-align: center;
     }
-
-    .editor input:focus {
-      border-color: var(--orange);
-    }
-
-    .editor .apply-btn {
-      width: 100%;
-      height: 42px;
+    .editor .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .editor button {
+      height: 44px;
       border: 0;
       border-radius: 10px;
-      background: var(--orange);
-      color: #12263f;
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
     }
+    .editor .apply { background: var(--orange); color: #12263f; }
+    .editor .cancel { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: rgba(6, 21, 39, 0.96);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 2px calc(8px + env(safe-area-inset-bottom, 0px));
+      backdrop-filter: blur(10px);
+    }
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      font-size: 10.5px;
+      cursor: pointer;
+      display: grid;
+      gap: 3px;
+      justify-items: center;
+      padding: 2px 0;
+      font-weight: 600;
+    }
+    .nav button.active { color: var(--orange); }
+    .nav .ico {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      line-height: 1;
+    }
+    .home-indicator {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.28);
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <!--
-    ============================================================
-    عدّل البيانات هنا لأغراض التعلّم
-    ============================================================
-  -->
   <script>
+    // بيانات تجريبية — غيّر الرصيد هنا أو اضغط مطوّلاً على المبلغ
     window.DEMO_DATA = {
-      balance: 7034.340, // ← غيّر الرصيد من هنا
+      balance: 7034.340,
       currency: "OMR",
       userName: "WALEED MOHAMMED ABDUL HADI AL NAJJAR",
       balanceTitle: "الرصيد في الحساب",
@@ -324,43 +427,43 @@
       moneyAction: "مالي",
       goalsAction: "أهدافي",
       promoTitle: "بطاقة الخصم المباشر",
-      promoSubtitle: "استمتع بخصومات حصرية عند الدفع",
+      promoSubtitle: "استمتع بخصومات مباشرة عند الدفع ببطاقتك",
       transactionsTitle: "المعاملات المالية",
       viewAllLabel: "مشاهدة الكل",
-      transactions: [
-        { title: "تحويل وارد", subtitle: "من حساب ادخار", amount: 50.0, credit: true, date: "18 يوليو" },
-        { title: "شراء نقطة بيع", subtitle: "متجر تجريبي", amount: 12.25, credit: false, date: "17 يوليو" },
-        { title: "دفعة فاتورة", subtitle: "خدمات", amount: 5.0, credit: false, date: "16 يوليو" },
-      ],
+      statusTime: "6:37",
     };
   </script>
 
   <div class="phone">
+    <div class="status">
+      <div class="time" id="statusTime">6:37</div>
+      <div class="right">
+        <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <span>4G</span>
+        <div class="battery" aria-hidden="true"><span></span></div>
+      </div>
+    </div>
+
     <div class="content">
       <div class="header">
-        <h1 id="userName"></h1>
-        <div class="avatar">👤</div>
+        <h1 class="name" id="userName"></h1>
+        <div class="icons">
+          <button class="icon-btn" type="button" aria-label="إشعارات">🔔</button>
+          <button class="icon-btn" type="button" aria-label="الملف">👤</button>
+        </div>
       </div>
 
       <section class="balance-card">
         <div class="balance-title" id="balanceTitle"></div>
         <div class="balance-row">
-          <div class="balance-amount" id="balanceAmount"></div>
+          <div class="balance-amount" id="balanceAmount" title="اضغط مطوّلاً للتعديل"></div>
           <button class="eye-btn" id="toggleEye" type="button" aria-label="إظهار/إخفاء الرصيد">👁</button>
         </div>
         <div class="account-row">
-          <span>📄</span>
-          <span id="accountLabel"></span>
+          <span class="doc">📄</span>
+          <span class="acc" id="accountLabel"></span>
           <span class="details" id="viewDetails"></span>
         </div>
-      </section>
-
-      <!-- لوحة تعديل للتعلّم -->
-      <section class="editor">
-        <h4>تعديل الرصيد (للتعلّم)</h4>
-        <label for="balanceInput">الرصيد الجديد</label>
-        <input id="balanceInput" type="number" step="0.001" min="0" />
-        <button class="apply-btn" id="applyBalance" type="button">تطبيق الرصيد</button>
       </section>
 
       <div class="actions">
@@ -369,7 +472,7 @@
       </div>
 
       <div class="promo">
-        <div class="promo-card">💳</div>
+        <div class="promo-card" aria-hidden="true"></div>
         <div>
           <h3 id="promoTitle"></h3>
           <p id="promoSubtitle"></p>
@@ -380,27 +483,37 @@
         <h2 id="transactionsTitle"></h2>
         <span id="viewAll"></span>
       </div>
-      <div id="transactions"></div>
-
-      <p class="hint">
-        تجريبي للتعلّم فقط.<br />
-        غيّر الرقم في خانة التعديل واضغط «تطبيق الرصيد».
-      </p>
+      <div class="tx-empty">لا توجد معاملات للعرض</div>
     </div>
 
     <nav class="nav" id="bottomNav">
-      <button class="active" type="button"><span class="ico">🏠</span>الرئيسية</button>
-      <button type="button"><span class="ico">💳</span>البطاقات</button>
-      <button type="button"><span class="ico">🔁</span>التحويلات</button>
-      <button type="button"><span class="ico">💵</span>المدفوعات</button>
+      <button class="active" type="button"><span class="ico">⌂</span>الرئيسية</button>
+      <button type="button"><span class="ico">▭</span>البطاقات</button>
+      <button type="button"><span class="ico">⇄</span>التحويلات</button>
+      <button type="button"><span class="ico">﷼</span>المدفوعات</button>
       <button type="button"><span class="ico">⋯</span>المزيد</button>
     </nav>
+    <div class="home-indicator"></div>
+
+    <div class="editor-sheet" id="editorSheet">
+      <div class="editor">
+        <h4>تعديل الرصيد (تعلّم)</h4>
+        <label for="balanceInput">الرصيد</label>
+        <input id="balanceInput" type="number" step="0.001" min="0" />
+        <div class="row">
+          <button class="cancel" id="cancelEdit" type="button">إلغاء</button>
+          <button class="apply" id="applyBalance" type="button">تطبيق</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     const data = window.DEMO_DATA;
     let visible = true;
     const balanceInput = document.getElementById("balanceInput");
+    const sheet = document.getElementById("editorSheet");
+    const amountEl = document.getElementById("balanceAmount");
 
     function money(n) {
       return Number(n).toLocaleString("en-US", {
@@ -410,10 +523,20 @@
     }
 
     function renderBalance() {
-      document.getElementById("balanceAmount").textContent = visible
+      amountEl.textContent = visible
         ? `${money(data.balance)} ${data.currency}`
         : `•••••• ${data.currency}`;
       balanceInput.value = Number(data.balance).toFixed(3);
+    }
+
+    function openEditor() {
+      balanceInput.value = Number(data.balance).toFixed(3);
+      sheet.classList.add("open");
+      setTimeout(() => balanceInput.focus(), 50);
+    }
+
+    function closeEditor() {
+      sheet.classList.remove("open");
     }
 
     function applyBalanceFromInput() {
@@ -425,9 +548,11 @@
       data.balance = Math.round(next * 1000) / 1000;
       visible = true;
       renderBalance();
+      closeEditor();
     }
 
     function render() {
+      document.getElementById("statusTime").textContent = data.statusTime;
       document.getElementById("userName").textContent = data.userName;
       document.getElementById("balanceTitle").textContent = data.balanceTitle;
       document.getElementById("accountLabel").textContent = data.accountLabel;
@@ -439,25 +564,6 @@
       document.getElementById("transactionsTitle").textContent = data.transactionsTitle;
       document.getElementById("viewAll").textContent = data.viewAllLabel;
       renderBalance();
-
-      const host = document.getElementById("transactions");
-      host.innerHTML = data.transactions
-        .map((tx) => {
-          const cls = tx.credit ? "credit" : "debit";
-          const sign = tx.credit ? "+" : "-";
-          const icon = tx.credit ? "↙" : "↗";
-          return `
-            <div class="tx">
-              <div class="tx-icon ${cls}">${icon}</div>
-              <div class="tx-body">
-                <strong>${tx.title}</strong>
-                <small>${tx.subtitle} · ${tx.date}</small>
-              </div>
-              <div class="tx-amount ${cls}">${sign}${money(tx.amount)} ${data.currency}</div>
-            </div>
-          `;
-        })
-        .join("");
     }
 
     document.getElementById("toggleEye").addEventListener("click", () => {
@@ -465,7 +571,20 @@
       renderBalance();
     });
 
+    // ضغط مطوّل على الرصيد لفتح التعديل (للتعلّم بدون تشويه الشكل)
+    let pressTimer;
+    amountEl.addEventListener("pointerdown", () => {
+      pressTimer = setTimeout(openEditor, 550);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => {
+      amountEl.addEventListener(ev, () => clearTimeout(pressTimer));
+    });
+
     document.getElementById("applyBalance").addEventListener("click", applyBalanceFromInput);
+    document.getElementById("cancelEdit").addEventListener("click", closeEditor);
+    sheet.addEventListener("click", (e) => {
+      if (e.target === sheet) closeEditor();
+    });
     balanceInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") applyBalanceFromInput();
     });

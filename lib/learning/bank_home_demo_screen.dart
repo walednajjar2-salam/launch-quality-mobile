@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'bank_home_demo_data.dart';
 
-/// شاشة رئيسية بنكية تجريبية — لأغراض التعلّم فقط.
-/// ليست تطبيقاً بنكياً حقيقياً ولا تتصل بأي بنك.
+/// شاشة رئيسية بنكية تجريبية مطابقة تقريبياً للصورة — لأغراض التعلّم فقط.
 class BankHomeDemoScreen extends StatefulWidget {
   const BankHomeDemoScreen({super.key});
 
@@ -34,11 +34,101 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
   }
 
   String get _formattedBalance {
-    if (!_balanceVisible) return '••••••';
+    if (!_balanceVisible) return '•••••• ${BankHomeDemoData.currency}';
     return '${_amountFmt.format(_balance)} ${BankHomeDemoData.currency}';
   }
 
-  void _applyBalanceEdit() {
+  Future<void> _openBalanceEditor() async {
+    _balanceController.text = _balance.toStringAsFixed(3);
+    final applied = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: const Color(0xFF12243C),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(
+            16,
+            16,
+            16,
+            16 + MediaQuery.viewInsetsOf(ctx).bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'تعديل الرصيد (تعلّم)',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFFF28C28),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: _balanceController,
+                autofocus: true,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'الرصيد',
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  filled: true,
+                  fillColor: const Color(0x44000000),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Color(0x33FFFFFF)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Color(0xFFF28C28)),
+                  ),
+                ),
+                onSubmitted: (_) => Navigator.pop(ctx, true),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(44),
+                      ),
+                      child: const Text('إلغاء'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: const Color(0xFFF28C28),
+                        foregroundColor: const Color(0xFF12263F),
+                        minimumSize: const Size.fromHeight(44),
+                      ),
+                      child: const Text('تطبيق', style: TextStyle(fontWeight: FontWeight.w700)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (applied != true || !mounted) return;
     final parsed = double.tryParse(_balanceController.text.trim());
     if (parsed == null || parsed < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -49,51 +139,78 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
     setState(() {
       _balance = double.parse(parsed.toStringAsFixed(3));
       _balanceVisible = true;
-      _balanceController.text = _balance.toStringAsFixed(3);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: const Color(0xFF0B1F3A),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                  children: [
-                    _buildHeader(),
-                    const SizedBox(height: 16),
-                    _buildBalanceCard(),
-                    const SizedBox(height: 12),
-                    _buildBalanceEditor(),
-                    const SizedBox(height: 16),
-                    _buildQuickActions(),
-                    const SizedBox(height: 16),
-                    _buildPromoBanner(),
-                    const SizedBox(height: 20),
-                    _buildTransactionsHeader(),
-                    const SizedBox(height: 10),
-                    ...BankHomeDemoData.transactions.map(_buildTransactionTile),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'تجريبي للتعلّم — عدّل الرصيد من الخانة أعلاه',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0x88FFFFFF),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          backgroundColor: const Color(0xFF071A33),
+          body: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF0A2344), Color(0xFF071A33), Color(0xFF061325)],
+                stops: [0, 0.42, 1],
               ),
-              _buildBottomNav(),
-            ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  _buildStatusBar(),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.fromLTRB(16, 6, 16, 18),
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 14),
+                        _buildBalanceCard(),
+                        const SizedBox(height: 14),
+                        _buildQuickActions(),
+                        const SizedBox(height: 14),
+                        _buildPromoBanner(),
+                        const SizedBox(height: 18),
+                        _buildTransactionsHeader(),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'لا توجد معاملات للعرض',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Color(0x73FFFFFF), fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ),
+                  _buildBottomNav(),
+                ],
+              ),
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusBar() {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(22, 4, 22, 0),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Row(
+          children: [
+            Text('6:37', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 15)),
+            Spacer(),
+            Icon(Icons.signal_cellular_alt, color: Colors.white, size: 16),
+            SizedBox(width: 4),
+            Text('4G', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12)),
+            SizedBox(width: 6),
+            Icon(Icons.battery_full, color: Colors.white, size: 18),
+          ],
         ),
       ),
     );
@@ -107,61 +224,73 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
             BankHomeDemoData.userName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.right,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.4,
             ),
           ),
         ),
+        const SizedBox(width: 10),
+        _roundIcon(Icons.notifications_none),
         const SizedBox(width: 8),
-        Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: const Color(0x22FFFFFF),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: const Icon(Icons.person_outline, color: Colors.white, size: 20),
-        ),
+        _roundIcon(Icons.person_outline),
       ],
+    );
+  }
+
+  Widget _roundIcon(IconData icon) {
+    return Container(
+      width: 34,
+      height: 34,
+      decoration: BoxDecoration(
+        color: const Color(0x14FFFFFF),
+        borderRadius: BorderRadius.circular(17),
+      ),
+      child: Icon(icon, color: Colors.white, size: 18),
     );
   }
 
   Widget _buildBalanceCard() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 18, 16, 14),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1A3355), Color(0xFF12263F)],
+          colors: [Color(0xFF243952), Color(0xFF1A2D45), Color(0xFF15263C)],
         ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0x33FFFFFF)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0x14FFFFFF)),
+        boxShadow: const [
+          BoxShadow(color: Color(0x2E000000), blurRadius: 24, offset: Offset(0, 8)),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             BankHomeDemoData.balanceTitle,
-            style: const TextStyle(
-              color: Color(0xCCFFFFFF),
-              fontSize: 14,
-            ),
+            textAlign: TextAlign.right,
+            style: const TextStyle(color: Color(0xD1FFFFFF), fontSize: 13),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
-                child: Text(
-                  _formattedBalance,
-                  style: const TextStyle(
-                    color: Color(0xFFFF8A3D),
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                    height: 1.1,
+                child: GestureDetector(
+                  onLongPress: _openBalanceEditor,
+                  child: Text(
+                    _formattedBalance,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      color: Color(0xFFF28C28),
+                      fontSize: 34,
+                      fontWeight: FontWeight.w700,
+                      height: 1.05,
+                    ),
                   ),
                 ),
               ),
@@ -182,16 +311,17 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
               Expanded(
                 child: Text(
                   BankHomeDemoData.accountLabel,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(color: Colors.white70, fontSize: 12.5),
                 ),
               ),
               Text(
                 BankHomeDemoData.viewDetailsLabel,
                 style: const TextStyle(
-                  color: Color(0xFFFF8A3D),
+                  color: Color(0xFFFF9A3C),
                   fontSize: 12,
                   decoration: TextDecoration.underline,
-                  decorationColor: Color(0xFFFF8A3D),
+                  decorationColor: Color(0xFFFF9A3C),
                 ),
               ),
             ],
@@ -201,122 +331,69 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
     );
   }
 
-  Widget _buildBalanceEditor() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0x22FF8A3D),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0x88FF8A3D)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'تعديل الرصيد (للتعلّم)',
-            style: TextStyle(
-              color: Color(0xFFFF8A3D),
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: _balanceController,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              labelText: 'الرصيد الجديد',
-              labelStyle: const TextStyle(color: Colors.white70),
-              filled: true,
-              fillColor: const Color(0x33000000),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0x44FFFFFF)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0x44FFFFFF)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Color(0xFFFF8A3D)),
-              ),
-            ),
-            onSubmitted: (_) => _applyBalanceEdit(),
-          ),
-          const SizedBox(height: 10),
-          FilledButton(
-            onPressed: _applyBalanceEdit,
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFFF8A3D),
-              foregroundColor: const Color(0xFF12263F),
-              minimumSize: const Size.fromHeight(42),
-            ),
-            child: const Text(
-              'تطبيق الرصيد',
-              style: TextStyle(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildQuickActions() {
     return Row(
       children: [
-        Expanded(child: _actionButton(BankHomeDemoData.moneyAction, Icons.account_balance_wallet_outlined)),
-        const SizedBox(width: 12),
-        Expanded(child: _actionButton(BankHomeDemoData.goalsAction, Icons.flag_outlined)),
+        Expanded(child: _actionButton(BankHomeDemoData.moneyAction)),
+        const SizedBox(width: 10),
+        Expanded(child: _actionButton(BankHomeDemoData.goalsAction)),
       ],
     );
   }
 
-  Widget _actionButton(String label, IconData icon) {
+  Widget _actionButton(String label) {
     return Container(
-      height: 48,
+      height: 46,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: const Color(0xFF6B4E2E),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: Colors.white, size: 18),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-          ),
+        borderRadius: BorderRadius.circular(10),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF9A6634), Color(0xFF8B5A2B), Color(0xFF6E4520)],
+        ),
+        boxShadow: const [
+          BoxShadow(color: Color(0x33000000), offset: Offset(0, 2)),
         ],
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+        ),
       ),
     );
   }
 
   Widget _buildPromoBanner() {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(color: Color(0x1F000000), blurRadius: 10, offset: Offset(0, 2)),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            width: 64,
-            height: 42,
+            width: 78,
+            height: 48,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               gradient: const LinearGradient(
-                colors: [Color(0xFF1A3355), Color(0xFFFF8A3D)],
+                colors: [Color(0xFF1A3355), Color(0xFF2A4D78), Color(0xFFF28C28)],
               ),
             ),
-            child: const Icon(Icons.credit_card, color: Colors.white, size: 22),
+            alignment: Alignment.bottomLeft,
+            padding: const EdgeInsets.all(6),
+            child: const Text(
+              '•••• 0101',
+              style: TextStyle(color: Colors.white70, fontSize: 8, letterSpacing: 0.5),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -326,18 +403,15 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
                 Text(
                   BankHomeDemoData.promoTitle,
                   style: const TextStyle(
-                    color: Color(0xFF12263F),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
+                    color: Color(0xFF13233A),
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13.5,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Text(
                   BankHomeDemoData.promoSubtitle,
-                  style: const TextStyle(
-                    color: Color(0xFF5A6B7D),
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Color(0xFF5B6D82), fontSize: 11.5, height: 1.35),
                 ),
               ],
             ),
@@ -353,67 +427,23 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
         Expanded(
           child: Text(
             BankHomeDemoData.transactionsTitle,
+            textAlign: TextAlign.right,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ),
         Text(
           BankHomeDemoData.viewAllLabel,
           style: const TextStyle(
-            color: Color(0xFFFF8A3D),
-            fontSize: 13,
+            color: Color(0xFFF28C28),
+            fontSize: 12.5,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildTransactionTile(DemoTransaction tx) {
-    final sign = tx.isCredit ? '+' : '-';
-    final color = tx.isCredit ? const Color(0xFF34D399) : const Color(0xFFF87171);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0x14FFFFFF),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: const Color(0x22FFFFFF),
-            child: Icon(
-              tx.isCredit ? Icons.south_west : Icons.north_east,
-              color: color,
-              size: 16,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tx.title,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  '${tx.subtitle} · ${tx.date}',
-                  style: const TextStyle(color: Colors.white60, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            '$sign${_amountFmt.format(tx.amount)} ${BankHomeDemoData.currency}',
-            style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 13),
-          ),
-        ],
-      ),
     );
   }
 
@@ -427,10 +457,10 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.fromLTRB(2, 8, 2, 8 + MediaQuery.paddingOf(context).bottom),
       decoration: const BoxDecoration(
-        color: Color(0xFF0A1A30),
-        border: Border(top: BorderSide(color: Color(0x22FFFFFF))),
+        color: Color(0xF5061527),
+        border: Border(top: BorderSide(color: Color(0x14FFFFFF))),
       ),
       child: Row(
         children: [
@@ -443,15 +473,16 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
                   children: [
                     Icon(
                       items[i].$1,
-                      color: _navIndex == i ? const Color(0xFFFF8A3D) : Colors.white54,
+                      color: _navIndex == i ? const Color(0xFFF28C28) : Colors.white54,
                       size: 22,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       items[i].$2,
                       style: TextStyle(
-                        color: _navIndex == i ? const Color(0xFFFF8A3D) : Colors.white54,
-                        fontSize: 11,
+                        color: _navIndex == i ? const Color(0xFFF28C28) : Colors.white54,
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
