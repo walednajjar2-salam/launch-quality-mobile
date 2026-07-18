@@ -2,10 +2,14 @@
 param(
   [string]$BaseUrl = "https://jawda-al-intilaqa-production.up.railway.app",
   [string]$AdminUser = "admin",
-  [string]$AdminPass = $env:ADMIN_PASSWORD
+  [string]$AdminPass = $env:ADMIN_PASSWORD,
+  [string]$OperationsPass = $env:OPERATIONS_PASSWORD,
+  [string]$MaintenancePass = $env:MAINTENANCE_PASSWORD
 )
 
 if (-not $AdminPass) { throw "Set ADMIN_PASSWORD environment variable or pass -AdminPass" }
+if (-not $OperationsPass) { throw "Set OPERATIONS_PASSWORD environment variable or pass -OperationsPass" }
+if (-not $MaintenancePass) { throw "Set MAINTENANCE_PASSWORD environment variable or pass -MaintenancePass" }
 
 $ErrorActionPreference = "Stop"
 $settingsPath = Join-Path (Split-Path $PSScriptRoot -Parent) "data\company_settings.json"
@@ -21,8 +25,8 @@ $saved = Invoke-RestMethod -Uri "$BaseUrl/api/company_settings" -Method PUT -Hea
 Write-Host "Company: $($saved.settings.name_ar)"
 
 $requiredUsers = @(
-  @{ username = "operations"; name = "Operations Team"; role = "operations"; password = "LaunchOps2026" },
-  @{ username = "maintenance"; name = "Maintenance Team"; role = "maintenance"; password = "LaunchMaint2026" }
+  @{ username = "operations"; name = "Operations Team"; role = "operations"; password = $OperationsPass },
+  @{ username = "maintenance"; name = "Maintenance Team"; role = "maintenance"; password = $MaintenancePass }
 )
 
 Write-Host "Ensuring team users..."
