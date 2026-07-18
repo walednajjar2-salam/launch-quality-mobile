@@ -50,4 +50,13 @@ railway up --detach
 | ERP | https://jawda-al-intilaqa-production.up.railway.app/app.html |
 | Volume | `jawda-al-intilaqa-volume` → `/app/data` (البيانات محفوظة بعد إعادة النشر) |
 
+## Flutter Web (Staff)
+
+| الخدمة | الرابط |
+|--------|--------|
+| Staff Web | https://launch-quality-mobile-production-bb40.up.railway.app |
+| Railway service | `Launch-Quality-Mobile` |
+
+GitHub Actions: أضف `RAILWAY_TOKEN` — راجع `.github/DEPLOY.md`
+
 تفاصيل النشر: `backend/jawdah-cloud-v47/RAILWAY.md`

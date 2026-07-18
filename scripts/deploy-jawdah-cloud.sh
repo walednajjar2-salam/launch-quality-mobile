@@ -8,4 +8,6 @@ if [[ -z "${RAILWAY_TOKEN:-}" ]]; then
   exit 1
 fi
 
-npx --yes @railway/cli@latest up --detach --service "${RAILWAY_SERVICE:-Jawda-Al-Intilaqa}"
+npx --yes @railway/cli@latest up --detach --service "${RAILWAY_SERVICE:-Jawda-Al-Intilaqa}" \
+  -p "${RAILWAY_PROJECT_ID:-9239907c-96e9-4763-b2d3-2d57931f7bba}" \
+  -e "${RAILWAY_ENVIRONMENT:-production}"

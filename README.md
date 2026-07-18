@@ -20,6 +20,8 @@ flutter run -d ios         # iPhone / Simulator (macOS + Xcode)
 
 `https://jawda-al-intilaqa-production.up.railway.app/api`
 
+**Flutter Web (Staff):** https://launch-quality-mobile-production-bb40.up.railway.app
+
 | User | Password |
 |------|----------|
 | waleed.najjar | Waleed2026! |
