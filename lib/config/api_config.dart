@@ -1,6 +1,6 @@
 class ApiConfig {
   static const String productionBaseUrl =
-      'https://web-production-08d73.up.railway.app/api';
+      'https://jawda-al-intilaqa-production.up.railway.app/api';
 
   /// Override at runtime via `--dart-define=API_BASE_URL=...` if needed.
   static const String baseUrl = String.fromEnvironment(
