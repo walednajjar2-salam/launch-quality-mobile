@@ -56,8 +56,6 @@ curl -X POST https://backboard.railway.com/graphql/v2 \
 
 Legacy v72 URL (`web-production-08d73.up.railway.app`) is a separate Railway project — retire it from the old project's dashboard when ready.
 
-## Persistent database (legacy section)
-
 ## Automatic daily backup (enabled by default)
 
 Backups are stored on the same persistent volume:
