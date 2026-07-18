@@ -18,7 +18,7 @@ flutter run -d ios         # iPhone / Simulator (macOS + Xcode)
 
 ## API
 
-`https://web-production-08d73.up.railway.app/api`
+`https://jawda-al-intilaqa-production.up.railway.app/api`
 
 | User | Password |
 |------|----------|

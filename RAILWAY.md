@@ -17,7 +17,7 @@
    - كلمة المرور: `Waleed2026!`
 
 التطبيق يتصل تلقائياً بـ API الإنتاج:
-`https://web-production-08d73.up.railway.app/api`
+`https://jawda-al-intilaqa-production.up.railway.app/api`
 
 ## النشر من CLI
 
