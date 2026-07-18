@@ -1,6 +1,6 @@
 # Launch Quality — Flutter Native
 
-**One app** for **Android + Windows + Chrome** · luxury dark UI · Railway API · no WebView.
+**One app** for **iPhone + Android + Windows + Chrome** · luxury dark UI · Railway API · no WebView.
 
 Full structure and roadmap: **[ROADMAP.md](ROADMAP.md)**
 
@@ -12,7 +12,8 @@ flutter pub get
 
 flutter run -d chrome      # test in browser
 flutter run -d windows     # desktop
-flutter run -d android     # phone
+flutter run -d android     # Android phone
+flutter run -d ios         # iPhone / Simulator (macOS + Xcode)
 ```
 
 ## API
@@ -21,8 +22,7 @@ flutter run -d android     # phone
 
 | User | Password |
 |------|----------|
-| Najjar | Najjar2026 |
-| owner | owner2015 |
+| waleed.najjar | Waleed2026! |
 
 ## Routes
 
@@ -39,9 +39,20 @@ flutter run -d android     # phone
 .\scripts\build-windows.ps1
 ```
 
+```bash
+# iPhone / iPad (macOS only)
+chmod +x scripts/build-ios.sh
+./scripts/build-ios.sh
+# ثم: افتح ios/Runner.xcworkspace في Xcode → Archive
+```
+
+## Deploy (Railway — Flutter Web)
+
+انظر **[RAILWAY.md](RAILWAY.md)** — Dockerfile جاهز للنشر على Railway.
 ## Features
 
 - Dark luxury theme · glass cards · 28px · RTL Arabic
+- iPhone-ready: Arabic display name, dark launch screen, Safe Area / notch, haptics
 - Dashboard KPIs · Projects · Staff · Finance charts
 - Maintenance · Payment proofs
 - Tenant portal via `portal_token`

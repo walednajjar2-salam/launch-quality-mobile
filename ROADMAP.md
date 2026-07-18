@@ -1,6 +1,18 @@
 # Launch Quality Mobile - Development Roadmap
 
-**Version:** 1.1.0+2 | **Status:** Active Development
+**Version:** 1.1.1+3 | **Status:** Active Development
+
+## One app · Four platforms
+
+| Platform | Purpose |
+|----------|---------|
+| **iPhone / iOS** | Staff + Portal on iPhone (Xcode archive / TestFlight) |
+| **Android** | Staff + Portal in production |
+| **Windows** | Desktop operations dashboard |
+| **Chrome** | Fast API/UI testing |
+
+**Entry:** `lib/main.dart` → `LaunchQualityApp`  
+**Backend:** `https://web-production-08d73.up.railway.app/api` (no backend changes)
 
 ---
 
@@ -10,7 +22,7 @@
 
 #### 🔴 عالية الأولوية
 - [ ] **PR #1 Review** - إصلاح مشاكل التطوير (26 يوم معلق)
-- [ ] **iOS Support (PR #8)** - إضافة دعم الآيفون الكامل
+- [x] **iOS Support (PR #8)** - دعم الآيفون (Safe Area، اسم عربي، Podfile، build-ios)
 - [ ] **Unit Tests** - تغطية اختبارات شاملة للـ Services والـ Models
 - [ ] **Error Handling** - نظام معالجة الأخطاء الموحد
 
@@ -41,7 +53,7 @@
 ### 🟡 المرحلة 2: التحسينات (قيد التقدم)
 | المهمة | الحالة | الإصدار المخطط |
 |------|--------|----------------|
-| iOS Support | 🟡 PR #8 | 1.1.1 |
+| iOS Support | ✅ PR #8 | 1.1.1 |
 | Unit Tests | 🟡 In Progress | 1.1.1 |
 | Error Handling | 🟠 Planned | 1.1.1 |
 | Offline Support | ⚪ Planned | 1.2.0 |
@@ -86,16 +98,48 @@ launch-quality-mobile/
 │       ├── staff_shell.dart
 │       ├── portal/
 │       └── modules/
+│           ├── dashboard_screen.dart
+│           ├── projects_screen.dart
+│           ├── staff_screen.dart
+│           ├── finance_screen.dart
+│           ├── maintenance_screen.dart
+│           ├── payment_proofs_screen.dart
+│           └── properties/clients/contracts/invoices
 ├── test/                          # الاختبارات
 ├── android/                       # إعدادات Android
-├── ios/                          # إعدادات iOS
-├── windows/                      # إعدادات Windows
-├── web/                          # إعدادات Web
-├── scripts/                      # سكريبتات البناء
-├── assets/                       # الموارد (الشعار، الصور)
-├── pubspec.yaml                  # الحزم والتبعيات
-└── analysis_options.yaml         # قواعس الجودة
+├── ios/                           # iPhone / iPad (Xcode)
+├── windows/                       # إعدادات Windows
+├── web/                           # إعدادات Web
+├── scripts/
+│   ├── build-apk.ps1
+│   ├── build-windows.ps1
+│   └── build-ios.sh
+├── assets/                        # الموارد (الشعار، الصور)
+├── railway.toml                   # نشر Flutter Web على Railway
+├── pubspec.yaml                   # الحزم والتبعيات
+└── analysis_options.yaml          # قواعد الجودة
 ```
+
+---
+
+## Routes
+
+| Path | Screen |
+|------|--------|
+| `/` | Staff login |
+| `/staff` | Staff shell (all modules) |
+| `/portal` | Tenant gate (paste token) |
+| `/portal?token=XXX` | Auto-open portal |
+| `/portal/app` | Tenant dashboard |
+
+---
+
+## Responsive layout
+
+| Width | Layout |
+|-------|--------|
+| `< 600px` | Bottom nav (4 tabs + «المزيد») |
+| `≥ 900px` | NavigationRail + wide grids |
 
 ---
 
@@ -104,10 +148,11 @@ launch-quality-mobile/
 ### التطوير
 ```bash
 # جميع المنصات
+flutter pub get
 flutter run -d chrome      # Web
 flutter run -d windows     # Desktop
 flutter run -d android     # Mobile
-flutter run -d ios        # iPhone
+flutter run -d ios         # iPhone / Simulator
 
 # تحليل الكود
 flutter analyze
@@ -132,7 +177,18 @@ flutter build web --release
 
 # iOS
 ./scripts/build-ios.sh
+# أو: flutter build ios --release --no-codesign
 ```
+
+---
+
+## Test login (production)
+
+| User | Password |
+|------|----------|
+| waleed.najjar | Waleed2026! |
+
+> الحسابات القديمة في الوثائق (`Najjar` / `owner`) لم تعد صالحة على الإنتاج.
 
 ---
 
@@ -185,4 +241,4 @@ flutter build web --release
 
 ---
 
-**آخر تحديث:** 17 يوليو 2026 | **الحالة:** نشط ✨
+**آخر تحديث:** 18 يوليو 2026 | **الحالة:** نشط ✨

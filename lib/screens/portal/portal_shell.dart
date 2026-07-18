@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -110,7 +111,10 @@ class _PortalShellState extends State<PortalShell> {
                           child: ChoiceChip(
                             label: Text(tabs[i]),
                             selected: portal.tabIndex == i,
-                            onSelected: (_) => portal.setTab(i),
+                            onSelected: (_) {
+                              HapticFeedback.selectionClick();
+                              portal.setTab(i);
+                            },
                           ),
                         );
                       }),
