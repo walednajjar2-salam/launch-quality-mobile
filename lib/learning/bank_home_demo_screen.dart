@@ -15,12 +15,42 @@ class BankHomeDemoScreen extends StatefulWidget {
 class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
   bool _balanceVisible = true;
   int _navIndex = 0;
+  late double _balance;
+  late final TextEditingController _balanceController;
 
   static final _amountFmt = NumberFormat('#,##0.000', 'en_US');
 
+  @override
+  void initState() {
+    super.initState();
+    _balance = BankHomeDemoData.balance;
+    _balanceController = TextEditingController(text: _balance.toStringAsFixed(3));
+  }
+
+  @override
+  void dispose() {
+    _balanceController.dispose();
+    super.dispose();
+  }
+
   String get _formattedBalance {
     if (!_balanceVisible) return '••••••';
-    return '${_amountFmt.format(BankHomeDemoData.balance)} ${BankHomeDemoData.currency}';
+    return '${_amountFmt.format(_balance)} ${BankHomeDemoData.currency}';
+  }
+
+  void _applyBalanceEdit() {
+    final parsed = double.tryParse(_balanceController.text.trim());
+    if (parsed == null || parsed < 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('أدخل رقماً صحيحاً للرصيد')),
+      );
+      return;
+    }
+    setState(() {
+      _balance = double.parse(parsed.toStringAsFixed(3));
+      _balanceVisible = true;
+      _balanceController.text = _balance.toStringAsFixed(3);
+    });
   }
 
   @override
@@ -39,6 +69,8 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
                     _buildHeader(),
                     const SizedBox(height: 16),
                     _buildBalanceCard(),
+                    const SizedBox(height: 12),
+                    _buildBalanceEditor(),
                     const SizedBox(height: 16),
                     _buildQuickActions(),
                     const SizedBox(height: 16),
@@ -49,7 +81,7 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
                     ...BankHomeDemoData.transactions.map(_buildTransactionTile),
                     const SizedBox(height: 12),
                     const Text(
-                      'تجريبي للتعلّم — عدّل القيم في bank_home_demo_data.dart',
+                      'تجريبي للتعلّم — عدّل الرصيد من الخانة أعلاه',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0x88FFFFFF),
@@ -163,6 +195,68 @@ class _BankHomeDemoScreenState extends State<BankHomeDemoScreen> {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBalanceEditor() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0x22FF8A3D),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0x88FF8A3D)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'تعديل الرصيد (للتعلّم)',
+            style: TextStyle(
+              color: Color(0xFFFF8A3D),
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _balanceController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'الرصيد الجديد',
+              labelStyle: const TextStyle(color: Colors.white70),
+              filled: true,
+              fillColor: const Color(0x33000000),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0x44FFFFFF)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0x44FFFFFF)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Color(0xFFFF8A3D)),
+              ),
+            ),
+            onSubmitted: (_) => _applyBalanceEdit(),
+          ),
+          const SizedBox(height: 10),
+          FilledButton(
+            onPressed: _applyBalanceEdit,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFFF8A3D),
+              foregroundColor: const Color(0xFF12263F),
+              minimumSize: const Size.fromHeight(42),
+            ),
+            child: const Text(
+              'تطبيق الرصيد',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
           ),
         ],
       ),

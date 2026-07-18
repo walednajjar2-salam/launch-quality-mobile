@@ -5,20 +5,18 @@
 
 ## تعديل الرصيد
 
-افتح أحد الملفين وغيّر قيمة `balance` إلى أي رقم تريده (مثلاً `7034.340`):
+الطريقة الأسهل: من داخل الشاشة نفسها  
+اكتب الرقم في خانة **«تعديل الرصيد»** ثم اضغط **«تطبيق الرصيد»**.
 
-1. **HTML (الأسهل في المتصفح)**  
-   الملف: `learning/bank-home-demo.html`  
-   السطر داخل `window.DEMO_DATA`:
+أو عدّل القيمة الافتراضية في الكود:
+
+1. **HTML** — `learning/bank-home-demo.html`
 
    ```js
    balance: 7034.340,
    ```
 
-   ثم افتح الملف في المتصفح.
-
-2. **Flutter**  
-   الملف: `lib/learning/bank_home_demo_data.dart`
+2. **Flutter** — `lib/learning/bank_home_demo_data.dart`
 
    ```dart
    static const double balance = 7034.340;
