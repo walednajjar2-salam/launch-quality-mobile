@@ -11,7 +11,8 @@ import urllib.error
 import urllib.request
 from datetime import date, timedelta
 
-API = os.environ.get("LQ_API", "https://jawda-al-intilaqa-production.up.railway.app/api").rstrip("/")
+API = os.environ.get("LQ_API", "https://web-production-08d73.up.railway.app/api").rstrip("/")
+BACKUP_API = os.environ.get("LQ_BACKUP_API", "https://jawda-al-intilaqa-production.up.railway.app/api").rstrip("/")
 ADMIN_USER = os.environ.get("LQ_ADMIN_USER", "waleed.najjar")
 ADMIN_PASSWORD = os.environ.get("LQ_ADMIN_PASSWORD", "1234567902")
 BACKUP_TS = os.environ.get("LQ_BACKUP_TS", "20260719-062159")
@@ -41,19 +42,27 @@ def password_hash(password: str, salt: str | None = None) -> str:
     return f"pbkdf2_sha256${salt}${dk.hex()}"
 
 
-def request(method: str, path: str, token: str | None = None, body: dict | None = None) -> dict:
+def request(
+    method: str,
+    path: str,
+    token: str | None = None,
+    body: dict | None = None,
+    *,
+    base: str | None = None,
+) -> dict:
     headers = {"Content-Type": "application/json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     data = json.dumps(body).encode("utf-8") if body is not None else None
-    req = urllib.request.Request(f"{API}/{path.lstrip('/')}", data=data, headers=headers, method=method)
+    root = (base or API).rstrip("/")
+    req = urllib.request.Request(f"{root}/{path.lstrip('/')}", data=data, headers=headers, method=method)
     with urllib.request.urlopen(req, timeout=120) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
 def load_backup(token: str) -> dict:
     req = urllib.request.Request(
-        f"{API}/backup/download?kind=json&timestamp={BACKUP_TS}",
+        f"{BACKUP_API}/backup/download?kind=json&timestamp={BACKUP_TS}",
         headers={"Authorization": f"Bearer {token}"},
     )
     with urllib.request.urlopen(req, timeout=120) as resp:
@@ -114,17 +123,28 @@ def fix_users(users: list) -> list:
 
 
 def main() -> int:
-    login = request("POST", "login", body={"username": ADMIN_USER, "password": ADMIN_PASSWORD})
-    if not login.get("ok"):
-        print("Login failed:", login, file=sys.stderr)
+    backup_login = request(
+        "POST", "login", body={"username": ADMIN_USER, "password": ADMIN_PASSWORD}, base=BACKUP_API
+    )
+    if not backup_login.get("ok"):
+        print("Backup login failed:", backup_login, file=sys.stderr)
         return 1
-    token = login["token"]
-    print(f"Logged in as {login['user']['username']}")
+    backup_token = backup_login["token"]
+    print(f"Backup source: {BACKUP_API}")
 
-    before = request("GET", "bootstrap", token=token)["data"]
+    target_login = request(
+        "POST", "login", body={"username": ADMIN_USER, "password": ADMIN_PASSWORD}, base=API
+    )
+    if not target_login.get("ok"):
+        print("Target login failed:", target_login, file=sys.stderr)
+        return 1
+    target_token = target_login["token"]
+    print(f"Restore target: {API}")
+
+    before = request("GET", "bootstrap", token=target_token)["data"]
     print(f"Before: properties={len(before.get('properties',[]))} contracts={len(before.get('contracts',[]))}")
 
-    tables = load_backup(token)
+    tables = load_backup(backup_token)
     restore_tables = {
         "properties": fix_properties(tables.get("properties") or []),
         "contracts": fix_contracts(tables.get("contracts") or []),
@@ -139,7 +159,7 @@ def main() -> int:
     result = request(
         "POST",
         "restore",
-        token=token,
+        token=target_token,
         body={"mode": "merge", "backup": {"tables": restore_tables}},
     )
     if not result.get("ok"):
@@ -147,7 +167,7 @@ def main() -> int:
         return 1
     print("Restore OK")
 
-    after = request("GET", "bootstrap", token=token)["data"]
+    after = request("GET", "bootstrap", token=target_token)["data"]
     print(f"After: properties={len(after.get('properties',[]))} contracts={len(after.get('contracts',[]))}")
     print("Active contracts:")
     for c in after.get("contracts", []):

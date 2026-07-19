@@ -17,7 +17,7 @@
    - كلمة المرور: `1234567902`
 
 التطبيق يتصل تلقائياً بـ API الإنتاج:
-`https://jawda-al-intilaqa-production.up.railway.app/api`
+`https://web-production-08d73.up.railway.app/api`
 
 ## النشر من CLI
 
@@ -46,9 +46,9 @@ railway up --detach
 
 | الخدمة | الرابط |
 |--------|--------|
-| API | https://jawda-al-intilaqa-production.up.railway.app/api |
-| ERP | https://jawda-al-intilaqa-production.up.railway.app/app.html |
-| Volume | `jawda-al-intilaqa-volume` → `/app/data` (البيانات محفوظة بعد إعادة النشر) |
+| API | https://web-production-08d73.up.railway.app/api |
+| ERP | https://web-production-08d73.up.railway.app/app.html |
+| Volume (نسخ احتياطي) | `jawda-al-intilaqa-volume` على مشروع Jawda-Al-Intilaqa |
 
 ## Flutter Web (Staff)
 

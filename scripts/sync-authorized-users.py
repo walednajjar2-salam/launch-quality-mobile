@@ -8,7 +8,7 @@ import sys
 import urllib.error
 import urllib.request
 
-API = os.environ.get("LQ_API", "https://jawda-al-intilaqa-production.up.railway.app/api").rstrip("/")
+API = os.environ.get("LQ_API", "https://web-production-08d73.up.railway.app/api").rstrip("/")
 ADMIN_USER = os.environ.get("LQ_ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("LQ_ADMIN_PASSWORD", "1234567891")
 
