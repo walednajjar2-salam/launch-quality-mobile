@@ -1,48 +1,39 @@
 import 'package:flutter/material.dart';
 
-/// Launch Quality brand accents + adaptive surface/text scheme.
+/// Simple accent aliases mapped to Material defaults (no custom luxury theme).
+/// Prefer [Theme.of(context).colorScheme] in new UI.
 abstract final class BrandColors {
-  static const gold = Color(0xFF0F766E);
-  static const goldBright = Color(0xFF0D9488);
-  static const turquoise = Color(0xFF14B8A6);
-  static const tealDeep = Color(0xFF0F766E);
+  static const gold = Color(0xFF00639A);
+  static const goldBright = Color(0xFF00639A);
+  static const turquoise = Color(0xFF006874);
+  static const tealDeep = Color(0xFF004F58);
 
-  static const danger = Color(0xFFDC2626);
-  static const success = Color(0xFF059669);
+  static const danger = Color(0xFFBA1A1A);
+  static const success = Color(0xFF146C2E);
 
-  static const cornerRadius = 28.0;
-  static const cardPadding = 18.0;
+  static const cornerRadius = 12.0;
+  static const cardPadding = 16.0;
 
-  /// Default (light) surface aliases — prefer [of] inside widgets.
-  static const background = Color(0xFFFDFBF7);
+  static const background = Color(0xFFF8F9FF);
   static const backgroundElevated = Color(0xFFFFFFFF);
   static const panel = Color(0xFFFFFFFF);
-  static const textPrimary = Color(0xFF1C1917);
-  static const textMuted = Color(0xFF78716C);
+  static const textPrimary = Color(0xFF191C20);
+  static const textMuted = Color(0xFF43474E);
 
-  static const goldGlow = LinearGradient(
-    colors: [Color(0x330D9488), Color(0x1414B8A6), Colors.transparent],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const glassStroke = LinearGradient(
-    colors: [
-      Color(0x660D9488),
-      Color(0x3314B8A6),
-      Color(0x1A0D9488),
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  /// Resolve surface/text colors for the active brightness.
   static BrandScheme of(BuildContext context) {
     final extension = Theme.of(context).extension<BrandScheme>();
     if (extension != null) return extension;
-    return Theme.of(context).brightness == Brightness.dark
-        ? BrandScheme.dark
-        : BrandScheme.light;
+    final cs = Theme.of(context).colorScheme;
+    return BrandScheme(
+      background: cs.surface,
+      backgroundElevated: cs.surfaceContainerHighest,
+      panel: cs.surfaceContainerLow,
+      textPrimary: cs.onSurface,
+      textMuted: cs.onSurfaceVariant,
+      gold: cs.primary,
+      goldBright: cs.primary,
+      turquoise: cs.secondary,
+    );
   }
 }
 
@@ -68,27 +59,18 @@ class BrandScheme extends ThemeExtension<BrandScheme> {
   final Color goldBright;
   final Color turquoise;
 
-  static const light = BrandScheme(
-    background: Color(0xFFFDFBF7),
-    backgroundElevated: Color(0xFFFFFFFF),
-    panel: Color(0xFFFFFFFF),
-    textPrimary: Color(0xFF1C1917),
-    textMuted: Color(0xFF78716C),
-    gold: Color(0xFF0F766E),
-    goldBright: Color(0xFF0D9488),
-    turquoise: Color(0xFF14B8A6),
-  );
-
-  static const dark = BrandScheme(
-    background: Color(0xFF000000),
-    backgroundElevated: Color(0xFF0A0A0A),
-    panel: Color(0xFF111111),
-    textPrimary: Color(0xFFF5F5F5),
-    textMuted: Color(0xFFA3A3A3),
-    gold: Color(0xFF40E0D0),
-    goldBright: Color(0xFF7FFFD4),
-    turquoise: Color(0xFF5EEAD4),
-  );
+  static BrandScheme fromColorScheme(ColorScheme cs) {
+    return BrandScheme(
+      background: cs.surface,
+      backgroundElevated: cs.surfaceContainerHighest,
+      panel: cs.surfaceContainerLow,
+      textPrimary: cs.onSurface,
+      textMuted: cs.onSurfaceVariant,
+      gold: cs.primary,
+      goldBright: cs.primary,
+      turquoise: cs.secondary,
+    );
+  }
 
   @override
   BrandScheme copyWith({
