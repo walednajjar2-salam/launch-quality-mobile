@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import type { UserRow } from "../db.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -26,12 +27,12 @@ export function validatePassword(password: string): string | null {
   return null;
 }
 
-export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 12);
+export function hashPassword(password: string): string {
+  return bcrypt.hashSync(password, 12);
 }
 
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash);
+export function verifyPassword(password: string, hash: string): boolean {
+  return bcrypt.compareSync(password, hash);
 }
 
 export function signToken(userId: string, role: string): string {
@@ -60,14 +61,14 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   }
 }
 
-export function publicUser(user: { _id: unknown; name: string; email: string; phone?: string; role: string; rating: number; createdAt: Date }) {
+export function publicUser(user: UserRow) {
   return {
-    id: String(user._id),
+    id: user.id,
     name: user.name,
     email: user.email,
     phone: user.phone || "",
     role: user.role,
     rating: user.rating,
-    createdAt: user.createdAt,
+    createdAt: user.created_at,
   };
 }

@@ -1,23 +1,23 @@
 import { Router } from "express";
 import {
-  createAd,
-  deleteAd,
+  createAdHandler,
+  deleteAdHandler,
   getAd,
   likeAd,
-  listAds,
+  listAdsHandler,
   myAds,
-  updateAd,
+  updateAdHandler,
 } from "../controllers/adsController.js";
-import { authMiddleware, AuthRequest } from "../utils/auth.js";
+import { authMiddleware } from "../utils/auth.js";
 
 const router = Router();
 
-router.get("/", listAds);
+router.get("/", listAdsHandler);
 router.get("/mine", authMiddleware, myAds);
 router.get("/:id", getAd);
-router.post("/", authMiddleware, createAd);
-router.put("/:id", authMiddleware, updateAd);
-router.delete("/:id", authMiddleware, deleteAd);
+router.post("/", authMiddleware, createAdHandler);
+router.put("/:id", authMiddleware, updateAdHandler);
+router.delete("/:id", authMiddleware, deleteAdHandler);
 router.post("/:id/like", authMiddleware, likeAd);
 
 export default router;

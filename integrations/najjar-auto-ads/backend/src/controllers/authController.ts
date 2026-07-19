@@ -1,5 +1,9 @@
 import { Response } from "express";
-import { User } from "../models/index.js";
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+} from "../store/index.js";
 import {
   AuthRequest,
   hashPassword,
@@ -25,19 +29,18 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
     res.status(400).json({ ok: false, error: pwdErr });
     return;
   }
-  const exists = await User.findOne({ email: email.trim().toLowerCase() });
-  if (exists) {
+  if (findUserByEmail(email)) {
     res.status(409).json({ ok: false, error: "البريد مسجل مسبقاً" });
     return;
   }
-  const user = await User.create({
+  const user = createUser({
     name: name.trim(),
-    email: email.trim().toLowerCase(),
-    passwordHash: await hashPassword(password),
+    email: email.trim(),
+    passwordHash: hashPassword(password),
     phone: phone?.trim() || "",
     role: "user",
   });
-  const token = signToken(String(user._id), user.role);
+  const token = signToken(user.id, user.role);
   res.status(201).json({ ok: true, token, user: publicUser(user) });
 }
 
@@ -47,17 +50,17 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
     res.status(400).json({ ok: false, error: "البريد وكلمة المرور مطلوبة" });
     return;
   }
-  const user = await User.findOne({ email: email.trim().toLowerCase() });
-  if (!user || !(await verifyPassword(password, user.passwordHash))) {
+  const user = findUserByEmail(email);
+  if (!user || !verifyPassword(password, user.password_hash)) {
     res.status(401).json({ ok: false, error: "بيانات الدخول غير صحيحة" });
     return;
   }
-  const token = signToken(String(user._id), user.role);
+  const token = signToken(user.id, user.role);
   res.json({ ok: true, token, user: publicUser(user) });
 }
 
 export async function me(req: AuthRequest, res: Response): Promise<void> {
-  const user = await User.findById(req.userId);
+  const user = findUserById(req.userId!);
   if (!user) {
     res.status(404).json({ ok: false, error: "المستخدم غير موجود" });
     return;

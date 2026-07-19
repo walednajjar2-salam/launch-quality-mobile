@@ -1,15 +1,25 @@
 import cors from "cors";
 import express from "express";
 import rateLimit from "express-rate-limit";
+import fs from "fs";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
 import adsRoutes from "./routes/ads.js";
 import authRoutes from "./routes/auth.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.join(__dirname, "..", "public");
 
 export function createApp() {
   const app = express();
   app.set("trust proxy", 1);
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: process.env.NODE_ENV === "production" ? false : undefined,
+    }),
+  );
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN?.split(",").map((s) => s.trim()) || true,
@@ -37,6 +47,16 @@ export function createApp() {
 
   app.use("/api/auth", authRoutes);
   app.use("/api/ads", adsRoutes);
+
+  if (fs.existsSync(publicDir)) {
+    app.use(express.static(publicDir));
+    app.get("*", (req, res, next) => {
+      if (req.path.startsWith("/api")) return next();
+      res.sendFile(path.join(publicDir, "index.html"), (err) => {
+        if (err) next();
+      });
+    });
+  }
 
   app.use((_req, res) => {
     res.status(404).json({ ok: false, error: "Not found" });
