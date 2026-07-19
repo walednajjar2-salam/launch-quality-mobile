@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy NAJJAR Auto Ads (API + React UI in one Railway service, SQLite backend).
+# Deploy NAJJAR Auto Ads (API + React UI + MongoDB on Railway).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -27,7 +27,8 @@ $CLI variable set \
   DEMO_ADMIN_EMAIL="admin@najjar.om" \
   DEMO_ADMIN_PASSWORD="Najjar2026!" \
   NODE_ENV="production" \
-  NAJJAR_DATA_DIR="/app/data" \
+  DATABASE_ENGINE="mongo" \
+  'MONGODB_URI=${{MongoDB.MONGO_URL}}' \
   --service "$SVC" -p "$PROJECT" -e "$ENV" --skip-deploys --json >/dev/null || true
 
 $CLI up --detach -y -s "$SVC" -p "$PROJECT" -e "$ENV"
