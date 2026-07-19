@@ -1,0 +1,26 @@
+name: Deploy ERP to v72 API (web-production-08d73)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Deploy to v72 and sync data
+        env:
+          OLD_RAILWAY_TOKEN: ${{ secrets.OLD_RAILWAY_TOKEN }}
+        run: |
+          if [ -z "$OLD_RAILWAY_TOKEN" ]; then
+            echo "::error::Add OLD_RAILWAY_TOKEN to GitHub Secrets (v72 project token)"
+            exit 1
+          fi
+          chmod +x scripts/deploy-v72-api.sh
+          bash scripts/deploy-v72-api.sh

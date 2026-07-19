@@ -128,7 +128,7 @@ AI_MODEL = os.environ.get("LQ_AI_MODEL", "gpt-4o-mini").strip()
 AI_DAILY_LIMIT = max(1, int(os.environ.get("LQ_AI_DAILY_LIMIT", "50") or "50"))
 APPROVAL_THRESHOLD = float(os.environ.get("LQ_APPROVAL_THRESHOLD", "3000") or "3000")
 STAFF_APP_VERSION = os.environ.get("LQ_STAFF_APP_VERSION", "2.0.0").strip()
-PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://jawda-al-intilaqa-production.up.railway.app").strip()
+PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://web-production-08d73.up.railway.app").strip()
 _STAFF_APK_SOURCE = (
     "https://raw.githubusercontent.com/walednajjar2-salam/launch-quality-mobile/"
     "downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk"
@@ -2057,14 +2057,17 @@ def emergency_reset_team_passwords(db: sqlite3.Connection) -> None:
         ("viewer", "1234567901"),
         ("waleed.najjar", "1234567902"),
     ]
+    names = {
+        "properties.manager": "امجد محمد الجامودي",
+    }
     disable = ("Ahmad.najjar", "hospitality", "Account", "Real Estate")
     for username, password in sequential:
         row = db.execute("SELECT id FROM users WHERE username=?", (username,)).fetchone()
         if not row:
             continue
         db.execute(
-            "UPDATE users SET password_hash=?, must_change_password=0, active=1, password_changed_at=? WHERE username=?",
-            (password_hash(password), now_iso(), username),
+            "UPDATE users SET password_hash=?, must_change_password=0, active=1, password_changed_at=?, name=COALESCE(?, name) WHERE username=?",
+            (password_hash(password), now_iso(), names.get(username), username),
         )
     for username in disable:
         db.execute("UPDATE users SET active=0 WHERE username=?", (username,))

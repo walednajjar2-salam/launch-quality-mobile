@@ -9,7 +9,8 @@ COPY assets ./assets
 COPY web ./web
 
 RUN flutter pub get
-RUN flutter build web --release
+RUN flutter build web --release \
+  --dart-define=API_BASE_URL=https://web-production-08d73.up.railway.app/api
 
 FROM nginx:alpine
 
