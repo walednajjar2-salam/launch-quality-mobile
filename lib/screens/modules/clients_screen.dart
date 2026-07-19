@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 
 class ClientsScreen extends StatefulWidget {
   const ClientsScreen({super.key, required this.items});
@@ -65,7 +66,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                           style: TextStyle(
                             color: (c['balance'] ?? 0) > 0
                                 ? Colors.red.shade700
-                                : BrandColors.gold,
+                                : Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

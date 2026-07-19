@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../services/bootstrap_service.dart';
 import '../state/app_state.dart';
-import '../theme/app_theme.dart';
+import '../widgets/common.dart';
 import '../utils/layout_breakpoints.dart';
 import 'modules/clients_screen.dart';
 import 'modules/contracts_screen.dart';
@@ -28,10 +28,9 @@ class StaffShell extends StatelessWidget {
       return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          body: LuxuryBackground(
-            child: Center(
-              child: GlassCard(
-                accent: BrandColors.danger,
+          body: Center(
+              child: AppCard(
+                accent: Theme.of(context).colorScheme.error,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -39,7 +38,7 @@ class StaffShell extends StatelessWidget {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () => app.refresh(),
-                      child: const Text('إعادة المحاولة'),
+                      child: Text('إعادة المحاولة'),
                     ),
                     TextButton(
                       onPressed: () => app.logout(),
@@ -49,7 +48,6 @@ class StaffShell extends StatelessWidget {
                 ),
               ),
             ),
-          ),
         ),
       );
     }
@@ -68,8 +66,7 @@ class StaffShell extends StatelessWidget {
       child: Scaffold(
         // On iPhone, keep bottom inset for the home indicator on NavigationBar only
         // (avoid double padding under the body).
-        body: LuxuryBackground(
-          child: SafeArea(
+        body: SafeArea(
             bottom: desktop,
             child: Row(
               children: [
@@ -97,7 +94,6 @@ class StaffShell extends StatelessWidget {
               ],
             ),
           ),
-        ),
         bottomNavigationBar: desktop
             ? null
             : NavigationBar(
@@ -178,9 +174,9 @@ class StaffShell extends StatelessWidget {
   void _showMoreModules(BuildContext context, List<_StaffTab> tabs, AppState app) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: BrandColors.panel,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(BrandColors.cornerRadius)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
       ),
       builder: (_) => SafeArea(
         child: ListView(
@@ -188,7 +184,7 @@ class StaffShell extends StatelessWidget {
           children: [
             for (var i = 4; i < tabs.length; i++)
               ListTile(
-                leading: Icon(tabs[i].icon, color: BrandColors.goldBright),
+                leading: Icon(tabs[i].icon, color: Theme.of(context).colorScheme.primary),
                 title: Text(tabs[i].label),
                 onTap: () {
                   app.setNavIndex(i);
@@ -237,8 +233,8 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: GlassCard(
-        accent: BrandColors.gold,
+      child: AppCard(
+        accent: Theme.of(context).colorScheme.primary,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
@@ -248,14 +244,14 @@ class _TopBar extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: BrandColors.goldBright, fontWeight: FontWeight.bold)),
-                  Text('$userName · $role', style: const TextStyle(color: BrandColors.textMuted, fontSize: 12)),
+                  Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
+                  Text('$userName · $role', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12)),
                 ],
               ),
             ),
-            IconButton(tooltip: 'تحديث', onPressed: onRefresh, icon: const Icon(Icons.refresh, color: BrandColors.goldBright)),
-            IconButton(tooltip: 'بوابة المستأجر', onPressed: onPortal, icon: const Icon(Icons.link, color: BrandColors.turquoise)),
-            IconButton(tooltip: 'خروج', onPressed: onLogout, icon: const Icon(Icons.logout, color: BrandColors.textMuted)),
+            IconButton(tooltip: 'تحديث', onPressed: onRefresh, icon: Icon(Icons.refresh, color: Theme.of(context).colorScheme.primary)),
+            IconButton(tooltip: 'بوابة المستأجر', onPressed: onPortal, icon: Icon(Icons.link, color: Theme.of(context).colorScheme.secondary)),
+            IconButton(tooltip: 'خروج', onPressed: onLogout, icon: Icon(Icons.logout, color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ],
         ),
       ),
@@ -276,7 +272,7 @@ class _SideRail extends StatelessWidget {
       selectedIndex: index,
       onDestinationSelected: onSelect,
       labelType: NavigationRailLabelType.all,
-      backgroundColor: BrandColors.panel.withValues(alpha: 0.92),
+      backgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.92),
       destinations: tabs
           .map((t) => NavigationRailDestination(icon: Icon(t.icon), label: Text(t.label)))
           .toList(),

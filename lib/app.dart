@@ -12,7 +12,6 @@ import 'services/bootstrap_service.dart';
 import 'services/portal_service.dart';
 import 'state/app_state.dart';
 import 'state/portal_state.dart';
-import 'theme/app_theme.dart';
 
 GoRouter createRouter(AppState app, PortalState portal) {
   return GoRouter(
@@ -110,8 +109,23 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
       child: MaterialApp.router(
         title: 'جودة الانطلاقة',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.dark(),
-        themeMode: ThemeMode.dark,
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF00639A),
+            brightness: Brightness.light,
+          ),
+        ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF00639A),
+            brightness: Brightness.dark,
+          ),
+        ),
+        themeMode: ThemeMode.system,
         routerConfig: _router,
         builder: (context, child) {
           return Directionality(

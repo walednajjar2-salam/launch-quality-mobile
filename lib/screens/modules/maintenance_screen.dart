@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/bootstrap_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
 
 class MaintenanceScreen extends StatefulWidget {
   const MaintenanceScreen({
@@ -64,7 +64,7 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
           child: Row(
             children: [
               ChoiceChip(
-                label: const Text('مفتوحة'),
+                label: Text('مفتوحة'),
                 selected: _filter == 'open',
                 onSelected: (_) => setState(() => _filter = 'open'),
               ),
@@ -92,8 +92,8 @@ class _MaintenanceScreenState extends State<MaintenanceScreen> {
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (_, i) {
                     final m = items[i];
-                    return GlassCard(
-                      accent: BrandColors.tealDeep,
+                    return AppCard(
+                      accent: Theme.of(context).colorScheme.tertiary,
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: ListTile(
                         title: Text('${m['title'] ?? 'طلب صيانة'}'),

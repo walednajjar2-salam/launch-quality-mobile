@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
-import '../theme/app_theme.dart';
+import '../widgets/common.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,15 +36,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: LuxuryBackground(
-          child: SafeArea(
+        body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 460),
-                  child: GlassCard(
-                    accent: BrandColors.gold,
+                  child: AppCard(
+                    accent: Theme.of(context).colorScheme.primary,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -58,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               errorBuilder: (_, __, ___) => Icon(
                                 Icons.apartment_rounded,
                                 size: 72,
-                                color: BrandColors.goldBright,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),
@@ -69,14 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: BrandColors.goldBright,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
+                        Text(
                           'waleed.najjar / 1234567902',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: BrandColors.textMuted, fontSize: 12),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
                         ),
                         const SizedBox(height: 24),
                         TextField(
@@ -101,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         if (app.errorMessage != null) ...[
                           const SizedBox(height: 12),
-                          Text(app.errorMessage!, style: const TextStyle(color: BrandColors.danger)),
+                          Text(app.errorMessage!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ],
                         const SizedBox(height: 20),
                         FilledButton(
@@ -120,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-        ),
       ),
     );
   }

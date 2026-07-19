@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../state/portal_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
 
 class PortalGateScreen extends StatefulWidget {
   const PortalGateScreen({super.key, this.initialToken});
@@ -57,15 +57,14 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: LuxuryBackground(
-          child: SafeArea(
+        body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 460),
-                  child: GlassCard(
-                    accent: BrandColors.turquoise,
+                  child: AppCard(
+                    accent: Theme.of(context).colorScheme.secondary,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -74,10 +73,10 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                             'assets/logo.png',
                             width: 88,
                             height: 88,
-                            errorBuilder: (_, __, ___) => const Icon(
+                            errorBuilder: (_, __, ___) => Icon(
                               Icons.home_work_outlined,
                               size: 64,
-                              color: BrandColors.goldBright,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),
@@ -86,15 +85,15 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                           'بوابة المستأجر',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: BrandColors.goldBright,
+                                color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
+                        Text(
                           'أدخل portal_token من رابط البوابة',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: BrandColors.textMuted),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                         ),
                         const SizedBox(height: 20),
                         TextField(
@@ -106,7 +105,7 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                         ),
                         if (portal.errorMessage != null) ...[
                           const SizedBox(height: 12),
-                          Text(portal.errorMessage!, style: const TextStyle(color: BrandColors.danger)),
+                          Text(portal.errorMessage!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ],
                         const SizedBox(height: 16),
                         FilledButton(
@@ -130,7 +129,6 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
               ),
             ),
           ),
-        ),
       ),
     );
   }

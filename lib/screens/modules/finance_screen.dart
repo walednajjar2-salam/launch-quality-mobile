@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../services/bootstrap_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 import '../../utils/layout_breakpoints.dart';
 
 class FinanceScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class FinanceScreen extends StatelessWidget {
     );
 
     return RefreshIndicator(
-      color: BrandColors.gold,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: () => context.read<AppState>().refresh(),
       child: ListView(
         padding: EdgeInsets.all(LayoutBreakpoints.isDesktop(context) ? 24 : 16),
@@ -40,42 +41,42 @@ class FinanceScreen extends StatelessWidget {
                     label: 'الإيرادات',
                     value: money(k['income']),
                     icon: Icons.arrow_upward_rounded,
-                    accent: BrandColors.success,
-                    valueColor: BrandColors.success,
+                    accent: Colors.green,
+                    valueColor: Colors.green,
                   ),
                   KpiTile(
                     label: 'المصروفات',
                     value: money(k['expense']),
                     icon: Icons.arrow_downward_rounded,
-                    accent: BrandColors.danger,
-                    valueColor: BrandColors.danger,
+                    accent: Theme.of(context).colorScheme.error,
+                    valueColor: Theme.of(context).colorScheme.error,
                   ),
                   KpiTile(
                     label: 'الأرباح',
                     value: money(k['net']),
                     icon: Icons.account_balance_wallet_outlined,
-                    accent: BrandColors.gold,
+                    accent: Theme.of(context).colorScheme.primary,
                   ),
                   KpiTile(
                     label: 'المحصّل',
                     value: money(k['paid']),
                     icon: Icons.payments_outlined,
-                    accent: BrandColors.turquoise,
+                    accent: Theme.of(context).colorScheme.secondary,
                   ),
                 ],
               );
             },
           ),
           const SizedBox(height: 18),
-          GlassCard(
-            accent: BrandColors.turquoise,
+          AppCard(
+            accent: Theme.of(context).colorScheme.secondary,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'الأداء الشهري',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: BrandColors.goldBright,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -116,7 +117,7 @@ class _FinanceChart extends StatelessWidget {
           show: true,
           drawVerticalLine: false,
           getDrawingHorizontalLine: (v) => FlLine(
-            color: BrandColors.gold.withValues(alpha: 0.08),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
             strokeWidth: 1,
           ),
         ),
@@ -129,7 +130,7 @@ class _FinanceChart extends StatelessWidget {
               reservedSize: 42,
               getTitlesWidget: (v, _) => Text(
                 v.toInt().toString(),
-                style: const TextStyle(color: BrandColors.textMuted, fontSize: 10),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10),
               ),
             ),
           ),
@@ -143,7 +144,7 @@ class _FinanceChart extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 6),
                   child: Text(
                     '${series[i]['month'] ?? ''}',
-                    style: const TextStyle(color: BrandColors.textMuted, fontSize: 10),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 10),
                   ),
                 );
               },
@@ -155,14 +156,14 @@ class _FinanceChart extends StatelessWidget {
           LineChartBarData(
             spots: incomeSpots,
             isCurved: true,
-            color: BrandColors.success,
+            color: Colors.green,
             barWidth: 3,
             dotData: const FlDotData(show: false),
           ),
           LineChartBarData(
             spots: expenseSpots,
             isCurved: true,
-            color: BrandColors.danger,
+            color: Theme.of(context).colorScheme.error,
             barWidth: 3,
             dotData: const FlDotData(show: false),
           ),

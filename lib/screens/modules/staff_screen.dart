@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/bootstrap_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
 import '../../utils/layout_breakpoints.dart';
 
 class StaffScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class StaffScreen extends StatelessWidget {
     final cols = LayoutBreakpoints.gridColumns(context);
 
     return RefreshIndicator(
-      color: BrandColors.gold,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: () => context.read<AppState>().refresh(),
       child: ListView(
         padding: EdgeInsets.all(LayoutBreakpoints.isDesktop(context) ? 24 : 16),
@@ -39,25 +39,25 @@ class StaffScreen extends StatelessWidget {
                 label: 'الحضور',
                 value: '$active',
                 icon: Icons.person_pin_circle_outlined,
-                accent: BrandColors.success,
+                accent: Colors.green,
               ),
               KpiTile(
                 label: 'الغياب',
                 value: '$absences',
                 icon: Icons.person_off_outlined,
-                accent: BrandColors.danger,
+                accent: Theme.of(context).colorScheme.error,
               ),
               KpiTile(
                 label: 'المناوبات',
                 value: '${active.clamp(0, 12)}',
                 icon: Icons.schedule_outlined,
-                accent: BrandColors.gold,
+                accent: Theme.of(context).colorScheme.primary,
               ),
               KpiTile(
                 label: 'نشطون',
                 value: '$active',
                 icon: Icons.groups_2_outlined,
-                accent: BrandColors.turquoise,
+                accent: Theme.of(context).colorScheme.secondary,
               ),
             ],
           ),
@@ -65,7 +65,7 @@ class StaffScreen extends StatelessWidget {
           Text(
             'قائمة الموظفين',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: BrandColors.goldBright,
+                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -76,15 +76,15 @@ class StaffScreen extends StatelessWidget {
             ...employees.map((e) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: GlassCard(
-                  accent: BrandColors.tealDeep,
+                child: AppCard(
+                  accent: Theme.of(context).colorScheme.tertiary,
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
-                      backgroundColor: BrandColors.gold.withValues(alpha: 0.15),
+                      backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
                       child: Text(
                         '${e['name'] ?? '?'}'.substring(0, 1),
-                        style: const TextStyle(color: BrandColors.goldBright),
+                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
                       ),
                     ),
                     title: Text('${e['name'] ?? ''}'),
@@ -94,8 +94,8 @@ class StaffScreen extends StatelessWidget {
                           ? Icons.check_circle
                           : Icons.remove_circle_outline,
                       color: '${e['status'] ?? ''}'.toLowerCase().contains('active')
-                          ? BrandColors.success
-                          : BrandColors.textMuted,
+                          ? Colors.green
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ),
