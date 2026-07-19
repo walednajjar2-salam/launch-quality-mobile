@@ -43,16 +43,22 @@ body.saas-luxury .ev-neural-canvas{opacity:.28}
 .ev-holo-orbs i:nth-child(3){width:180px;height:180px;left:42%;bottom:22%;background:rgba(0,212,255,.12);animation-delay:-12s}
 @keyframes evOrbFloat{from{transform:translate(0,0) scale(1)}to{transform:translate(12px,-18px) scale(1.06)}}
 
-/* Login grid — centered mode */
+/* Login shell — split by default; centered only with .login-stage--center */
 body.enterprise-vision.login-ultra .login-shell{position:relative;z-index:2;min-height:100dvh;display:flex!important;flex-direction:column!important}
 body.enterprise-vision.login-ultra .login-stage{
+  display:grid!important;
+  grid-template-columns:1.05fr .95fr!important;
+  min-height:0!important;
+  flex:1!important;
+  width:100%!important;
+  align-items:stretch!important;
+}
+body.enterprise-vision.login-ultra .login-stage--center{
   display:flex!important;
   flex-direction:column!important;
   align-items:center!important;
   justify-content:center!important;
   grid-template-columns:1fr!important;
-  min-height:0!important;
-  flex:1!important;
 }
 body.enterprise-vision.login-ultra .login-stage--center .login-auth{
   border-inline-start:none!important;

@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css?v=ultra15">
-  <link rel="stylesheet" href="lq-shell.css?v=shell17">
+  <link rel="stylesheet" href="app.css?v=ultra16">
+  <link rel="stylesheet" href="lq-shell.css?v=shell18">
   <link rel="stylesheet" href="lq-ui-unify.css?v=ui2">
   <link rel="stylesheet" href="lq-print.css?v=lq2" media="print">
 </head>
@@ -105,36 +105,19 @@
       <span class="login-float-icon fi-6" data-tone="rose"><span class="lfi-orbit"></span><span class="lfi-glow"></span><span class="lfi-emoji">✨</span></span>
     </div>
     <div class="login-shell">
-      <div class="login-top-logo" aria-hidden="false">
-        <div class="login-logo-wrap login-logo-wrap--float">
-          <img src="assets/brand-logo-gold.png?v=17" alt="مشاريع جودة الانطلاقة" class="login-logo-img login-logo-img--float" width="739" height="682" decoding="async">
-        </div>
-      </div>
+      <!-- Split login (RTL): showcase first = logo on the right, auth second = form on the left -->
+      <div class="login-stage">
+        <aside class="login-showcase" aria-label="هوية جودة الانطلاقة">
+          <div class="login-showcase-glow" aria-hidden="true"></div>
+          <div class="login-logo-wrap login-logo-wrap--float">
+            <img src="assets/brand-logo-gold.png?v=18" alt="مشاريع جودة الانطلاقة" class="login-logo-img login-logo-img--float" width="739" height="682" decoding="async">
+          </div>
+          <h1 class="login-showcase-title">جودة الانطلاقة ش.م.م</h1>
+          <p class="login-tagline">Launch Quality LLC · Real Estate &amp; Hospitality ERP</p>
+        </aside>
 
-      <div class="va-login-analytics" aria-label="Visual Analytics preview">
-        <div class="va-login-analytics-head">
-          <strong>🌟 Visual Analytics</strong>
-          <span>Live · BI</span>
-        </div>
-        <div class="va-insight-grid">
-          <div class="va-insight-card"><b>96%</b><span>Occupancy</span><div class="va-mini-chart"><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="va-insight-card"><b>Live</b><span>Revenue</span><div class="va-mini-chart"><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="va-insight-card"><b>AI</b><span>Insights</span><div class="va-mini-chart"><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="va-insight-card"><b>24/7</b><span>Monitoring</span><div class="va-mini-chart"><i></i><i></i><i></i><i></i><i></i></div></div>
-        </div>
-        <div class="va-login-pill-row">
-          <span class="va-login-pill">📊 Data Insights</span>
-          <span class="va-login-pill">💰 Finance BI</span>
-          <span class="va-login-pill">🏢 Portfolio</span>
-          <span class="va-login-pill">🔮 Predictive</span>
-        </div>
-      </div>
-
-      <div class="login-stage login-stage--center">
-        <div class="login-glass-stage">
-          <div class="login-glass-stage-shine" aria-hidden="true"></div>
-          <div class="login-auth login-auth--float">
-          <section class="login-glass-card ev-auth-card login-card--floating" aria-label="تسجيل الدخول">
+        <div class="login-auth">
+          <section class="login-glass-card ev-auth-card" aria-label="تسجيل الدخول">
             <div class="login-card-head">
               <div>
                 <span class="login-secure-badge" dir="ltr">Enterprise Security · SOC 2 Ready</span>
@@ -213,7 +196,6 @@
               <span class="ev-trust-pill" dir="ltr">Audit Trail</span>
             </div>
           </section>
-          </div>
         </div>
       </div>
 
