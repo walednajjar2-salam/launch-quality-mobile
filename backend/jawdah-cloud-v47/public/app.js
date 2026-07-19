@@ -1031,9 +1031,6 @@ function renderDashboard(){
     return `<button type="button" class="pin ${cls}" title="${propertyLabel(p)}" style="left:${left}%;top:${top}%" onclick="showMapPopupById('${p.id}',${left},${top})"></button>`;
   }).join('');
   if(props[0]) showMapPopup(props[0], positions[0][0], positions[0][1]);
-  if(typeof lqRenderHospitalityMap==='function'){
-    requestAnimationFrame(()=>lqRenderHospitalityMap(props));
-  }
 
   const projGrid=$('#saasProjectsGrid');
   if(projGrid) projGrid.innerHTML=props.slice(0,12).map(p=>{
