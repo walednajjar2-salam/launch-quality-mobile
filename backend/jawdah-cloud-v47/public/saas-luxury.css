@@ -366,9 +366,44 @@ body.login-ultra.saas-login .login-showcase{
   text-align:center!important;
   justify-content:center!important;
   padding:clamp(32px,4vw,56px)!important;
+  position:relative!important;
+  z-index:3!important;
 }
-body.login-ultra.saas-login .login-showcase-title{margin:0 0 6px!important}
+body.login-ultra.saas-login .login-showcase-title{
+  margin:12px 0 6px!important;
+  font-family:"Tajawal","Segoe UI",sans-serif!important;
+  font-size:clamp(22px,2.6vw,32px)!important;
+  font-weight:800!important;
+  background:linear-gradient(135deg,#fde68a 0%,#fbbf24 45%,#d4af37 100%)!important;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  color:transparent!important;
+  filter:drop-shadow(0 0 16px rgba(212,175,55,.28))!important;
+}
 body.login-ultra.saas-login .login-tagline{margin:0!important;color:var(--saas-muted)!important;font-size:13px!important}
+/* Split: large floating logo lives in the right (RTL first) column */
+body.login-ultra.saas-login .login-showcase .login-logo-wrap--float{
+  width:clamp(240px,36vw,420px)!important;
+  max-width:min(92%,420px)!important;
+  margin:0 auto 8px!important;
+  pointer-events:none!important;
+}
+body.login-ultra.saas-login .login-showcase .login-logo-img--float{
+  width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  filter:drop-shadow(0 20px 44px rgba(212,175,55,.42)) drop-shadow(0 8px 24px rgba(0,0,0,.25))!important;
+}
+body.login-ultra.saas-login .login-stage:not(.login-stage--center) .login-auth{
+  max-width:none!important;
+  width:100%!important;
+}
+body.login-ultra.saas-login .login-stage:not(.login-stage--center) .login-glass-card{
+  max-width:min(480px,100%)!important;
+  margin:0 auto!important;
+}
 
 /* Bottom center band — about + chips */
 body.login-ultra.saas-login .login-bottom-center{
