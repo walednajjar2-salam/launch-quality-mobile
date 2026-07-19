@@ -62,4 +62,14 @@ railway up --detach
 
 GitHub Actions: أضف `RAILWAY_TOKEN` — راجع `.github/DEPLOY.md`
 
+## NAJJAR Auto Ads (إعلانات السيارات)
+
+منصة MERN مدمجة في `integrations/najjar-auto-ads/` — راجع [README](integrations/najjar-auto-ads/README.md).
+
+| الخدمة | التشغيل المحلي |
+|--------|----------------|
+| Docker | `cd integrations/najjar-auto-ads && docker compose up -d` |
+| الواجهة | http://localhost:3000 |
+| API | http://localhost:4000/api/health |
+
 تفاصيل النشر: `backend/jawdah-cloud-v47/RAILWAY.md`

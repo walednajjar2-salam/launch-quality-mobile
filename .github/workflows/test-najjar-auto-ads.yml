@@ -1,0 +1,42 @@
+name: Test NAJJAR Auto Ads
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'integrations/najjar-auto-ads/**'
+  pull_request:
+    paths:
+      - 'integrations/najjar-auto-ads/**'
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/najjar-auto-ads/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: integrations/najjar-auto-ads/backend/package-lock.json
+      - run: npm install
+      - run: npm test
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/najjar-auto-ads/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm run build
+        env:
+          VITE_API_BASE_URL: /api

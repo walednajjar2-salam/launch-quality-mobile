@@ -1,0 +1,56 @@
+name: Deploy NAJJAR Auto Ads to Railway
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'integrations/najjar-auto-ads/**'
+      - '.github/workflows/deploy-najjar-auto-ads.yml'
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: integrations/najjar-auto-ads/backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+      - name: Deploy API
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::warning::RAILWAY_TOKEN not set — skipping NAJJAR API deploy"
+            exit 0
+          fi
+          railway up --detach \
+            --service "${NAJJAR_API_SERVICE:-NAJJAR-Auto-Ads-API}" \
+            -p "${RAILWAY_PROJECT_ID:-9239907c-96e9-4763-b2d3-2d57931f7bba" \
+            -e "${RAILWAY_ENVIRONMENT:-production}"
+
+  deploy-web:
+    runs-on: ubuntu-latest
+    needs: deploy-api
+    defaults:
+      run:
+        working-directory: integrations/najjar-auto-ads/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+      - name: Deploy Web
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          VITE_API_BASE_URL: ${{ vars.NAJJAR_API_URL || 'https://najjar-auto-ads-api-production.up.railway.app/api' }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::warning::RAILWAY_TOKEN not set — skipping NAJJAR Web deploy"
+            exit 0
+          fi
+          railway up --detach \
+            --service "${NAJJAR_WEB_SERVICE:-NAJJAR-Auto-Ads-Web}" \
+            -p "${RAILWAY_PROJECT_ID:-9239907c-96e9-4763-b2d3-2d57931f7bba" \
+            -e "${RAILWAY_ENVIRONMENT:-production}"
