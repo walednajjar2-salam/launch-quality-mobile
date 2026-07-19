@@ -29,11 +29,11 @@ export async function register(req: AuthRequest, res: Response): Promise<void> {
     res.status(400).json({ ok: false, error: pwdErr });
     return;
   }
-  if (findUserByEmail(email)) {
+  if (await findUserByEmail(email)) {
     res.status(409).json({ ok: false, error: "البريد مسجل مسبقاً" });
     return;
   }
-  const user = createUser({
+  const user = await createUser({
     name: name.trim(),
     email: email.trim(),
     passwordHash: hashPassword(password),
@@ -50,7 +50,7 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
     res.status(400).json({ ok: false, error: "البريد وكلمة المرور مطلوبة" });
     return;
   }
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user || !verifyPassword(password, user.password_hash)) {
     res.status(401).json({ ok: false, error: "بيانات الدخول غير صحيحة" });
     return;
@@ -60,7 +60,7 @@ export async function login(req: AuthRequest, res: Response): Promise<void> {
 }
 
 export async function me(req: AuthRequest, res: Response): Promise<void> {
-  const user = findUserById(req.userId!);
+  const user = await findUserById(req.userId!);
   if (!user) {
     res.status(404).json({ ok: false, error: "المستخدم غير موجود" });
     return;

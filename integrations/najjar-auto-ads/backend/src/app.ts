@@ -8,6 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import adsRoutes from "./routes/ads.js";
 import authRoutes from "./routes/auth.js";
+import { getEngine } from "./store/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.join(__dirname, "..", "public");
@@ -42,6 +43,7 @@ export function createApp() {
       ok: true,
       service: "najjar-auto-ads-api",
       version: "1.0.0",
+      database: getEngine(),
     });
   });
 
