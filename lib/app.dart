@@ -110,8 +110,9 @@ class _LaunchQualityAppState extends State<LaunchQualityApp> {
       child: MaterialApp.router(
         title: 'جودة الانطلاقة',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.dark(),
-        themeMode: ThemeMode.dark,
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: ThemeMode.system,
         routerConfig: _router,
         builder: (context, child) {
           return Directionality(

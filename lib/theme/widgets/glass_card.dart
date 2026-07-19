@@ -20,6 +20,7 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     final body = ClipRRect(
       borderRadius: BorderRadius.circular(BrandColors.cornerRadius),
       child: BackdropFilter(
@@ -30,20 +31,20 @@ class GlassCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                BrandColors.panel.withValues(alpha: 0.92),
-                BrandColors.backgroundElevated.withValues(alpha: 0.88),
+                brand.panel.withValues(alpha: 0.92),
+                brand.backgroundElevated.withValues(alpha: 0.88),
               ],
             ),
             borderRadius: BorderRadius.circular(BrandColors.cornerRadius),
             border: Border.all(color: accent.withValues(alpha: 0.28)),
             boxShadow: [
               BoxShadow(
-                color: BrandColors.gold.withValues(alpha: 0.12),
+                color: brand.gold.withValues(alpha: 0.12),
                 blurRadius: 24,
                 offset: const Offset(0, 10),
               ),
               BoxShadow(
-                color: BrandColors.turquoise.withValues(alpha: 0.08),
+                color: brand.turquoise.withValues(alpha: 0.08),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -103,6 +104,7 @@ class KpiTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     return GlassCard(
       accent: accent,
       child: Column(
@@ -115,14 +117,14 @@ class KpiTile extends StatelessWidget {
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: valueColor ?? BrandColors.textPrimary,
+                  color: valueColor ?? brand.textPrimary,
                 ),
           ),
           const SizedBox(height: 6),
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: BrandColors.goldBright,
+                  color: brand.goldBright,
                   fontWeight: FontWeight.w600,
                 ),
           ),

@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final app = context.watch<AppState>();
     final loading = app.status == AppStatus.loading;
+    final brand = BrandColors.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 460),
                   child: GlassCard(
-                    accent: BrandColors.gold,
+                    accent: brand.gold,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               errorBuilder: (_, __, ___) => Icon(
                                 Icons.apartment_rounded,
                                 size: 72,
-                                color: BrandColors.goldBright,
+                                color: brand.goldBright,
                               ),
                             ),
                           ),
@@ -69,14 +70,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: BrandColors.goldBright,
+                                color: brand.goldBright,
                               ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
+                        Text(
                           'waleed.najjar / 1234567902',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: BrandColors.textMuted, fontSize: 12),
+                          style: TextStyle(color: brand.textMuted, fontSize: 12),
                         ),
                         const SizedBox(height: 24),
                         TextField(

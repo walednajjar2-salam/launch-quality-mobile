@@ -41,6 +41,7 @@ class _PortalShellState extends State<PortalShell> {
 
     final tabs = ['نظرة عامة', 'الفواتير', 'المدفوعات', 'الصيانة'];
     final desktop = LayoutBreakpoints.isDesktop(context);
+    final brand = BrandColors.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -52,7 +53,7 @@ class _PortalShellState extends State<PortalShell> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                   child: GlassCard(
-                    accent: BrandColors.gold,
+                    accent: brand.gold,
                     child: Row(
                       children: [
                         Image.asset('assets/logo.png', width: 42, height: 42),
@@ -64,13 +65,13 @@ class _PortalShellState extends State<PortalShell> {
                               Text(
                                 data.clientName,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: BrandColors.goldBright,
+                                      color: brand.goldBright,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
                               Text(
                                 'الرصيد: ${money(data.summary['balance'])}',
-                                style: const TextStyle(color: BrandColors.textMuted),
+                                style: TextStyle(color: brand.textMuted),
                               ),
                             ],
                           ),
@@ -78,7 +79,7 @@ class _PortalShellState extends State<PortalShell> {
                         IconButton(
                           tooltip: 'تحديث',
                           onPressed: portal.refresh,
-                          icon: const Icon(Icons.refresh, color: BrandColors.goldBright),
+                          icon: Icon(Icons.refresh, color: brand.goldBright),
                         ),
                         IconButton(
                           tooltip: 'خروج',
@@ -86,7 +87,7 @@ class _PortalShellState extends State<PortalShell> {
                             await portal.logout();
                             if (context.mounted) context.go('/portal');
                           },
-                          icon: const Icon(Icons.logout, color: BrandColors.textMuted),
+                          icon: Icon(Icons.logout, color: brand.textMuted),
                         ),
                       ],
                     ),
@@ -160,9 +161,14 @@ class _PortalShellState extends State<PortalShell> {
         ),
         const SizedBox(height: 12),
         GlassCard(
-          child: Text(
-            'العقود النشطة: ${data.contracts.length}',
-            style: const TextStyle(color: BrandColors.textPrimary),
+          child: Builder(
+            builder: (context) {
+              final brand = BrandColors.of(context);
+              return Text(
+                'العقود النشطة: ${data.contracts.length}',
+                style: TextStyle(color: brand.textPrimary),
+              );
+            },
           ),
         ),
       ],

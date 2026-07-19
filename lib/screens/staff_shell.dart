@@ -176,9 +176,10 @@ class StaffShell extends StatelessWidget {
   }
 
   void _showMoreModules(BuildContext context, List<_StaffTab> tabs, AppState app) {
+    final brand = BrandColors.of(context);
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: BrandColors.panel,
+      backgroundColor: brand.panel,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(BrandColors.cornerRadius)),
       ),
@@ -188,7 +189,7 @@ class StaffShell extends StatelessWidget {
           children: [
             for (var i = 4; i < tabs.length; i++)
               ListTile(
-                leading: Icon(tabs[i].icon, color: BrandColors.goldBright),
+                leading: Icon(tabs[i].icon, color: brand.goldBright),
                 title: Text(tabs[i].label),
                 onTap: () {
                   app.setNavIndex(i);
@@ -235,10 +236,11 @@ class _TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: GlassCard(
-        accent: BrandColors.gold,
+        accent: brand.gold,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: Row(
           children: [
@@ -248,14 +250,14 @@ class _TopBar extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: BrandColors.goldBright, fontWeight: FontWeight.bold)),
-                  Text('$userName · $role', style: const TextStyle(color: BrandColors.textMuted, fontSize: 12)),
+                  Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: brand.goldBright, fontWeight: FontWeight.bold)),
+                  Text('$userName · $role', style: TextStyle(color: brand.textMuted, fontSize: 12)),
                 ],
               ),
             ),
-            IconButton(tooltip: 'تحديث', onPressed: onRefresh, icon: const Icon(Icons.refresh, color: BrandColors.goldBright)),
-            IconButton(tooltip: 'بوابة المستأجر', onPressed: onPortal, icon: const Icon(Icons.link, color: BrandColors.turquoise)),
-            IconButton(tooltip: 'خروج', onPressed: onLogout, icon: const Icon(Icons.logout, color: BrandColors.textMuted)),
+            IconButton(tooltip: 'تحديث', onPressed: onRefresh, icon: Icon(Icons.refresh, color: brand.goldBright)),
+            IconButton(tooltip: 'بوابة المستأجر', onPressed: onPortal, icon: Icon(Icons.link, color: brand.turquoise)),
+            IconButton(tooltip: 'خروج', onPressed: onLogout, icon: Icon(Icons.logout, color: brand.textMuted)),
           ],
         ),
       ),
@@ -272,11 +274,12 @@ class _SideRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     return NavigationRail(
       selectedIndex: index,
       onDestinationSelected: onSelect,
       labelType: NavigationRailLabelType.all,
-      backgroundColor: BrandColors.panel.withValues(alpha: 0.92),
+      backgroundColor: brand.panel.withValues(alpha: 0.92),
       destinations: tabs
           .map((t) => NavigationRailDestination(icon: Icon(t.icon), label: Text(t.label)))
           .toList(),

@@ -82,7 +82,7 @@ class ProjectsScreen extends StatelessWidget {
                             const SizedBox(height: 6),
                             Text(
                               'الحالة: ${p['status'] ?? 'نشط'}',
-                              style: const TextStyle(color: BrandColors.textMuted),
+                              style: TextStyle(color: BrandColors.textMuted),
                             ),
                             const SizedBox(height: 6),
                             Text(

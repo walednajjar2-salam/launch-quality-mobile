@@ -6,15 +6,11 @@ import 'app.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // iPhone / iPad: dark chrome that matches the luxury theme (status bar + home indicator).
-  // Orientation: iPhone portrait via Info.plist; iPad keeps landscape there.
+  // Follow the device appearance (light/dark). Per-screen overlays come from AppTheme.
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark,
-      systemNavigationBarColor: Color(0xFF0A0A0A),
-      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
     ),
   );

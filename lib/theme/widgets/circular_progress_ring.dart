@@ -20,6 +20,7 @@ class CircularProgressRing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     final value = (progress.clamp(0, 100)) / 100;
     return SizedBox(
       width: size,
@@ -45,14 +46,14 @@ class CircularProgressRing extends StatelessWidget {
                 '${progress.round()}%',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: BrandColors.textPrimary,
+                      color: brand.textPrimary,
                     ),
               ),
               if (label != null)
                 Text(
                   label!,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: BrandColors.textMuted,
+                        color: brand.textMuted,
                       ),
                 ),
             ],

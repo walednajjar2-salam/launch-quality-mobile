@@ -9,18 +9,19 @@ class LuxuryBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = BrandColors.of(context);
     return Stack(
       fit: StackFit.expand,
       children: [
         DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                BrandColors.background,
-                BrandColors.backgroundElevated,
-                BrandColors.panel,
+                brand.background,
+                brand.backgroundElevated,
+                brand.panel,
               ],
             ),
           ),
@@ -28,16 +29,16 @@ class LuxuryBackground extends StatelessWidget {
         Positioned(
           top: -80,
           left: -40,
-          child: _glow(BrandColors.gold.withValues(alpha: 0.14), 280),
+          child: _glow(brand.gold.withValues(alpha: 0.14), 280),
         ),
         Positioned(
           top: -60,
           right: -20,
-          child: _glow(BrandColors.turquoise.withValues(alpha: 0.10), 240),
+          child: _glow(brand.turquoise.withValues(alpha: 0.10), 240),
         ),
         Center(
           child: Opacity(
-            opacity: 0.06,
+            opacity: Theme.of(context).brightness == Brightness.dark ? 0.06 : 0.04,
             child: Image.asset(
               'assets/logo.png',
               width: 360,

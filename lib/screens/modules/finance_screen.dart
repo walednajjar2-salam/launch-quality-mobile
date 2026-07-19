@@ -129,7 +129,7 @@ class _FinanceChart extends StatelessWidget {
               reservedSize: 42,
               getTitlesWidget: (v, _) => Text(
                 v.toInt().toString(),
-                style: const TextStyle(color: BrandColors.textMuted, fontSize: 10),
+                style: TextStyle(color: BrandColors.textMuted, fontSize: 10),
               ),
             ),
           ),
@@ -143,7 +143,7 @@ class _FinanceChart extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 6),
                   child: Text(
                     '${series[i]['month'] ?? ''}',
-                    style: const TextStyle(color: BrandColors.textMuted, fontSize: 10),
+                    style: TextStyle(color: BrandColors.textMuted, fontSize: 10),
                   ),
                 );
               },

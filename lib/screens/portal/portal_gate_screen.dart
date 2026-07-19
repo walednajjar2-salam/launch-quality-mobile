@@ -47,6 +47,7 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
   @override
   Widget build(BuildContext context) {
     final portal = context.watch<PortalState>();
+    final brand = BrandColors.of(context);
 
     if (portal.status == PortalStatus.ready) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -65,7 +66,7 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 460),
                   child: GlassCard(
-                    accent: BrandColors.turquoise,
+                    accent: brand.turquoise,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -74,10 +75,10 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                             'assets/logo.png',
                             width: 88,
                             height: 88,
-                            errorBuilder: (_, __, ___) => const Icon(
+                            errorBuilder: (_, __, ___) => Icon(
                               Icons.home_work_outlined,
                               size: 64,
-                              color: BrandColors.goldBright,
+                              color: brand.goldBright,
                             ),
                           ),
                         ),
@@ -86,15 +87,15 @@ class _PortalGateScreenState extends State<PortalGateScreen> {
                           'بوابة المستأجر',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: BrandColors.goldBright,
+                                color: brand.goldBright,
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
+                        Text(
                           'أدخل portal_token من رابط البوابة',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: BrandColors.textMuted),
+                          style: TextStyle(color: brand.textMuted),
                         ),
                         const SizedBox(height: 20),
                         TextField(

@@ -47,7 +47,7 @@ class DashboardScreen extends StatelessWidget {
                               color: BrandColors.goldBright,
                             ),
                       ),
-                      Text(data.user.roleLabel, style: const TextStyle(color: BrandColors.textMuted)),
+                      Text(data.user.roleLabel, style: TextStyle(color: BrandColors.textMuted)),
                       const SizedBox(height: 10),
                       Text('المشاريع النشطة: ${k['rented'] ?? k['properties'] ?? 0}'),
                       Text('الإيرادات: ${money(k['income'])}'),
