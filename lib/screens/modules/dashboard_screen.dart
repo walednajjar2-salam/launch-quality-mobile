@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../services/bootstrap_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 import '../../utils/layout_breakpoints.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -19,20 +20,20 @@ class DashboardScreen extends StatelessWidget {
     final cols = LayoutBreakpoints.gridColumns(context);
 
     return RefreshIndicator(
-      color: BrandColors.gold,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: () => context.read<AppState>().refresh(),
       child: ListView(
         padding: EdgeInsets.all(LayoutBreakpoints.isDesktop(context) ? 24 : 16),
         children: [
-          GlassCard(
-            accent: BrandColors.turquoise,
+          AppCard(
+            accent: Theme.of(context).colorScheme.secondary,
             child: Row(
               children: [
                 CircularProgressRing(
                   progress: health,
                   size: 110,
                   strokeWidth: 10,
-                  accent: BrandColors.gold,
+                  accent: Theme.of(context).colorScheme.primary,
                   label: 'إنجاز',
                 ),
                 const SizedBox(width: 18),
@@ -44,10 +45,10 @@ class DashboardScreen extends StatelessWidget {
                         'مرحباً ${data.user.name}',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: BrandColors.goldBright,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                       ),
-                      Text(data.user.roleLabel, style: TextStyle(color: BrandColors.textMuted)),
+                      Text(data.user.roleLabel, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
                       const SizedBox(height: 10),
                       Text('المشاريع النشطة: ${k['rented'] ?? k['properties'] ?? 0}'),
                       Text('الإيرادات: ${money(k['income'])}'),
@@ -68,10 +69,10 @@ class DashboardScreen extends StatelessWidget {
             childAspectRatio: 1.45,
             children: [
               KpiTile(label: 'الإيرادات', value: money(k['income']), icon: Icons.trending_up),
-              KpiTile(label: 'المصروفات', value: money(k['expense']), icon: Icons.trending_down, accent: BrandColors.danger),
-              KpiTile(label: 'الصافي', value: money(k['net']), accent: BrandColors.gold),
-              KpiTile(label: 'المتأخرات', value: money(k['overdue']), accent: BrandColors.danger, valueColor: BrandColors.danger),
-              KpiTile(label: 'الإشغال', value: '${k['occupancy'] ?? 0}%', accent: BrandColors.turquoise),
+              KpiTile(label: 'المصروفات', value: money(k['expense']), icon: Icons.trending_down, accent: Theme.of(context).colorScheme.error),
+              KpiTile(label: 'الصافي', value: money(k['net']), accent: Theme.of(context).colorScheme.primary),
+              KpiTile(label: 'المتأخرات', value: money(k['overdue']), accent: Theme.of(context).colorScheme.error, valueColor: Theme.of(context).colorScheme.error),
+              KpiTile(label: 'الإشغال', value: '${k['occupancy'] ?? 0}%', accent: Theme.of(context).colorScheme.secondary),
               KpiTile(label: 'صيانة مفتوحة', value: '${k['maintenance'] ?? 0}'),
               KpiTile(label: 'عقود تنتهي', value: '${k['expiring'] ?? 0}'),
               KpiTile(label: 'عقود منتهية', value: '${k['expired'] ?? 0}'),
@@ -81,7 +82,7 @@ class DashboardScreen extends StatelessWidget {
           Text(
             'آخر النشاطات / قرارات تنفيذية',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: BrandColors.goldBright,
+                  color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -92,12 +93,12 @@ class DashboardScreen extends StatelessWidget {
             ...decisions.map(
               (d) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: GlassCard(
-                  accent: '${d['level']}' == 'High' ? BrandColors.danger : BrandColors.gold,
+                child: AppCard(
+                  accent: '${d['level']}' == 'High' ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
-                      backgroundColor: BrandColors.gold.withValues(alpha: 0.15),
+                      backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
                       child: Text('${d['level'] ?? ''}'.isNotEmpty ? '${d['level']}'.substring(0, 1) : '?'),
                     ),
                     title: Text('${d['text'] ?? ''}'),

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../config/api_config.dart';
 import '../../services/bootstrap_service.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 
 class PaymentProofsScreen extends StatefulWidget {
   const PaymentProofsScreen({
@@ -120,11 +121,11 @@ class _PaymentProofsScreenState extends State<PaymentProofsScreen> {
   Color _statusColor(String? status) {
     switch ('${status ?? ''}'.toLowerCase()) {
       case 'approved':
-        return BrandColors.success;
+        return Colors.green;
       case 'rejected':
-        return BrandColors.danger;
+        return Theme.of(context).colorScheme.error;
       default:
-        return BrandColors.goldBright;
+        return Theme.of(context).colorScheme.primary;
     }
   }
 
@@ -148,7 +149,7 @@ class _PaymentProofsScreenState extends State<PaymentProofsScreen> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text('إلغاء')),
           FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('تأكيد')),
         ],
       ),
@@ -237,19 +238,19 @@ class _PaymentProofsScreenState extends State<PaymentProofsScreen> {
                       label: 'معلّقة',
                       value: '${counts['pending'] ?? 0}',
                       icon: Icons.hourglass_top_outlined,
-                      accent: BrandColors.gold,
+                      accent: Theme.of(context).colorScheme.primary,
                     ),
                     KpiTile(
                       label: 'موافق',
                       value: '${counts['approved'] ?? 0}',
                       icon: Icons.verified_outlined,
-                      accent: BrandColors.success,
+                      accent: Colors.green,
                     ),
                     KpiTile(
                       label: 'مرفوض',
                       value: '${counts['rejected'] ?? 0}',
                       icon: Icons.block_outlined,
-                      accent: BrandColors.danger,
+                      accent: Theme.of(context).colorScheme.error,
                     ),
                   ];
                   if (wide) {
@@ -360,7 +361,7 @@ class _ProofCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reviewNote = '${proof['review_note'] ?? ''}'.trim();
-    return GlassCard(
+    return AppCard(
       accent: statusColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

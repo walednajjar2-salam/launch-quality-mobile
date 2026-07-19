@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 
 class ContractsScreen extends StatefulWidget {
   const ContractsScreen({

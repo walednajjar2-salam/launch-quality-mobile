@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/portal_data.dart';
 import '../../state/portal_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../utils/format.dart';
 import '../../utils/layout_breakpoints.dart';
 
 class PortalShell extends StatefulWidget {
@@ -41,19 +42,17 @@ class _PortalShellState extends State<PortalShell> {
 
     final tabs = ['نظرة عامة', 'الفواتير', 'المدفوعات', 'الصيانة'];
     final desktop = LayoutBreakpoints.isDesktop(context);
-    final brand = BrandColors.of(context);
 
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: LuxuryBackground(
-          child: SafeArea(
+        body: SafeArea(
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                  child: GlassCard(
-                    accent: brand.gold,
+                  child: AppCard(
+                    accent: Theme.of(context).colorScheme.primary,
                     child: Row(
                       children: [
                         Image.asset('assets/logo.png', width: 42, height: 42),
@@ -65,13 +64,13 @@ class _PortalShellState extends State<PortalShell> {
                               Text(
                                 data.clientName,
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: brand.goldBright,
+                                      color: Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
                               Text(
                                 'الرصيد: ${money(data.summary['balance'])}',
-                                style: TextStyle(color: brand.textMuted),
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                               ),
                             ],
                           ),
@@ -79,7 +78,7 @@ class _PortalShellState extends State<PortalShell> {
                         IconButton(
                           tooltip: 'تحديث',
                           onPressed: portal.refresh,
-                          icon: Icon(Icons.refresh, color: brand.goldBright),
+                          icon: Icon(Icons.refresh, color: Theme.of(context).colorScheme.primary),
                         ),
                         IconButton(
                           tooltip: 'خروج',
@@ -87,7 +86,7 @@ class _PortalShellState extends State<PortalShell> {
                             await portal.logout();
                             if (context.mounted) context.go('/portal');
                           },
-                          icon: Icon(Icons.logout, color: brand.textMuted),
+                          icon: Icon(Icons.logout, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         ),
                       ],
                     ),
@@ -135,7 +134,6 @@ class _PortalShellState extends State<PortalShell> {
               ],
             ),
           ),
-        ),
       ),
     );
   }
@@ -153,23 +151,15 @@ class _PortalShellState extends State<PortalShell> {
           crossAxisSpacing: 12,
           childAspectRatio: 1.5,
           children: [
-            KpiTile(label: 'إجمالي الفواتير', value: money(s['billed']), accent: BrandColors.gold),
-            KpiTile(label: 'المدفوع', value: money(s['paid']), accent: BrandColors.success),
-            KpiTile(label: 'الرصيد', value: money(s['balance']), accent: BrandColors.danger),
+            KpiTile(label: 'إجمالي الفواتير', value: money(s['billed']), accent: Theme.of(context).colorScheme.primary),
+            KpiTile(label: 'المدفوع', value: money(s['paid']), accent: Colors.green),
+            KpiTile(label: 'الرصيد', value: money(s['balance']), accent: Theme.of(context).colorScheme.error),
             KpiTile(label: 'فواتير مفتوحة', value: '${s['open_invoices'] ?? 0}'),
           ],
         ),
         const SizedBox(height: 12),
-        GlassCard(
-          child: Builder(
-            builder: (context) {
-              final brand = BrandColors.of(context);
-              return Text(
-                'العقود النشطة: ${data.contracts.length}',
-                style: TextStyle(color: brand.textPrimary),
-              );
-            },
-          ),
+        AppCard(
+          child: Text('العقود النشطة: ${data.contracts.length}'),
         ),
       ],
     );
@@ -185,8 +175,8 @@ class _PortalShellState extends State<PortalShell> {
         ...data.invoices.map((inv) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: GlassCard(
-              accent: '${inv['status']}' == 'Paid' ? BrandColors.success : BrandColors.gold,
+            child: AppCard(
+              accent: '${inv['status']}' == 'Paid' ? Colors.green : Theme.of(context).colorScheme.primary,
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text('${inv['invoice_no'] ?? inv['id']}'),
@@ -197,8 +187,8 @@ class _PortalShellState extends State<PortalShell> {
           );
         }),
         const SizedBox(height: 8),
-        GlassCard(
-          accent: BrandColors.turquoise,
+        AppCard(
+          accent: Theme.of(context).colorScheme.secondary,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -247,7 +237,7 @@ class _PortalShellState extends State<PortalShell> {
                     }
                   }
                 },
-                child: const Text('إرسال الإثبات'),
+                child: Text('إرسال الإثبات'),
               ),
             ],
           ),
@@ -266,7 +256,7 @@ class _PortalShellState extends State<PortalShell> {
       separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (_, i) {
         final p = data.payments[i];
-        return GlassCard(
+        return AppCard(
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text('${p['payment_date'] ?? ''}'),
@@ -282,8 +272,8 @@ class _PortalShellState extends State<PortalShell> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        GlassCard(
-          accent: BrandColors.gold,
+        AppCard(
+          accent: Theme.of(context).colorScheme.primary,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -321,7 +311,7 @@ class _PortalShellState extends State<PortalShell> {
         ...data.maintenance.map(
           (m) => Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: GlassCard(
+            child: AppCard(
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text('${m['title'] ?? ''}'),

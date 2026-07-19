@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/bootstrap_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/app_theme.dart';
+import '../../widgets/common.dart';
 import '../../utils/layout_breakpoints.dart';
 
 class ProjectsScreen extends StatelessWidget {
@@ -33,7 +33,7 @@ class ProjectsScreen extends StatelessWidget {
     final cols = LayoutBreakpoints.isDesktop(context) ? 2 : 1;
 
     return RefreshIndicator(
-      color: BrandColors.gold,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: () => context.read<AppState>().refresh(),
       child: items.isEmpty
           ? ListView(
@@ -55,15 +55,15 @@ class ProjectsScreen extends StatelessWidget {
                 final p = items[i];
                 final progress = _progress(p);
                 final perf = _performance(p);
-                return GlassCard(
-                  accent: BrandColors.gold,
+                return AppCard(
+                  accent: Theme.of(context).colorScheme.primary,
                   child: Row(
                     children: [
                       CircularProgressRing(
                         progress: progress,
                         size: 84,
                         strokeWidth: 8,
-                        accent: BrandColors.turquoise,
+                        accent: Theme.of(context).colorScheme.secondary,
                         label: 'إنجاز',
                       ),
                       const SizedBox(width: 16),
@@ -75,20 +75,19 @@ class ProjectsScreen extends StatelessWidget {
                             Text(
                               '${p['name'] ?? 'مشروع'}',
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: BrandColors.goldBright,
+                                    color: Theme.of(context).colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               'الحالة: ${p['status'] ?? 'نشط'}',
-                              style: TextStyle(color: BrandColors.textMuted),
+                              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               'مؤشر الأداء ${perf.round()}%',
-                              style: const TextStyle(
-                                color: BrandColors.textPrimary,
+                              style: TextStyle(color: Theme.of(context).colorScheme.onSurface,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
