@@ -14,7 +14,7 @@
 4. **Settings → Networking → Generate Domain**
 5. افتح الرابط الناتج وسجّل الدخول بـ:
    - المستخدم: `waleed.najjar`
-   - كلمة المرور: `Waleed2026!`
+   - كلمة المرور: `1234567902`
 
 التطبيق يتصل تلقائياً بـ API الإنتاج:
 `https://jawda-al-intilaqa-production.up.railway.app/api`
