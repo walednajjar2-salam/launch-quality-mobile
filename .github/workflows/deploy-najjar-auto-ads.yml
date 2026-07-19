@@ -19,9 +19,11 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Deploy NAJJAR Auto Ads (SQLite + API + Web)
+      - name: Deploy NAJJAR Auto Ads (MongoDB + API + Web)
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: 9239907c-96e9-4763-b2d3-2d57931f7bba
+          RAILWAY_ENVIRONMENT: production
           NAJJAR_JWT_SECRET: ${{ secrets.NAJJAR_JWT_SECRET }}
         run: |
           if [ -z "$RAILWAY_TOKEN" ]; then

@@ -16,11 +16,19 @@ if [[ -z "${RAILWAY_TOKEN:-}" ]]; then
 fi
 
 export RAILWAY_TOKEN
+export RAILWAY_PROJECT_ID="$PROJECT"
+export RAILWAY_ENVIRONMENT="$ENV"
 
 echo "=== Deploy NAJJAR Auto Ads ==="
-echo "Service: $SVC (API + Web combined)"
+echo "Service: $SVC (API + Web + MongoDB)"
 
 cd "$ROOT/integrations/najjar-auto-ads"
+
+if ! $CLI service list -p "$PROJECT" -e "$ENV" 2>/dev/null | grep -q "$SVC"; then
+  echo "Creating Railway service: $SVC"
+  $CLI add --service "$SVC" --json >/dev/null || true
+  sleep 5
+fi
 
 $CLI variable set \
   JWT_SECRET="$JWT_SECRET" \
@@ -31,7 +39,12 @@ $CLI variable set \
   'MONGODB_URI=${{MongoDB.MONGO_URL}}' \
   --service "$SVC" -p "$PROJECT" -e "$ENV" --skip-deploys --json >/dev/null || true
 
-$CLI up --detach -y -s "$SVC" -p "$PROJECT" -e "$ENV"
+$CLI up --detach -y -s "$SVC" -p "$PROJECT" -e "$ENV" || {
+  echo "Retry deploy after service create..."
+  $CLI add --service "$SVC" --json >/dev/null || true
+  sleep 5
+  $CLI up --detach -y -s "$SVC" -p "$PROJECT" -e "$ENV"
+}
 
 HOST="$($CLI domain list --service "$SVC" --project "$PROJECT" --environment "$ENV" --json 2>/dev/null | python3 -c "
 import json,sys
