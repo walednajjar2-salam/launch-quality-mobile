@@ -62,7 +62,7 @@
       {
         id: "walid",
         icon: "✦",
-        label: "WALEED AI",
+        label: "Salam AI",
         value: () => "Live",
         sub: "مساعد ذكي",
         tone: "violet",

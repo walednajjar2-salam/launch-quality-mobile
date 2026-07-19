@@ -711,7 +711,7 @@ function renderWalidPage(){
     window.LQ_WALID_INTEL.refresh().catch(()=>{});
     return;
   }
-  box.innerHTML='<p class="mini">Walid module loading…</p>';
+  box.innerHTML='<p class="mini">Salam module loading…</p>';
 }
 function renderMessagesPage(){
   const box=$('#messagesPageBox'); if(!box) return;

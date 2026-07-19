@@ -276,7 +276,7 @@
       msgs.push({t:eng.brief,pred:true});
       eng.risks.slice(0,3).forEach(r=>msgs.push({t:`⚠ ${r.l}: ${r.v}`,pred:false}));
     } else {
-      msgs.push({t:'Walid: جاهزية النظام '+ (k.health||0) +'% · إشغال '+(k.occupancy||0)+'%',pred:true});
+      msgs.push({t:'Salam: جاهزية النظام '+ (k.health||0) +'% · إشغال '+(k.occupancy||0)+'%',pred:true});
     }
     msgs.push({t:'توقع: الإيرادات الشهرية مستقرة بناءً على العقود النشطة.',pred:true});
     const overdue=Number(k.overdue||0);

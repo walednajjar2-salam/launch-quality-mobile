@@ -12,7 +12,7 @@ def build_openapi_spec(base_url: str, version: str) -> Dict[str, Any]:
         {"name": "Core", "description": "عقارات، عملاء، عقود، فواتير"},
         {"name": "Finance", "description": "محاسبة وبنك"},
         {"name": "Operations", "description": "صيانة، تنبيهات، اعتمادات"},
-        {"name": "Intelligence", "description": "Walid والذكاء التشغيلي"},
+        {"name": "Intelligence", "description": "Salam والذكاء التشغيلي"},
         {"name": "Enterprise", "description": "فروع، تدقيق، نسخ احتياطي"},
     ]
 
@@ -51,8 +51,8 @@ def build_openapi_spec(base_url: str, version: str) -> Dict[str, Any]:
     get("/api/financial_statements", "القوائم المالية", "Finance")
     get("/api/bank_reconciliation_preview", "معاينة تسوية البنك", "Finance")
     get("/api/alert_center", "مركز التنبيهات", "Operations")
-    get("/api/operational_intel", "ذكاء Walid", "Intelligence")
-    post("/api/ai/ask", "سؤال Walid", "Intelligence", {"question": "من لم يدفع؟"})
+    get("/api/operational_intel", "ذكاء Salam", "Intelligence")
+    post("/api/ai/ask", "سؤال Salam", "Intelligence", {"question": "من لم يدفع؟"})
     get("/api/branches", "الفروع", "Enterprise")
     get("/api/audit_feed", "سجل التدقيق", "Enterprise")
     get("/api/backup/status", "حالة النسخ الاحتياطي", "Enterprise")

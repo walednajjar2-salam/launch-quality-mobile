@@ -122,7 +122,7 @@ SUPPORT_PHONE = os.environ.get("LQ_SUPPORT_PHONE", "+96871924089")
 SUPPORT_EMAIL = os.environ.get("LQ_SUPPORT_EMAIL", "info@alamal.info")
 VAT_RATE = float(os.environ.get("LQ_VAT_RATE", "0.05") or "0.05")
 COMPANY_VAT_NO = os.environ.get("LQ_VAT_NO", "OM-VAT-PENDING").strip()
-AI_ASSISTANT_NAME = "WALEED"
+AI_ASSISTANT_NAME = os.environ.get("LQ_AI_ASSISTANT_NAME", "Salam").strip() or "Salam"
 OPENAI_API_KEY = (os.environ.get("OPENAI_API_KEY") or os.environ.get("LQ_OPENAI_API_KEY") or "").strip()
 AI_MODEL = os.environ.get("LQ_AI_MODEL", "gpt-4o-mini").strip()
 AI_DAILY_LIMIT = max(1, int(os.environ.get("LQ_AI_DAILY_LIMIT", "50") or "50"))
@@ -4274,7 +4274,7 @@ class JawdahHandler(BaseHTTPRequestHandler):
         if usage["count"] >= AI_DAILY_LIMIT:
             return self.send_json({
                 "ok": False,
-                "error": f"تم بلوغ حد Walid اليوم ({AI_DAILY_LIMIT} سؤال) — جرّب غداً أو استخدم التوصيات التلقائية",
+                "error": f"تم بلوغ حد {AI_ASSISTANT_NAME} اليوم ({AI_DAILY_LIMIT} سؤال) — جرّب غداً أو استخدم التوصيات التلقائية",
                 "usage": usage,
             }, 429)
         dash = build_dashboard(db)
@@ -4845,7 +4845,7 @@ def walid_rules_reply(
         recs = intel.get("recommendations") or []
         if recs:
             lines = [f"• [{r['priority']}] {r['title']}: {r['text']}" for r in recs[:6 if limited else 10]]
-            parts.append("توصيات Walid / Recommendations:\n" + "\n".join(lines))
+            parts.append(f"توصيات {AI_ASSISTANT_NAME} / Recommendations:\n" + "\n".join(lines))
             for r in recs[:3]:
                 act(r.get("action_label") or r["title"], r.get("section") or "dashboard")
         else:

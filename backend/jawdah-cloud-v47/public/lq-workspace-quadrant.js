@@ -12,7 +12,7 @@
     accounts: "الحسابات",
     users: "المستخدمين",
     backup: "نسخ احتياطي",
-    walid: "WALEED",
+    walid: "Salam",
     messages: "الرسائل",
     payroll: "الرواتب",
     inventory: "المخزن",
