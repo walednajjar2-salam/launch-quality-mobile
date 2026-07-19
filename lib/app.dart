@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'screens/analytics_screen.dart';
+import 'screens/dashboard_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/notifications_screen.dart';
 import 'screens/portal/portal_gate_screen.dart';
 import 'screens/portal/portal_shell.dart';
+import 'screens/profile_screen.dart';
+import 'screens/reports_screen.dart';
+import 'screens/settings_screen.dart';
 import 'screens/staff_shell.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
@@ -43,6 +49,30 @@ GoRouter createRouter(AppState app, PortalState portal) {
       GoRoute(
         path: '/staff',
         builder: (_, __) => const StaffShell(),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        builder: (_, __) => const PremiumDashboardScreen(),
+      ),
+      GoRoute(
+        path: '/analytics',
+        builder: (_, __) => const AnalyticsScreen(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        builder: (_, __) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (_, __) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/reports',
+        builder: (_, __) => const ReportsScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (_, __) => const SettingsScreen(),
       ),
       GoRoute(
         path: '/portal',
