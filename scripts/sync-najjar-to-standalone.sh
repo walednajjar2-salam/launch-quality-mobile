@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Sync integrations/najjar-auto-ads → walednajjar2-salam/NAJJAR-auto-ads (standalone repo).
+# Triggered automatically when NAJJAR paths change on main.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
