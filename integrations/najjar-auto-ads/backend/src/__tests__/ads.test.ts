@@ -1,25 +1,26 @@
 import request from "supertest";
 import { createApp } from "../app.js";
-import { User } from "../models/index.js";
+import { createUser } from "../store/index.js";
 import { hashPassword } from "../utils/auth.js";
 
 describe("ads routes", () => {
   const app = createApp();
   let token = "";
 
-  beforeEach(async () => {
-    const user = await User.create({
+  beforeEach(() => {
+    createUser({
       name: "Seller",
       email: "seller@najjar.om",
-      passwordHash: await hashPassword("SellerPass1"),
+      passwordHash: hashPassword("SellerPass1"),
       role: "dealer",
     });
-    const login = await request(app)
+    return request(app)
       .post("/api/auth/login")
-      .send({ email: "seller@najjar.om", password: "SellerPass1" });
-    token = login.body.token;
-    expect(token).toBeTruthy();
-    void user;
+      .send({ email: "seller@najjar.om", password: "SellerPass1" })
+      .then((login) => {
+        token = login.body.token;
+        expect(token).toBeTruthy();
+      });
   });
 
   it("creates, lists, updates and likes ads", async () => {

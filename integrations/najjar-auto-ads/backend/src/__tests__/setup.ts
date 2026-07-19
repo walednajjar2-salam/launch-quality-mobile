@@ -1,22 +1,22 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
+import fs from "fs";
+import path from "path";
+import { initDb } from "../db.js";
 
-let mongo: MongoMemoryServer;
+const TEST_DB = path.join(process.cwd(), "data", "test-najjar.sqlite3");
 
-beforeAll(async () => {
+beforeAll(() => {
   process.env.JWT_SECRET = "test-secret-key-min-16-chars";
-  mongo = await MongoMemoryServer.create();
-  await mongoose.connect(mongo.getUri());
+  fs.mkdirSync(path.dirname(TEST_DB), { recursive: true });
+  if (fs.existsSync(TEST_DB)) fs.unlinkSync(TEST_DB);
+  process.env.NAJJAR_DATA_DIR = path.dirname(TEST_DB);
+  initDb();
 });
 
-afterAll(async () => {
-  await mongoose.disconnect();
-  await mongo.stop();
+afterAll(() => {
+  if (fs.existsSync(TEST_DB)) fs.unlinkSync(TEST_DB);
 });
 
-afterEach(async () => {
-  const collections = mongoose.connection.collections;
-  for (const key of Object.keys(collections)) {
-    await collections[key].deleteMany({});
-  }
+beforeEach(() => {
+  const db = initDb();
+  db.exec("DELETE FROM ad_likes; DELETE FROM ads; DELETE FROM users;");
 });

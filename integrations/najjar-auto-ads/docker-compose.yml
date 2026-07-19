@@ -1,37 +1,18 @@
 services:
-  mongo:
-    image: mongo:7
-    restart: unless-stopped
-    volumes:
-      - najjar_mongo:/data/db
-    ports:
-      - "27017:27017"
-
-  mongo-express:
-    image: mongo-express:1
-    restart: unless-stopped
-    depends_on:
-      - mongo
-    ports:
-      - "8081:8081"
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
-      ME_CONFIG_BASICAUTH: "false"
-
   backend:
     build: ./backend
     restart: unless-stopped
-    depends_on:
-      - mongo
     ports:
       - "4000:4000"
     environment:
       PORT: 4000
-      MONGODB_URI: mongodb://mongo:27017/najjar_auto_ads
+      NAJJAR_DATA_DIR: /app/data
       JWT_SECRET: najjar-dev-secret-key-2026-min16
       CORS_ORIGIN: http://localhost:3000,http://127.0.0.1:3000
       DEMO_ADMIN_EMAIL: admin@najjar.om
       DEMO_ADMIN_PASSWORD: Najjar2026!
+    volumes:
+      - najjar_data:/app/data
 
   frontend:
     build:
@@ -45,4 +26,4 @@ services:
       - "3000:8080"
 
 volumes:
-  najjar_mongo:
+  najjar_data:
