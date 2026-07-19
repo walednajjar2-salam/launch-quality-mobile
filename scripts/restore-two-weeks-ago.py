@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Restore ERP operational data from ~2 weeks ago (2026-07-06).
+"""Restore ERP operational data from Nizwa snapshot (2026-07-08).
 
-Target date from today (2026-07-19): exactly 14 days → 2026-07-05.
-No backup exists for Jul 5; closest archive is 20260706-042029 (13 days ago).
+Target: ~2 weeks before 2026-07-19. Jul 5 archive is missing on the volume;
+Jul 6 is demo-era data. Jul 8 (20260708-042029) is the first Nizwa · حي التراث
+snapshot with 5 properties — used as the production restore default.
 Users roster is kept current (13 authorized accounts).
+
+Override: LQ_BACKUP_TS=20260706-042029 for demo-era restore.
 """
 from __future__ import annotations
 
@@ -16,14 +19,14 @@ import urllib.request
 API = os.environ.get("LQ_API", "https://web-production-08d73.up.railway.app/api").rstrip("/")
 ADMIN_USER = os.environ.get("LQ_ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("LQ_ADMIN_PASSWORD", "1234567891")
-# Closest backup to Jul 5 (exactly 2 weeks) — Jul 5 archive missing on volume
-BACKUP_TS = os.environ.get("LQ_BACKUP_TS", "20260706-042029")
+BACKUP_TS = os.environ.get("LQ_BACKUP_TS", "20260708-042029")
 
-TWO_WEEKS_PROP_IDS = {
+NIZWA_PROP_IDS = {
     "P-1001",
     "P-1003",
     "PRO-0BC035B7",
     "PRO-1619E470",
+    "PRO-28199DB2",
 }
 
 
@@ -53,7 +56,7 @@ def main() -> int:
         print("Login failed:", login, file=sys.stderr)
         return 1
     token = login["token"]
-    print(f"Logged in — restoring backup {BACKUP_TS} (~2 weeks ago, target Jul 5)")
+    print(f"Logged in — restoring backup {BACKUP_TS} (Nizwa · Jul 8 snapshot)")
 
     tables = download_backup(token)
     restore = {
@@ -67,7 +70,7 @@ def main() -> int:
         "purchase_invoices": tables.get("purchase_invoices") or [],
         "revenues": tables.get("revenues") or [],
     }
-    print("Two-weeks-ago counts:", {k: len(v) for k, v in restore.items()})
+    print("Backup counts:", {k: len(v) for k, v in restore.items()})
 
     result = request(
         "POST",
@@ -83,7 +86,7 @@ def main() -> int:
     current = request("GET", "bootstrap", token=token)["data"]["properties"]
     for p in current:
         pid = p.get("id")
-        if pid and pid not in TWO_WEEKS_PROP_IDS:
+        if pid and pid not in NIZWA_PROP_IDS:
             try:
                 request("DELETE", f"properties/{pid}", token=token)
                 print(f"Removed later property: {pid}")
