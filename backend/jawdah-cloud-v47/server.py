@@ -128,15 +128,31 @@ AI_MODEL = os.environ.get("LQ_AI_MODEL", "gpt-4o-mini").strip()
 AI_DAILY_LIMIT = max(1, int(os.environ.get("LQ_AI_DAILY_LIMIT", "50") or "50"))
 APPROVAL_THRESHOLD = float(os.environ.get("LQ_APPROVAL_THRESHOLD", "3000") or "3000")
 STAFF_APP_VERSION = os.environ.get("LQ_STAFF_APP_VERSION", "2.0.0").strip()
+PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://jawda-al-intilaqa-production.up.railway.app").strip()
+_STAFF_APK_SOURCE = (
+    "https://raw.githubusercontent.com/walednajjar2-salam/launch-quality-mobile/"
+    "downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk"
+)
+_STAFF_ZIP_SOURCE = (
+    "https://raw.githubusercontent.com/walednajjar2-salam/launch-quality-mobile/"
+    "downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip"
+)
+STAFF_APK_SOURCE = os.environ.get("LQ_STAFF_APK_SOURCE", _STAFF_APK_SOURCE).strip()
+STAFF_ZIP_SOURCE = os.environ.get("LQ_STAFF_ZIP_SOURCE", _STAFF_ZIP_SOURCE).strip()
 STAFF_DOWNLOAD_APK = os.environ.get(
     "LQ_STAFF_APK_URL",
-    "https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff.apk",
+    f"{PRODUCTION_URL}/downloads/Launch-Quality-Staff.apk",
 ).strip()
 STAFF_DOWNLOAD_ZIP = os.environ.get(
     "LQ_STAFF_ZIP_URL",
-    "https://github.com/walednajjar2-salam/launch-quality-mobile/raw/downloads-v1.0.1-staff/downloads/Launch-Quality-Staff-Windows.zip",
+    f"{PRODUCTION_URL}/downloads/Launch-Quality-Staff-Windows.zip",
 ).strip()
-PRODUCTION_URL = os.environ.get("LQ_PRODUCTION_URL", "https://jawda-al-intilaqa-production.up.railway.app").strip()
+STAFF_DOWNLOAD_ROUTES = {
+    "/downloads/Launch-Quality-Staff.apk": (STAFF_APK_SOURCE, "Launch-Quality-Staff.apk"),
+    "/downloads/android.apk": (STAFF_APK_SOURCE, "Launch-Quality-Staff.apk"),
+    "/downloads/Launch-Quality-Staff-Windows.zip": (STAFF_ZIP_SOURCE, "Launch-Quality-Staff-Windows.zip"),
+    "/downloads/windows.zip": (STAFF_ZIP_SOURCE, "Launch-Quality-Staff-Windows.zip"),
+}
 LQ_DATABASE_URL = (os.environ.get("LQ_DATABASE_URL") or os.environ.get("DATABASE_URL") or "").strip()
 
 APPROVAL_DECIDE_ROLES = {
@@ -2126,7 +2142,29 @@ class JawdahHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         self.handle_api("DELETE", parsed.path, parsed.query)
 
+    def serve_download_proxy(self, remote_url: str, filename: str) -> None:
+        try:
+            req = urllib.request.Request(remote_url, headers={"User-Agent": "LaunchQuality-Download/2.0"})
+            with urllib.request.urlopen(req, timeout=180) as remote:
+                data = remote.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/octet-stream")
+            self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "public, max-age=3600")
+            self.send_cors_headers()
+            self.end_headers()
+            self.wfile.write(data)
+        except Exception:
+            self.send_response(302)
+            self.send_header("Location", remote_url)
+            self.end_headers()
+
     def serve_static(self, path: str) -> None:
+        download = STAFF_DOWNLOAD_ROUTES.get(path)
+        if download:
+            remote_url, filename = download
+            return self.serve_download_proxy(remote_url, filename)
         if path in ("/", ""):
             landing = PUBLIC_DIR / "landing.html"
             if landing.exists():

@@ -55,6 +55,9 @@ railway up --detach
 | الخدمة | الرابط |
 |--------|--------|
 | Staff Web | https://launch-quality-mobile-production-bb40.up.railway.app |
+| **تحميل Windows** | https://jawda-al-intilaqa-production.up.railway.app/downloads/Launch-Quality-Staff-Windows.zip |
+| **تحميل Android** | https://jawda-al-intilaqa-production.up.railway.app/downloads/Launch-Quality-Staff.apk |
+| صفحة التحميل | https://launch-quality-mobile-production-bb40.up.railway.app/download.html |
 | Railway service | `Launch-Quality-Mobile` |
 
 GitHub Actions: أضف `RAILWAY_TOKEN` — راجع `.github/DEPLOY.md`
