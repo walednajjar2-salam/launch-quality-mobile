@@ -1,0 +1,55 @@
+/* Oman hospitality map — Leaflet overlay */
+.lq-leaflet-host {
+  background: #dbeafe !important;
+}
+.lq-leaflet-host:before,
+.lq-leaflet-host .ev-map-grid-lines,
+.lq-leaflet-host .ev-city-overlay,
+.lq-leaflet-host .gis-pins-layer {
+  display: none !important;
+}
+.lq-oman-map {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 14px;
+  min-height: 300px;
+}
+.lq-map-popup {
+  display: grid;
+  gap: 6px;
+  font-family: Tajawal, sans-serif;
+  min-width: 180px;
+}
+.lq-map-popup strong {
+  font-size: 14px;
+  color: #0f172a;
+}
+.lq-map-popup span,
+.lq-map-popup em {
+  font-size: 12px;
+  color: #64748b;
+  font-style: normal;
+}
+.lq-map-popup b {
+  color: #b45309;
+  font-size: 13px;
+}
+.lq-map-hotel-photo {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.lq-map-hotel-fallback {
+  height: 90px;
+  display: grid;
+  place-items: center;
+  font-size: 42px;
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+.saas-map-panel .map-popup {
+  z-index: 5;
+}
