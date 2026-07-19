@@ -32,7 +32,7 @@ $CLI variable set \
 
 $CLI up --detach -y -s "$SVC" -p "$PROJECT" -e "$ENV"
 
-HOST="$($CLI domain list -s "$SVC" -p "$PROJECT" -e "$ENV" --json 2>/dev/null | python3 -c "
+HOST="$($CLI domain list --service "$SVC" --project "$PROJECT" --environment "$ENV" --json 2>/dev/null | python3 -c "
 import json,sys
 try:
   items=json.load(sys.stdin)
@@ -44,9 +44,9 @@ except: pass
 " 2>/dev/null || true)"
 
 if [[ -z "$HOST" ]]; then
-  $CLI domain -s "$SVC" -p "$PROJECT" -e "$ENV" --json >/dev/null 2>&1 || true
+  $CLI domain --service "$SVC" --project "$PROJECT" --environment "$ENV" --json >/dev/null 2>&1 || true
   sleep 3
-  HOST="$($CLI domain list -s "$SVC" -p "$PROJECT" -e "$ENV" --json 2>/dev/null | python3 -c "
+  HOST="$($CLI domain list --service "$SVC" --project "$PROJECT" --environment "$ENV" --json 2>/dev/null | python3 -c "
 import json,sys
 try:
   items=json.load(sys.stdin)
