@@ -255,7 +255,7 @@ export default function App() {
       </main>
 
       <footer>
-        <p>NAJJAR Auto Ads Platform v1.0.0 · Launch Quality LLC · info@alamal.info</p>
+        <p>NAJJAR Auto Ads v1.0.0 · منصة مستقلة لإعلانات السيارات · info@najjar.om</p>
       </footer>
 
       {authMode && (
