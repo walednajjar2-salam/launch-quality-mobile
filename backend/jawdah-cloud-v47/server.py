@@ -2025,7 +2025,7 @@ def ensure_team_users(db: sqlite3.Connection) -> None:
         ("ahmed.najjar", "أحمد محمد النجار", "admin", "Ahmed2026!"),
         ("waleed.najjar", "وليد محمد النجار", "owner", "Waleed2026!"),
         ("ahoud.shuaili", "عهود سعيد الشعيلي", "operations", "Ahoud2026!"),
-        ("properties.manager", "محمد حمد الربعاني", "operations", "Properties2026!"),
+        ("properties.manager", "امجد محمد الجامودي", "operations", "Properties2026!"),
         ("operations", "محمد مجدول أسلم", "viewer", "Operations2026!"),
         ("ali.hospitality", "علي محمد النديش", "maintenance", "Ali2026!"),
         ("maintenance", "محمد صالح سراج النور", "viewer", "Maintenance2026!"),
