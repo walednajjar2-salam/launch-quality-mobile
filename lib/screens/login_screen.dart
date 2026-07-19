@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          'waleed.najjar / Waleed2026!',
+                          'waleed.najjar / 1234567902',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: BrandColors.textMuted, fontSize: 12),
                         ),

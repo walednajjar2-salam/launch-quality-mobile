@@ -1,0 +1,63 @@
+name: Build Windows Staff App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'lib/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'windows/**'
+      - '.github/workflows/build-windows-release.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Build Windows release
+        run: |
+          flutter pub get
+          flutter config --enable-windows-desktop
+          flutter build windows --release
+
+      - name: Create ZIP
+        run: |
+          $src = "build\windows\x64\runner\Release"
+          $zip = "Launch-Quality-Staff-Windows.zip"
+          if (Test-Path $zip) { Remove-Item $zip }
+          Compress-Archive -Path "$src\*" -DestinationPath $zip
+          Get-Item $zip | Format-List Name, Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Launch-Quality-Staff-Windows
+          path: Launch-Quality-Staff-Windows.zip
+          retention-days: 90
+
+      - name: Publish ZIP to downloads branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin downloads-v1.0.1-staff 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            git checkout --orphan downloads-v1.0.1-staff
+            git rm -rf . 2>$null
+          } else {
+            git checkout downloads-v1.0.1-staff
+          }
+          New-Item -ItemType Directory -Force -Path downloads | Out-Null
+          Copy-Item -Force Launch-Quality-Staff-Windows.zip downloads\Launch-Quality-Staff-Windows.zip
+          git add downloads/Launch-Quality-Staff-Windows.zip
+          git commit -m "ci: rebuild Windows staff app ($(Get-Date -Format yyyy-MM-dd))"
+          git push -f origin HEAD:downloads-v1.0.1-staff
