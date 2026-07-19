@@ -1,6 +1,23 @@
 # NAJJAR Auto Ads Platform
 
-منصة احترافية لإعلانات السيارات — MERN Stack · عربي RTL · مدمجة في `launch-quality-mobile`.
+منصة **مستقلة** لإعلانات السيارات — Express + React · عربي RTL · MongoDB على Railway.
+
+> **ليست جزءاً من نظام العقارات (Launch Quality ERP).**  
+> حسابات وقاعدة بيانات وروابط منفصلة بالكامل.
+
+## الروابط
+
+| | |
+|--|--|
+| **الموقع** | https://najjar-auto-ads-api-production.up.railway.app |
+| **الدخول** | `admin@najjar.om` / `Najjar2026!` |
+
+## نظام العقارات (منفصل — Launch Quality)
+
+| | |
+|--|--|
+| **ERP** | https://jawda-al-intilaqa-production.up.railway.app |
+| **Staff Web** | https://launch-quality-mobile-production-bb40.up.railway.app |
 
 ## البنية
 
