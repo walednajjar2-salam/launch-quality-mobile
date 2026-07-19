@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>الرئيسية</title>
+  <style>
+    :root {
+      --bg: #001a33;
+      --bg-2: #002447;
+      --card: rgba(255, 255, 255, 0.10);
+      --card-solid: #0d2b4a;
+      --tx-box: #0a2744;
+      --orange: #ff8c00;
+      --bronze: #6b4a2a;
+      --bronze-2: #5a3d22;
+      --white: #ffffff;
+      --muted: rgba(255, 255, 255, 0.75);
+      --link: #9ec9ff;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Tahoma, Arial, sans-serif;
+      background: #000d1a;
+      color: var(--white);
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Status bar (LTR) */
+    .status {
+      height: 44px;
+      padding: 10px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      direction: ltr;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .status .meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5px;
+      height: 11px;
+    }
+    .bars i { width: 3px; background: #fff; border-radius: 1px; display: block; }
+    .bars i:nth-child(1) { height: 3px; }
+    .bars i:nth-child(2) { height: 5px; }
+    .bars i:nth-child(3) { height: 8px; }
+    .bars i:nth-child(4) { height: 11px; opacity: .35; }
+    .battery {
+      width: 24px; height: 11px; border: 1px solid rgba(255,255,255,.9);
+      border-radius: 3px; padding: 1px; position: relative;
+    }
+    .battery::after {
+      content: ""; position: absolute; right: -3px; top: 3px;
+      width: 2px; height: 4px; background: rgba(255,255,255,.9); border-radius: 0 1px 1px 0;
+    }
+    .battery span { display: block; height: 100%; width: 40%; background: #fff; border-radius: 1px; }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 16px 20px;
+      scrollbar-width: none;
+    }
+    .content::-webkit-scrollbar { display: none; }
+
+    /* Header: greeting right, orange avatar left */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 16px;
+      min-height: 42px;
+    }
+    .header .greet {
+      flex: 1;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: right;
+    }
+    .header .greet .hi { color: #fff; }
+    .header .greet .name {
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 18px;
+      flex: 0 0 auto;
+      box-shadow: 0 2px 8px rgba(255, 140, 0, 0.35);
+    }
+
+    /* Balance card */
+    .balance-card {
+      background: rgba(255, 255, 255, 0.11);
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .bal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .bal-top .title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.88);
+      font-weight: 600;
+    }
+    .eye {
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      padding: 0;
+    }
+    .bal-amount {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 4px;
+      margin-bottom: 14px;
+      direction: ltr;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      user-select: none;
+    }
+    .bal-amount .int {
+      color: var(--orange);
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .bal-amount .rest {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .bal-amount.hidden .int,
+    .bal-amount.hidden .rest { letter-spacing: 2px; }
+
+    .bal-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+    .acc {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+    }
+    .acc .ico {
+      width: 18px; height: 18px;
+      display: grid; place-items: center;
+      opacity: 0.9; font-size: 13px;
+    }
+    .details {
+      color: var(--link);
+      font-weight: 600;
+      white-space: nowrap;
+      font-size: 12.5px;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px 0 14px;
+    }
+    .dots span {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+    }
+    .dots span.on { background: #fff; }
+
+    /* Bronze split bar: مالي | أهدافي */
+    .quick {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: linear-gradient(180deg, #7a5530 0%, var(--bronze) 40%, var(--bronze-2) 100%);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    .quick::before {
+      content: "";
+      position: absolute;
+      top: 10px; bottom: 10px; left: 50%;
+      width: 1px; background: rgba(255,255,255,0.55);
+      transform: translateX(-50%);
+    }
+    .quick button {
+      border: 0;
+      background: transparent;
+      color: #fff;
+      height: 52px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+    }
+    .quick .new {
+      position: absolute;
+      top: 4px;
+      left: 8px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+    }
+    .quick .ico { font-size: 16px; line-height: 1; }
+
+    /* Promo banner */
+    .promo-wrap { margin-bottom: 8px; }
+    .promo {
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px 12px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 88px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    }
+    .promo .cta {
+      border: 0;
+      background: var(--orange);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      border-radius: 18px;
+      padding: 8px 12px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .promo .card-art {
+      width: 86px;
+      height: 54px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.28), transparent 42%),
+        linear-gradient(135deg, #0b2a4d 0%, #1e4e82 50%, #ff8c00 120%);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .promo .card-art::before {
+      content: "";
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 16px; height: 12px;
+      border-radius: 3px;
+      background: rgba(255, 214, 140, 0.9);
+    }
+    .promo .card-art::after {
+      content: "BANK";
+      position: absolute;
+      left: 8px; bottom: 7px;
+      font-size: 8px; color: rgba(255,255,255,.85);
+      letter-spacing: 1px; direction: ltr;
+    }
+    .promo .copy { text-align: right; }
+    .promo .copy h3 {
+      margin: 0 0 4px;
+      color: #0d2340;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+    .promo .copy p {
+      margin: 0;
+      color: #5a6d82;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    /* Transactions box */
+    .tx-box {
+      background: var(--tx-box);
+      border-radius: 16px;
+      padding: 14px 14px 18px;
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 72px;
+    }
+    .tx-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .tx-head h2 {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 800;
+    }
+    .tx-head .all {
+      color: var(--orange);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    /* Bottom nav */
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: #001528;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: grid;
+      gap: 3px;
+      justify-items: center;
+      cursor: pointer;
+      padding: 2px 0;
+    }
+    .nav button.active { color: var(--orange); }
+    .nav .ico { font-size: 18px; line-height: 1; }
+
+    /* Editor sheet (long-press balance) */
+    .sheet {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      z-index: 30;
+      align-items: flex-end;
+    }
+    .sheet.open { display: flex; }
+    .sheet .panel {
+      width: 100%;
+      background: #0b243f;
+      border-radius: 18px 18px 0 0;
+      padding: 16px 16px 28px;
+    }
+    .sheet h4 {
+      margin: 0 0 12px;
+      text-align: center;
+      color: var(--orange);
+      font-size: 14px;
+    }
+    .sheet input {
+      width: 100%;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(0,0,0,.3);
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 20px;
+      font-weight: 800;
+      text-align: center;
+      direction: ltr;
+      outline: none;
+    }
+    .sheet .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sheet button {
+      height: 44px; border: 0; border-radius: 10px;
+      font-weight: 800; cursor: pointer; font-size: 14px;
+    }
+    .sheet .apply { background: var(--orange); color: #001a33; }
+    .sheet .cancel { background: rgba(255,255,255,.12); color: #fff; }
+  </style>
+</head>
+<body>
+  <script>
+    // غيّر الرصيد هنا، أو اضغط مطوّلاً على المبلغ
+    window.DEMO_DATA = {
+      balance: 7034.340,
+      currency: "OMR",
+      greeting: "مرحباً",
+      userName: "WALEED MOHAMMED ABDUL HADI AL NAJJAR",
+      balanceTitle: "الرصيد في الحساب",
+      accountLabel: "حساب التوفير - 0101",
+      detailsLabel: "إظهار التفاصيل >",
+      moneyLabel: "مالي",
+      goalsLabel: "أهدافي",
+      promoTitle: "بطاقة مال للخصم المباشر",
+      promoSubtitle: "خصومات مباشرة عند الدفع ببطاقتك",
+      orderNow: "اطلب الآن",
+      txTitle: "المعاملات المالية",
+      viewAll: "مشاهدة الكل",
+      statusTime: "6:37",
+    };
+  </script>
+
+  <div class="phone">
+    <div class="status">
+      <div id="statusTime">6:37</div>
+      <div class="meta">
+        <div class="bars"><i></i><i></i><i></i><i></i></div>
+        <span>4G</span>
+        <div class="battery"><span></span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <header class="header">
+        <div class="greet">
+          <div><span class="hi" id="greeting">مرحباً</span> <span class="name" id="userName"></span></div>
+        </div>
+        <div class="avatar" aria-hidden="true">👤</div>
+      </header>
+
+      <section class="balance-card">
+        <div class="bal-top">
+          <div class="title" id="balanceTitle">الرصيد في الحساب</div>
+          <button class="eye" id="toggleEye" type="button" aria-label="إظهار/إخفاء">👁</button>
+        </div>
+        <div class="bal-amount" id="balanceAmount" title="اضغط مطوّلاً للتعديل">
+          <span class="int" id="balInt">7034</span><span class="rest" id="balRest">.340 OMR</span>
+        </div>
+        <div class="bal-bottom">
+          <div class="acc">
+            <span class="ico">⇩</span>
+            <span id="accountLabel">حساب التوفير - 0101</span>
+          </div>
+          <div class="details" id="detailsLabel">إظهار التفاصيل ></div>
+        </div>
+      </section>
+
+      <div class="dots" aria-hidden="true"><span class="on"></span><span></span></div>
+
+      <div class="quick">
+        <!-- RTL: الأول يمين = مالي ، الثاني يسار = أهدافي -->
+        <button type="button" id="moneyBtn">
+          <span class="ico">🛡</span>
+          <span id="moneyLabel">مالي</span>
+        </button>
+        <button type="button" id="goalsBtn">
+          <span class="new">NEW</span>
+          <span class="ico">🏆</span>
+          <span id="goalsLabel">أهدافي</span>
+        </button>
+      </div>
+
+      <div class="promo-wrap">
+        <div class="promo">
+          <!-- RTL: يمين نص ، وسط بطاقة ، يسار اطلب الآن -->
+          <div class="copy">
+            <h3 id="promoTitle">بطاقة مال للخصم المباشر</h3>
+            <p id="promoSubtitle">خصومات مباشرة عند الدفع ببطاقتك</p>
+          </div>
+          <div class="card-art" aria-hidden="true"></div>
+          <button class="cta" id="orderNow" type="button">اطلب الآن</button>
+        </div>
+        <div class="dots" aria-hidden="true"><span class="on"></span><span></span></div>
+      </div>
+
+      <section class="tx-box">
+        <div class="tx-head">
+          <h2 id="txTitle">المعاملات المالية</h2>
+          <div class="all" id="viewAll">مشاهدة الكل</div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="nav" id="bottomNav">
+      <button class="active" type="button"><span class="ico">⌂</span>الرئيسية</button>
+      <button type="button"><span class="ico">▭</span>البطاقات</button>
+      <button type="button"><span class="ico">⇄</span>التحويلات</button>
+      <button type="button"><span class="ico">☰</span>المدفوعات</button>
+      <button type="button"><span class="ico">≡</span>المزيد</button>
+    </nav>
+
+    <div class="sheet" id="sheet">
+      <div class="panel">
+        <h4>تعديل الرصيد (تعلّم)</h4>
+        <input id="balanceInput" type="number" step="0.001" min="0" />
+        <div class="row">
+          <button class="cancel" id="cancelEdit" type="button">إلغاء</button>
+          <button class="apply" id="applyBalance" type="button">تطبيق</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const data = window.DEMO_DATA;
+    let visible = true;
+    const amountEl = document.getElementById("balanceAmount");
+    const input = document.getElementById("balanceInput");
+    const sheet = document.getElementById("sheet");
+
+    function splitBalance(n) {
+      const fixed = Number(n).toFixed(3);
+      const [intPart, decPart] = fixed.split(".");
+      const intFmt = Number(intPart).toLocaleString("en-US");
+      return { intPart: intFmt, rest: `.${decPart} ${data.currency}` };
+    }
+
+    function renderBalance() {
+      const { intPart, rest } = splitBalance(data.balance);
+      if (visible) {
+        amountEl.classList.remove("hidden");
+        document.getElementById("balInt").textContent = intPart;
+        document.getElementById("balRest").textContent = rest;
+      } else {
+        amountEl.classList.add("hidden");
+        document.getElementById("balInt").textContent = "••••";
+        document.getElementById("balRest").textContent = ` ••• ${data.currency}`;
+      }
+      input.value = Number(data.balance).toFixed(3);
+    }
+
+    function render() {
+      document.getElementById("statusTime").textContent = data.statusTime;
+      document.getElementById("greeting").textContent = data.greeting;
+      document.getElementById("userName").textContent = data.userName;
+      document.getElementById("balanceTitle").textContent = data.balanceTitle;
+      document.getElementById("accountLabel").textContent = data.accountLabel;
+      document.getElementById("detailsLabel").textContent = data.detailsLabel;
+      document.getElementById("moneyLabel").textContent = data.moneyLabel;
+      document.getElementById("goalsLabel").textContent = data.goalsLabel;
+      document.getElementById("promoTitle").textContent = data.promoTitle;
+      document.getElementById("promoSubtitle").textContent = data.promoSubtitle;
+      document.getElementById("orderNow").textContent = data.orderNow;
+      document.getElementById("txTitle").textContent = data.txTitle;
+      document.getElementById("viewAll").textContent = data.viewAll;
+      renderBalance();
+    }
+
+    document.getElementById("toggleEye").addEventListener("click", () => {
+      visible = !visible;
+      renderBalance();
+    });
+
+    let pressTimer;
+    amountEl.addEventListener("pointerdown", () => {
+      pressTimer = setTimeout(() => {
+        input.value = Number(data.balance).toFixed(3);
+        sheet.classList.add("open");
+        setTimeout(() => input.focus(), 40);
+      }, 550);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((ev) => {
+      amountEl.addEventListener(ev, () => clearTimeout(pressTimer));
+    });
+
+    function apply() {
+      const next = Number(input.value);
+      if (!Number.isFinite(next) || next < 0) {
+        alert("أدخل رقماً صحيحاً");
+        return;
+      }
+      data.balance = Math.round(next * 1000) / 1000;
+      visible = true;
+      renderBalance();
+      sheet.classList.remove("open");
+    }
+
+    document.getElementById("applyBalance").addEventListener("click", apply);
+    document.getElementById("cancelEdit").addEventListener("click", () => sheet.classList.remove("open"));
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) sheet.classList.remove("open"); });
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") apply(); });
+
+    document.querySelectorAll("#bottomNav button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#bottomNav button").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
