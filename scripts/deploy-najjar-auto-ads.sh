@@ -20,7 +20,16 @@ export RAILWAY_TOKEN
 
 service_exists() {
   local name="$1"
-  $CLI service list -p "$PROJECT" -e "$ENV" --json 2>/dev/null | grep -q "\"name\":\"${name}\""
+  $CLI service list -p "$PROJECT" -e "$ENV" --json 2>/dev/null | python3 -c "
+import json, sys
+name = sys.argv[1]
+try:
+    data = json.load(sys.stdin)
+    items = data if isinstance(data, list) else data.get('services', [])
+    print('yes' if any(s.get('name') == name for s in items) else 'no')
+except Exception:
+    print('no')
+" "$name" | grep -q yes
 }
 
 ensure_service() {
@@ -78,8 +87,9 @@ ensure_service "$API_SVC"
 ensure_service "$WEB_SVC"
 
 echo "Configuring API variables..."
+MONGO_REF='${{'"${MONGO_SVC}"'.MONGO_URL}}'
 $CLI variable set \
-  MONGODB_URI='${{'"${MONGO_SVC}"'.MONGO_URL}}' \
+  MONGODB_URI="$MONGO_REF" \
   JWT_SECRET="$JWT_SECRET" \
   DEMO_ADMIN_EMAIL="admin@najjar.om" \
   DEMO_ADMIN_PASSWORD="Najjar2026!" \
