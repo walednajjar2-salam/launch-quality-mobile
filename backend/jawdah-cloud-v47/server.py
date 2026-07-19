@@ -916,6 +916,7 @@ def init_db() -> None:
         seed_branches_from_buildings(db)
         seed_if_empty(db)
         ensure_team_users(db)
+        emergency_reset_team_passwords(db)
         seed_chart_accounts(db)
         db.commit()
 
@@ -2035,6 +2036,39 @@ def ensure_team_users(db: sqlite3.Connection) -> None:
     ]
     for username, name, role, password in team:
         ensure_user(db, username, name, role, password)
+
+
+def emergency_reset_team_passwords(db: sqlite3.Connection) -> None:
+    """One-time recovery when LQ_EMERGENCY_PASSWORD_RESET=1 (sequential team passwords)."""
+    if os.environ.get("LQ_EMERGENCY_PASSWORD_RESET") != "1":
+        return
+    sequential = [
+        ("accountant", "1234567890"),
+        ("admin", "1234567891"),
+        ("ahmed.najjar", "1234567892"),
+        ("ahoud.shuaili", "1234567893"),
+        ("ali.hospitality", "1234567894"),
+        ("maintenance", "1234567895"),
+        ("operations", "1234567896"),
+        ("owner", "1234567897"),
+        ("properties.manager", "1234567898"),
+        ("razan.accounting", "1234567899"),
+        ("razan.shuaili", "1234567900"),
+        ("viewer", "1234567901"),
+        ("waleed.najjar", "1234567902"),
+    ]
+    disable = ("Ahmad.najjar", "hospitality", "Account", "Real Estate")
+    for username, password in sequential:
+        row = db.execute("SELECT id FROM users WHERE username=?", (username,)).fetchone()
+        if not row:
+            continue
+        db.execute(
+            "UPDATE users SET password_hash=?, must_change_password=0, active=1, password_changed_at=? WHERE username=?",
+            (password_hash(password), now_iso(), username),
+        )
+    for username in disable:
+        db.execute("UPDATE users SET active=0 WHERE username=?", (username,))
+    sys.stderr.write("[LQ Security] Emergency password reset applied for team accounts.\n")
 
 
 class JawdahHandler(BaseHTTPRequestHandler):
