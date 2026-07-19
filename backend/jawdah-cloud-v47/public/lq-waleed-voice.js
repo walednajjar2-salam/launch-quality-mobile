@@ -1,4 +1,4 @@
-/* Phase 8 — WALEED optional voice: speak replies + microphone input */
+/* Phase 8 — Salam optional voice: speak replies + microphone input */
 (function () {
   const VOICE_ON_KEY = "lq_waleed_voice";
   const voicesReady = { done: false };
@@ -16,7 +16,7 @@
     return String(text || "")
       .replace(/<[^>]+>/g, " ")
       .replace(/&[a-z]+;/gi, " ")
-      .replace(/^(WALEED|Walid)\s*\([^)]*\)\s*:\s*/i, "")
+      .replace(/^(Salam|WALEED|Walid)\s*\([^)]*\)\s*:\s*/i, "")
       .replace(/\s+/g, " ")
       .trim()
       .slice(0, 600);
@@ -72,16 +72,16 @@
     mic.type = "button";
     mic.id = "visionAiMic";
     mic.className = "ghost lq-voice-btn";
-    mic.title = "تحدث مع WALEED";
-    mic.setAttribute("aria-label", "تحدث مع WALEED");
+    mic.title = "تحدث مع Salam";
+    mic.setAttribute("aria-label", "تحدث مع Salam");
     mic.textContent = "🎤";
 
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.id = "visionAiSpeakToggle";
     toggle.className = "ghost lq-voice-btn";
-    toggle.title = "تفعيل / إيقاف صوت WALEED";
-    toggle.setAttribute("aria-label", "صوت WALEED");
+    toggle.title = "تفعيل / إيقاف صوت Salam";
+    toggle.setAttribute("aria-label", "صوت Salam");
     toggle.textContent = "🔇";
 
     const send = document.getElementById("visionAiSend");
@@ -96,7 +96,7 @@
     toggle.onclick = () => {
       setVoiceOn(!voiceOn());
       if (voiceOn()) {
-        speak("صوت WALEED مفعّل — اسألني أي شيء");
+        speak("صوت Salam مفعّل — اسألني أي شيء");
         if (typeof haptic === "function") haptic(6);
       }
     };
@@ -111,7 +111,7 @@
     const on = voiceOn();
     toggle.textContent = on ? "🔊" : "🔇";
     toggle.classList.toggle("active", on);
-    toggle.title = on ? "إيقاف صوت WALEED" : "تفعيل صوت WALEED";
+    toggle.title = on ? "إيقاف صوت Salam" : "تفعيل صوت Salam";
   }
 
   function bindMic(btn, hint) {

@@ -1,12 +1,14 @@
-/* WALEED — personal assistant persona */
+/* Salam — personal assistant persona */
 (function () {
+  const ASSISTANT = "Salam";
+
   function personalize() {
     const body = document.getElementById("visionAiBody");
     const headTitle = document.querySelector("#visionAiDock h4");
-    if (headTitle) headTitle.textContent = "WALEED · المساعد الشخصي";
+    if (headTitle) headTitle.textContent = `${ASSISTANT} · المساعد الشخصي`;
 
     const input = document.getElementById("visionAiInput");
-    if (input) input.placeholder = "اسأل WALEED · تحدث معي…";
+    if (input) input.placeholder = `اسأل ${ASSISTANT} · تحدث معي…`;
 
     if (!body || typeof displayUserName !== "function") return;
     const name = displayUserName(window.Jawdah?.user) || "زميلي";
@@ -14,7 +16,7 @@
       typeof displayUserRole === "function"
         ? displayUserRole(window.Jawdah?.user)
         : window.Jawdah?.user?.role || "";
-    const greet = `مرحباً ${name} — أنا WALEED، معك شخصياً. أطمئنك: العمل منظم والبيانات محدثة. دورك: ${role}. اسألني عن أي شيء.`;
+    const greet = `مرحباً ${name} — أنا ${ASSISTANT}، معك شخصياً. أطمئنك: العمل منظم والبيانات محدثة. دورك: ${role}. اسألني عن أي شيء.`;
     const first = body.querySelector(".vision-ai-msg");
     if (first) first.textContent = greet;
     else

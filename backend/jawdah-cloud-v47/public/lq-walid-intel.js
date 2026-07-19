@@ -27,7 +27,7 @@
       <div class="card lq-walid-guide">
         <h3>🤖 وليد · الذكاء التشغيلي — المرحلة 9</h3>
         <p class="mini">مساعد تشغيلي يجيب من بياناتك الحقيقية: متأخرات، عقود، تأمينات، صيانة، وتوصيات تنفيذية.</p>
-        <p class="mini">🎤 تحدث مع WALEED · 🔊 صوت الردود (اختياري من لوحة WALEED).</p>
+        <p class="mini">🎤 تحدث مع Salam · 🔊 صوت الردود (اختياري من لوحة Salam).</p>
         <ul class="check-list">
           <li><strong>أسئلة مباشرة</strong> — من لم يدفع؟ ما العقود التي تنتهي؟</li>
           <li><strong>توصيات</strong> — تحصيل، تجديد، صيانة، اعتمادات</li>
@@ -126,7 +126,7 @@
       </div>` +
       `<div class="card"><h4>💡 أسئلة سريعة</h4>${promptsHtml(intel.suggested_questions)}</div>` +
       `<div class="layout" style="margin-top:12px">
-        <div class="card"><h4>🎯 توصيات Walid</h4>${recommendationsHtml(intel.recommendations)}</div>
+        <div class="card"><h4>🎯 توصيات Salam</h4>${recommendationsHtml(intel.recommendations)}</div>
         <div class="card"><h4>💳 من لم يدفع؟</h4>${debtorsTable(intel.overdue_debtors)}</div>
       </div>` +
       `<div class="layout" style="margin-top:12px">
@@ -190,7 +190,7 @@
       const res = await api("ai/ask", { method: "POST", body: JSON.stringify({ question: q }) });
       usageCache = res.usage || usageCache;
       const mode = res.mode === "llm" ? "LLM" : "Rules";
-      const reply = `${res.assistant || "Walid"} (${mode}): ${res.reply || ""}`;
+      const reply = `${res.assistant || "Salam"} (${mode}): ${res.reply || ""}`;
       if (body) {
         body.insertAdjacentHTML("beforeend", `<div class="vision-ai-msg pred">${esc(reply)}</div>`);
         const actions = (res.actions || [])
@@ -210,7 +210,7 @@
       if (body) {
         body.insertAdjacentHTML(
           "beforeend",
-          `<div class="vision-ai-msg">${esc(e.message || "تعذر الاتصال بـ Walid")}</div>`
+          `<div class="vision-ai-msg">${esc(e.message || "تعذر الاتصال بـ Salam")}</div>`
         );
       }
       if (typeof toastErr === "function") toastErr(e);

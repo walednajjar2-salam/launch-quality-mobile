@@ -8,7 +8,7 @@
 
   const dragBar = document.createElement("div");
   dragBar.className = "lq-walid-drag-bar";
-  dragBar.title = "اسحب لنقل WALEED";
+  dragBar.title = "اسحب لنقل Salam";
   dragBar.textContent = "⋯ اسحب للنقل ⋯";
   dock.insertBefore(dragBar, dock.firstChild);
 
