@@ -1,0 +1,29 @@
+name: Sync NAJJAR to Standalone Repo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'integrations/najjar-auto-ads/**'
+      - 'scripts/sync-najjar-to-standalone.sh'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync to NAJJAR-auto-ads
+        env:
+          NAJJAR_STANDALONE_PUSH_TOKEN: ${{ secrets.NAJJAR_STANDALONE_PUSH_TOKEN }}
+          NAJJAR_STANDALONE_REPO: https://x-access-token:${{ secrets.NAJJAR_STANDALONE_PUSH_TOKEN }}@github.com/walednajjar2-salam/NAJJAR-auto-ads.git
+        run: |
+          if [ -z "$NAJJAR_STANDALONE_PUSH_TOKEN" ]; then
+            echo "::warning::NAJJAR_STANDALONE_PUSH_TOKEN not set — add a PAT with repo scope for walednajjar2-salam/NAJJAR-auto-ads"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          chmod +x scripts/sync-najjar-to-standalone.sh
+          bash scripts/sync-najjar-to-standalone.sh
