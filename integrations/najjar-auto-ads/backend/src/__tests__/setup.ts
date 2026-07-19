@@ -1,0 +1,22 @@
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
+
+let mongo: MongoMemoryServer;
+
+beforeAll(async () => {
+  process.env.JWT_SECRET = "test-secret-key-min-16-chars";
+  mongo = await MongoMemoryServer.create();
+  await mongoose.connect(mongo.getUri());
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+  await mongo.stop();
+});
+
+afterEach(async () => {
+  const collections = mongoose.connection.collections;
+  for (const key of Object.keys(collections)) {
+    await collections[key].deleteMany({});
+  }
+});
