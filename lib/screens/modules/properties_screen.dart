@@ -54,8 +54,32 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                   itemBuilder: (_, i) {
                     final p = items[i];
+                    final image = '${p['image'] ?? ''}';
+                    final photo = image.startsWith('http');
                     return Card(
                       child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: photo
+                              ? Image.network(
+                                  image,
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => const Icon(
+                                    Icons.apartment_rounded,
+                                    color: BrandColors.goldBright,
+                                  ),
+                                )
+                              : const SizedBox(
+                                  width: 56,
+                                  height: 56,
+                                  child: Icon(
+                                    Icons.apartment_rounded,
+                                    color: BrandColors.goldBright,
+                                  ),
+                                ),
+                        ),
                         title: Text('${p['name'] ?? '—'}'),
                         subtitle: Text('${p['location'] ?? ''}\n${p['type'] ?? ''}'),
                         isThreeLine: true,
