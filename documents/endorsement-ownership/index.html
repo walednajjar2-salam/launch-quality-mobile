@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ملحق نقل وثيقة التأمين — Endorsement Annexure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #0b2348;
+      --blue-text: #0b2348;
+      --sign-blue: #0b2348;
+      --accent: #b08a4e;
+      --row-gray: #f2f2f2;
+      --line-gray: #a1a1a1;
+      --divider: #7a7878;
+      --green-bar: #b08a4e;
+      --decl-bg: #f8f4ec;
+      --ink: #000;
+      --page-w: 210mm;
+      --page-h: 297mm;
+      --font: "Noto Sans", "Noto Sans Arabic", Arial, Tahoma, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #d8d8d8;
+      font-family: var(--font);
+      color: var(--ink);
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 16px;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .toolbar button {
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+    }
+
+    .toolbar .btn-print { background: var(--accent); color: #fff; }
+    .toolbar .btn-edit { background: #fff; color: #111; }
+    .toolbar .btn-save { background: var(--green-bar); color: #111; }
+    .toolbar .hint { opacity: 0.85; margin-inline-start: auto; }
+
+    .stage {
+      padding: 24px 12px 48px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: var(--page-w);
+      min-height: var(--page-h);
+      background: #fff;
+      padding: 18px 22px 28px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Header */
+    .header {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 6px;
+    }
+
+    .logo {
+      width: 140px;
+      max-height: 96px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .company {
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .company-ar {
+      font-size: 13.5pt;
+      font-weight: 700;
+      line-height: 1.2;
+      direction: rtl;
+    }
+
+    .company-en {
+      font-size: 20pt;
+      font-weight: 700;
+      color: var(--blue-text);
+      line-height: 1.15;
+      margin-top: 2px;
+    }
+
+    .company-addr {
+      font-size: 7.5pt;
+      line-height: 1.35;
+      margin-top: 4px;
+    }
+
+    .company-addr .ar {
+      direction: rtl;
+      display: block;
+    }
+
+    .doc-title {
+      text-align: center;
+      margin: 10px 0 12px;
+    }
+
+    .doc-title .ar {
+      font-size: 13.5pt;
+      font-weight: 700;
+      direction: rtl;
+    }
+
+    .doc-title .en {
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      margin-top: 2px;
+    }
+
+    .doc-title .cover-type {
+      margin-top: 6px;
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--blue-text);
+    }
+
+    .doc-title .cover-type .sep {
+      margin: 0 6px;
+      opacity: 0.55;
+    }
+
+    /* Table */
+    .details {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.5pt;
+      table-layout: fixed;
+    }
+
+    .details th {
+      background: var(--blue);
+      color: #fff;
+      font-weight: 400;
+      text-align: left;
+      padding: 3px 6px;
+    }
+
+    .details th .ar {
+      float: right;
+      direction: rtl;
+    }
+
+    .details td {
+      vertical-align: middle;
+      padding: 2px 5px;
+      border-bottom: 1px solid transparent;
+      height: 16px;
+    }
+
+    .details tr.zebra td { background: var(--row-gray); }
+
+    .lbl { width: 22%; }
+    .val { width: 36%; font-weight: 400; }
+    .arlbl {
+      width: 20%;
+      text-align: right;
+      direction: rtl;
+    }
+
+    .split {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.5pt;
+      table-layout: fixed;
+      border-top: 1px solid var(--line-gray);
+    }
+
+    .split td {
+      padding: 2px 4px;
+      vertical-align: middle;
+      height: 16px;
+    }
+
+    .split tr.zebra td { background: var(--row-gray); }
+
+    .split .mid-line {
+      border-left: 1px solid var(--divider);
+    }
+
+    .split .l-lbl { width: 16%; }
+    .split .l-val { width: 17%; }
+    .split .l-ar { width: 16%; text-align: right; direction: rtl; }
+    .split .r-lbl { width: 15%; padding-inline-start: 6px; }
+    .split .r-val { width: 15%; }
+    .split .r-ar { width: 21%; text-align: right; direction: rtl; }
+
+    .name-cell {
+      white-space: pre-line;
+      line-height: 1.15;
+      min-height: 34px;
+    }
+
+    .charges-row td { background: var(--row-gray); }
+
+    .green-bar {
+      height: 13px;
+      background: var(--green-bar);
+      margin: 0;
+    }
+
+    .declaration {
+      border: 1px solid var(--divider);
+      border-top: none;
+      background: var(--decl-bg);
+      padding: 8px 10px 12px;
+      font-size: 9pt;
+      line-height: 1.35;
+      min-height: 86px;
+    }
+
+    .declaration p {
+      margin: 0 0 12px;
+    }
+
+    .declaration p:last-child { margin-bottom: 0; }
+
+    .witness-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 34px;
+      font-size: 9pt;
+      gap: 16px;
+    }
+
+    .witness-line .left { color: var(--ink); flex: 1; }
+
+    .witness-line .right {
+      color: var(--sign-blue);
+      text-align: right;
+      min-width: 200px;
+    }
+
+    .sign-area {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 9pt;
+      align-items: start;
+    }
+
+    .meta-left {
+      font-size: 8pt;
+      line-height: 1.55;
+      margin-top: 78px;
+      color: #222;
+    }
+
+    .sign-right {
+      text-align: right;
+      color: var(--sign-blue);
+    }
+
+    .sign-right .ar-sign {
+      direction: rtl;
+      margin-top: 2px;
+    }
+
+    .sign-right .co { margin-top: 2px; }
+
+    .signature-line {
+      width: 140px;
+      height: 48px;
+      margin: 10px 0 6px auto;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .auth {
+      color: var(--sign-blue);
+      font-size: 9pt;
+    }
+
+    .tax {
+      color: var(--ink);
+      font-size: 9pt;
+      margin-top: 4px;
+    }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 2px;
+      min-width: 12px;
+      display: inline-block;
+    }
+
+    body.editing [contenteditable="true"] {
+      box-shadow: inset 0 0 0 1px rgba(0, 153, 255, 0.45);
+      background: rgba(0, 153, 255, 0.06);
+      padding: 0 2px;
+    }
+
+    body.editing [contenteditable="true"]:focus {
+      box-shadow: inset 0 0 0 1px var(--blue);
+      background: #eaf6ff;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none !important; }
+      .stage { padding: 0; }
+      .page {
+        box-shadow: none;
+        width: 210mm;
+        min-height: auto;
+        padding: 12mm 14mm;
+      }
+      body.editing [contenteditable="true"] {
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+      }
+      @page { size: A4; margin: 8mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong>ملحق نقل وثيقة التأمين</strong>
+    <button type="button" class="btn-edit" id="toggleEdit">تفعيل التعديل</button>
+    <button type="button" class="btn-save" id="exportJson">حفظ JSON</button>
+    <button type="button" class="btn-print" id="printBtn">طباعة / PDF</button>
+    <span class="hint">عدّل data.js أو فعّل التعديل المباشر على الصفحة</span>
+  </div>
+
+  <div class="stage">
+    <article class="page" id="page">
+      <!-- يُملأ عبر app.js -->
+    </article>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
