@@ -2,563 +2,277 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>K LINE — Vehicle Shipment Tracking</title>
+  <meta name="viewport" content="width=1440" />
+  <title>K LINE — Toyota Land Cruiser · Sohar Port</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     :root {
-      --bg: #07111f;
-      --panel: #0d1a2d;
-      --panel-2: #12243a;
-      --line: rgba(120, 170, 230, 0.22);
-      --text: #e8f1ff;
+      --bg: #060d18;
+      --panel: #0c1829;
+      --line: rgba(120,170,230,.22);
+      --text: #eaf2ff;
       --muted: #8aa0bd;
-      --accent: #2f7dff;
-      --accent-2: #19c3ff;
+      --blue: #2f7dff;
+      --cyan: #19c3ff;
       --ok: #2ecc71;
-      --warn: #f5a623;
-      --danger: #e74c3c;
+      --warn: #f0a500;
       --navy: #0b2348;
-      --copper: #b08a4e;
-      --radius: 18px;
-      --font: "IBM Plex Sans", "Noto Sans Arabic", system-ui, sans-serif;
+      --font: "IBM Plex Sans", "Noto Sans Arabic", sans-serif;
     }
-
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
     body {
-      margin: 0;
       font-family: var(--font);
       color: var(--text);
-      background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(47,125,255,.22), transparent 55%),
-        radial-gradient(900px 500px at 90% 0%, rgba(25,195,255,.12), transparent 50%),
-        linear-gradient(180deg, #050b14, #0a1526 40%, #07101c);
-    }
-
-    .app {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 16px;
+      background: radial-gradient(1000px 500px at 15% -10%, rgba(47,125,255,.2), transparent 55%), #060d18;
       display: grid;
-      gap: 14px;
-      grid-template-columns: 300px 1fr 300px;
-      grid-template-rows: auto 1fr;
-      min-height: 100vh;
+      place-items: center;
     }
 
-    .topbar {
+    /* ONE desktop canvas */
+    .desk {
+      width: 1440px;
+      height: 900px;
+      display: grid;
+      grid-template-columns: 320px 1fr 300px;
+      grid-template-rows: 64px 1fr;
+      gap: 12px;
+      padding: 14px;
+      background: linear-gradient(180deg, #081322, #050b14);
+    }
+
+    .top {
       grid-column: 1 / -1;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 12px 16px;
+      padding: 0 16px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(13, 26, 45, 0.85);
-      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      background: rgba(12,24,41,.9);
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      letter-spacing: 0.4px;
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+    .mark {
+      width: 40px; height: 40px; border-radius: 9px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg,#1a4fff,#0a2a88);
+      font-size: 11px; font-weight: 700;
     }
-
-    .brand .mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(145deg, #1a4fff, #0a2a88);
-      font-size: 12px;
-      font-weight: 700;
+    .live {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--muted);
+      border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
     }
-
-    .meta-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
     .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--ok);
-      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.18);
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.15); opacity: 0.7; }
+      width: 8px; height: 8px; border-radius: 50%; background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(46,204,113,.2);
     }
 
     .panel {
-      background: linear-gradient(180deg, rgba(18,36,58,.95), rgba(10,20,36,.95));
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #12233a, #0a1524);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
       min-height: 0;
     }
-
-    .panel-h {
-      padding: 12px 14px;
+    .ph {
+      padding: 10px 14px;
       border-bottom: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 11px; letter-spacing: .7px; text-transform: uppercase; color: var(--muted);
+      display: flex; justify-content: space-between; align-items: center;
     }
+    .pb { padding: 12px 14px; overflow: auto; flex: 1; }
 
-    .panel-b { padding: 14px; }
-
-    .vehicle-photo {
+    .photo {
       position: relative;
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
-      aspect-ratio: 16 / 11;
+      height: 210px;
       border: 1px solid var(--line);
       background: #000;
     }
-
-    .vehicle-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: contrast(1.05) saturate(1.05);
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .badge {
+      position: absolute; left: 8px; bottom: 8px;
+      background: rgba(0,0,0,.65); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 8px; padding: 4px 8px; font-size: 10px;
     }
 
-    .photo-badge {
-      position: absolute;
-      left: 10px;
-      bottom: 10px;
-      padding: 5px 9px;
-      border-radius: 8px;
-      background: rgba(0,0,0,.62);
-      border: 1px solid rgba(255,255,255,.2);
-      font-size: 11px;
-      backdrop-filter: blur(6px);
-    }
+    .title { margin: 12px 0 2px; font-size: 17px; font-weight: 700; line-height: 1.2; }
+    .sub { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
 
-    .v-title {
-      margin: 12px 0 4px;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.25;
-    }
+    table.specs { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.specs td { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    table.specs td:first-child { color: var(--muted); }
+    table.specs td:last-child { text-align: right; font-weight: 600; }
 
-    .v-sub {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 12px;
-    }
+    .sec { margin: 14px 0 6px; font-size: 10px; letter-spacing: .7px; text-transform: uppercase; color: var(--muted); }
+    .row { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .row span:first-child { color: var(--muted); }
 
-    .specs {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
+    .center { display: grid; grid-template-rows: 1fr 110px; gap: 12px; min-height: 0; }
 
-    .specs td {
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-
-    .specs td:first-child { color: var(--muted); width: 42%; }
-    .specs td:last-child { text-align: right; font-weight: 600; }
-
-    .section-label {
-      margin: 16px 0 8px;
-      font-size: 11px;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .customer div {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 6px 0;
-      font-size: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.05);
-    }
-
-    .customer span:first-child { color: var(--muted); }
-
-    .center {
-      display: grid;
-      grid-template-rows: 1fr auto;
-      gap: 14px;
-      min-height: 0;
-    }
-
-    /* NEW MAP SHAPE — clipped polygon / ticket frame */
+    /* Map shape */
     .map-shell {
       position: relative;
-      border-radius: 28px 28px 18px 18px;
-      padding: 10px;
-      background:
-        linear-gradient(135deg, rgba(47,125,255,.35), rgba(25,195,255,.08) 40%, rgba(11,35,72,.5));
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      border-radius: 26px 26px 16px 16px;
+      padding: 8px;
+      background: linear-gradient(135deg, rgba(47,125,255,.35), rgba(25,195,255,.08), rgba(11,35,72,.45));
     }
-
-    .map-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(140deg, rgba(120,190,255,.7), rgba(255,255,255,.05), rgba(25,195,255,.45));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
     .map-frame {
+      height: 100%;
+      min-height: 480px;
+      border-radius: 20px 20px 12px 12px;
+      overflow: hidden;
+      clip-path: polygon(0 3%, 2.5% 0, 97.5% 0, 100% 3%, 100% 93%, 97.5% 100%, 2.5% 100%, 0 93%);
+      border: 1px solid rgba(140,190,255,.35);
       position: relative;
-      height: min(52vh, 460px);
-      border-radius: 22px 22px 14px 14px;
-      overflow: hidden;
-      clip-path: polygon(
-        0% 4%,
-        3% 0%,
-        97% 0%,
-        100% 4%,
-        100% 92%,
-        97% 100%,
-        3% 100%,
-        0% 92%
-      );
-      border: 1px solid rgba(140, 190, 255, 0.35);
     }
+    #map { width: 100%; height: 100%; background: #0a1628; }
+    .leaflet-control-attribution { display: none !important; }
 
-    #map {
-      width: 100%;
-      height: 100%;
-      background: #0a1628;
+    .prog {
+      position: absolute; top: 12px; right: 12px; z-index: 500;
+      width: 148px; padding: 12px; border-radius: 14px;
+      background: rgba(7,17,31,.88); border: 1px solid rgba(120,170,230,.3); backdrop-filter: blur(8px);
     }
-
-    .map-overlay {
-      position: absolute;
-      inset: auto 12px 12px 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      z-index: 500;
-      pointer-events: none;
-    }
-
-    .pill {
-      pointer-events: auto;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(7, 17, 31, 0.82);
-      border: 1px solid rgba(120,170,230,.35);
-      backdrop-filter: blur(8px);
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .pill strong { color: var(--accent-2); }
-
-    .progress-side {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 500;
-      width: 150px;
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(7, 17, 31, 0.86);
-      border: 1px solid rgba(120,170,230,.3);
-      backdrop-filter: blur(10px);
-    }
-
-    .progress-side .label {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-    }
-
-    .progress-side .pct {
-      font-size: 28px;
-      font-weight: 700;
-      margin: 4px 0 8px;
-    }
-
-    .bar {
-      height: 8px;
-      border-radius: 99px;
-      background: rgba(255,255,255,.08);
-      overflow: hidden;
-    }
-
-    .bar > span {
-      display: block;
-      height: 100%;
-      width: 85%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    }
-
-    .eta {
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
+    .prog .l { font-size: 10px; color: var(--muted); letter-spacing: .6px; text-transform: uppercase; }
+    .prog .p { font-size: 28px; font-weight: 700; margin: 2px 0 8px; }
+    .bar { height: 7px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .bar > i { display: block; height: 100%; width: 85%; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .eta { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.35; }
     .eta b { color: var(--text); }
 
-    .stats {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
-      gap: 12px;
+    .pills {
+      position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 500;
+      display: flex; gap: 8px; flex-wrap: wrap;
     }
+    .pill {
+      padding: 7px 11px; border-radius: 999px; font-size: 12px; font-weight: 600;
+      background: rgba(7,17,31,.85); border: 1px solid rgba(120,170,230,.35);
+    }
+    .pill strong { color: var(--cyan); }
 
+    .stats { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; }
     .stat {
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(13,26,45,.9);
+      border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
+      background: rgba(12,24,41,.95);
     }
+    .stat h4 { margin: 0 0 6px; font-size: 10px; color: var(--muted); letter-spacing: .6px; text-transform: uppercase; }
+    .stat .v { font-size: 20px; font-weight: 700; }
+    .stat small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; margin-top: 2px; }
 
-    .stat h4 {
-      margin: 0 0 8px;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      font-weight: 600;
+    .ship {
+      height: 150px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 10px;
     }
+    .ship img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .chart {
-      height: 54px;
-      width: 100%;
-    }
-
-    .gauge {
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    .gauge small {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 500;
-      margin-top: 2px;
-    }
-
-    .ship-photo {
-      border-radius: 12px;
-      overflow: hidden;
-      aspect-ratio: 16 / 10;
-      border: 1px solid var(--line);
-      margin-bottom: 12px;
-    }
-
-    .ship-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .insure {
-      margin-top: 14px;
-      border-radius: 14px;
-      overflow: hidden;
+    .ins {
+      margin-top: 12px; border-radius: 12px; overflow: hidden;
       border: 1px solid rgba(176,138,78,.45);
-      background: linear-gradient(180deg, #13233a, #0d1828);
     }
-
-    .insure-h {
-      padding: 10px 12px;
-      background: linear-gradient(90deg, var(--navy), #16345f);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+    .ins-h {
+      padding: 9px 11px; background: linear-gradient(90deg, var(--navy), #16345f);
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
     }
-
-    .insure-h img { height: 28px; width: auto; }
-    .insure-h .ar {
-      font-family: "Noto Sans Arabic", sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .insure-b { padding: 12px; font-size: 12px; }
-    .insure-b p { margin: 0 0 8px; color: var(--muted); line-height: 1.45; }
-    .insure-b strong { color: var(--text); }
-
+    .ins-h img { height: 26px; }
+    .ins-h .ar { font-size: 12px; font-weight: 700; font-family: "Noto Sans Arabic", sans-serif; }
+    .ins-b { padding: 10px 11px; font-size: 12px; background: #0d1828; }
+    .ins-b p { margin: 0 0 6px; color: var(--muted); }
+    .ins-b strong { color: var(--text); }
     .btn {
-      display: inline-flex;
-      width: 100%;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-      padding: 10px 12px;
-      border: 0;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #e85d4c, #c0392b);
-      color: #fff;
-      font-weight: 700;
-      font-size: 12px;
-      text-decoration: none;
-      cursor: pointer;
+      display: flex; justify-content: center; margin-top: 8px; padding: 9px;
+      border-radius: 9px; background: linear-gradient(180deg,#e85d4c,#c0392b);
+      color: #fff; font-weight: 700; font-size: 12px; text-decoration: none;
     }
-
     .weather {
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-
-    .leaflet-container { background: #0a1628; font: inherit; }
-    .leaflet-control-attribution { display: none; }
-
-    .route-marker {
-      background: transparent;
-      border: 0;
-    }
-
-    @media (max-width: 1100px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-      .map-frame { height: 380px; }
-      .stats { grid-template-columns: 1fr; }
+      margin-top: 10px; padding: 10px; border-radius: 10px; border: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center; font-size: 12px;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
+  <div class="desk">
+    <header class="top">
       <div class="brand">
         <div class="mark">K LINE</div>
         <div>
           <div>Vehicle Ocean Shipment</div>
-          <div style="font-size:12px;color:var(--muted);font-weight:500">BL / SALEWES2370787 · Sohar Port</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:500">Toyota Land Cruiser · Sohar Port / ميناء صحار</div>
         </div>
       </div>
-      <div class="meta-chip"><span class="dot"></span> Live tracking · Gulf of Oman</div>
+      <div class="live"><span class="dot"></span> Live tracking · Gulf of Oman</div>
     </header>
 
-    <!-- LEFT: vehicle -->
+    <!-- LEFT -->
     <aside class="panel">
-      <div class="panel-h">
-        <span>Current Vehicle</span>
-        <span style="color:var(--warn)">USED / مستخدمة</span>
-      </div>
-      <div class="panel-b">
-        <div class="vehicle-photo">
-          <img src="assets/vehicle.jpg" alt="Real Toyota Land Cruiser at Sohar Port yard" />
-          <div class="photo-badge">Real port photo · Sohar / ميناء صحار</div>
+      <div class="ph"><span>Current Vehicle</span><span style="color:var(--warn)">USED / مستخدمة</span></div>
+      <div class="pb">
+        <div class="photo">
+          <img src="assets/vehicle.jpg" alt="Toyota Land Cruiser at port yard" />
+          <div class="badge">Port yard photo · Land Cruiser</div>
         </div>
-        <h2 class="v-title">TOYOTA LAND CRUISER</h2>
-        <div class="v-sub">Chassis SALEWES2370787 · Est. value 29,000 USD</div>
-
+        <h1 class="title">TOYOTA LAND CRUISER 300 V6 SPORT</h1>
+        <div class="sub">Est. value 29,000 USD · Chassis SALEWES2370787</div>
         <table class="specs">
-          <tr><td>Year</td><td>2025</td></tr>
+          <tr><td>Year</td><td>2024</td></tr>
           <tr><td>Color</td><td>Black</td></tr>
           <tr><td>Body Type / نوع الهيكل</td><td>مستخدمة</td></tr>
           <tr><td>Fuel</td><td>Petrol</td></tr>
           <tr><td>Condition</td><td>Used / مستخدمة</td></tr>
-          <tr><td>Location</td><td>Sohar Port / ميناء صحار</td></tr>
+          <tr><td>Location</td><td>Sohar Port</td></tr>
         </table>
-
-        <div class="section-label">Customer Details</div>
-        <div class="customer">
-          <div><span>Name</span><span>ABDULMALIK SHAFEEK</span></div>
-          <div><span>Civil ID</span><span>125556746</span></div>
-          <div><span>Nationality</span><span>India / الهند</span></div>
-          <div><span>Phone</span><span>+96871924089</span></div>
-          <div><span>Destination</span><span>Sohar Port, Oman</span></div>
-        </div>
+        <div class="sec">Customer Details</div>
+        <div class="row"><span>Name</span><span>ABDULMALIK SHAFEEK</span></div>
+        <div class="row"><span>Civil ID</span><span>125556746</span></div>
+        <div class="row"><span>Nationality</span><span>India / الهند</span></div>
+        <div class="row"><span>Phone</span><span>+96871924089</span></div>
+        <div class="row"><span>Destination</span><span>Sohar Port, Oman</span></div>
       </div>
     </aside>
 
-    <!-- CENTER: map -->
+    <!-- CENTER -->
     <main class="center">
       <section class="map-shell">
         <div class="map-frame">
           <div id="map"></div>
-          <div class="progress-side">
-            <div class="label">Voyage Progress</div>
-            <div class="pct">85%</div>
-            <div class="bar"><span></span></div>
+          <div class="prog">
+            <div class="l">Voyage Progress</div>
+            <div class="p">85%</div>
+            <div class="bar"><i></i></div>
             <div class="eta">ETA <b>Sohar Port</b><br/>30 Jun 2026 · 23:59</div>
           </div>
-          <div class="map-overlay">
+          <div class="pills">
             <div class="pill">Origin <strong>Laem Chabang</strong></div>
             <div class="pill">Via <strong>Arabian Sea</strong></div>
             <div class="pill">Dest <strong>Sohar Port</strong></div>
           </div>
         </div>
       </section>
-
       <section class="stats">
         <div class="stat">
           <h4>Voyage Progress</h4>
-          <svg class="chart" viewBox="0 0 220 54" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#2f7dff" stop-opacity=".55"/>
-                <stop offset="100%" stop-color="#2f7dff" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <path d="M0,42 C20,38 35,40 50,28 C70,12 85,18 110,16 C140,14 155,22 175,10 C195,2 210,8 220,6 L220,54 L0,54 Z" fill="url(#g)"/>
-            <path d="M0,42 C20,38 35,40 50,28 C70,12 85,18 110,16 C140,14 155,22 175,10 C195,2 210,8 220,6" fill="none" stroke="#19c3ff" stroke-width="2"/>
+          <svg width="100%" height="42" viewBox="0 0 220 42" preserveAspectRatio="none">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2f7dff" stop-opacity=".5"/><stop offset="100%" stop-color="#2f7dff" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,32 C30,28 50,30 70,18 C95,4 120,12 150,10 C180,8 200,14 220,6 L220,42 L0,42 Z" fill="url(#g)"/>
+            <path d="M0,32 C30,28 50,30 70,18 C95,4 120,12 150,10 C180,8 200,14 220,6" fill="none" stroke="#19c3ff" stroke-width="2"/>
           </svg>
         </div>
-        <div class="stat">
-          <h4>Vessel Speed</h4>
-          <div class="gauge">12.5 kts<small>Steady · Gulf of Oman</small></div>
-        </div>
-        <div class="stat">
-          <h4>Distance Travelled</h4>
-          <div class="gauge">4,820 nm<small>Remaining ~720 nm</small></div>
-        </div>
+        <div class="stat"><h4>Vessel Speed</h4><div class="v">12.5 kts</div><small>Steady · Gulf of Oman</small></div>
+        <div class="stat"><h4>Distance Travelled</h4><div class="v">4,820 nm</div><small>Remaining ~720 nm</small></div>
       </section>
     </main>
 
-    <!-- RIGHT: vessel + insurance -->
+    <!-- RIGHT -->
     <aside class="panel">
-      <div class="panel-h"><span>Vessel</span><span>K LINE</span></div>
-      <div class="panel-b">
-        <div class="ship-photo">
-          <img src="assets/ship.jpg" alt="Car carrier vessel at sea" />
-        </div>
+      <div class="ph"><span>Vessel</span><span>K LINE</span></div>
+      <div class="pb">
+        <div class="ship"><img src="assets/ship.jpg" alt="Car carrier vessel" /></div>
         <table class="specs">
           <tr><td>Name</td><td>ATTICA BLUE</td></tr>
           <tr><td>Type</td><td>Pure Car Carrier</td></tr>
@@ -566,25 +280,20 @@
           <tr><td>Route</td><td>Asia → Oman</td></tr>
           <tr><td>Status</td><td style="color:var(--ok)">Underway</td></tr>
         </table>
-
-        <div class="insure">
-          <div class="insure-h">
+        <div class="ins">
+          <div class="ins-h">
             <img src="assets/gig-logo.png" alt="GIG" />
             <div class="ar">الخليج العربي للتأمين</div>
           </div>
-          <div class="insure-b">
-            <p><strong>Comprehensive Cover</strong> · تأمين شامل</p>
-            <p>Period: 29/06/2026 → 30/06/2027</p>
+          <div class="ins-b">
+            <p><strong>Comprehensive</strong> · تأمين شامل</p>
+            <p>29/06/2026 → 30/06/2027</p>
             <p>Insured: ABDULMALIK SHAFEEK</p>
-            <a class="btn" href="../endorsement-ownership/GIG-Endorsement-USED.pdf" target="_blank" rel="noopener">DOWNLOAD INSURANCE</a>
+            <a class="btn" href="../endorsement-ownership/GIG-Endorsement-USED.pdf" target="_blank">DOWNLOAD INSURANCE</a>
           </div>
         </div>
-
         <div class="weather">
-          <div>
-            <div style="font-weight:700">Sohar</div>
-            <div style="color:var(--muted)">Clear skies</div>
-          </div>
+          <div><div style="font-weight:700">Sohar</div><div style="color:var(--muted)">Clear skies</div></div>
           <div style="font-size:22px;font-weight:700">35°C</div>
         </div>
       </div>
@@ -593,77 +302,22 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Route: Laem Chabang (approx) → Arabian Sea → Sohar Port
     const sohar = [24.382, 56.625];
     const laem = [13.0827, 100.883];
-    const mid = [15.2, 65.0];
-    const nowPos = [22.1, 59.8]; // ~85% towards Sohar
-
-    const map = L.map("map", {
-      zoomControl: false,
-      attributionControl: false,
-      dragging: true,
-      scrollWheelZoom: false,
-    }).setView([18.5, 68], 4);
-
-    // Dark nautical-style tiles
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 18,
-    }).addTo(map);
-
-    const route = [laem, [12.5, 78], mid, [20.5, 62], nowPos, sohar];
-
-    L.polyline(route, {
-      color: "#7ec8ff",
-      weight: 3,
-      opacity: 0.35,
-      dashArray: "8 10",
-    }).addTo(map);
-
-    L.polyline([laem, [12.5, 78], mid, [20.5, 62], nowPos], {
-      color: "#19c3ff",
-      weight: 4,
-      opacity: 0.95,
-    }).addTo(map);
-
-    function pin(latlng, label, color) {
-      const icon = L.divIcon({
-        className: "route-marker",
-        html: `<div style="
-          width:14px;height:14px;border-radius:50%;
-          background:${color};border:2px solid #fff;
-          box-shadow:0 0 0 6px ${color}33;"></div>
-          <div style="
-            margin-top:4px;transform:translateX(-40%);
-            white-space:nowrap;font:600 11px IBM Plex Sans,sans-serif;
-            color:#e8f1ff;text-shadow:0 1px 4px #000">${label}</div>`,
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
-      });
-      return L.marker(latlng, { icon }).addTo(map);
+    const nowPos = [22.1, 59.8];
+    const map = L.map("map", { zoomControl: false, attributionControl: false, scrollWheelZoom: false }).setView([18.5, 68], 4);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 18 }).addTo(map);
+    const route = [laem, [12.5, 78], [15.2, 65], [20.5, 62], nowPos, sohar];
+    L.polyline(route, { color: "#7ec8ff", weight: 3, opacity: .35, dashArray: "8 10" }).addTo(map);
+    L.polyline([laem, [12.5, 78], [15.2, 65], [20.5, 62], nowPos], { color: "#19c3ff", weight: 4, opacity: .95 }).addTo(map);
+    function pin(ll, label, color) {
+      L.marker(ll, { icon: L.divIcon({ className: "", html: `<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 0 0 5px ${color}33"></div><div style="margin-top:3px;transform:translateX(-35%);white-space:nowrap;font:600 11px IBM Plex Sans;color:#eaf2ff;text-shadow:0 1px 3px #000">${label}</div>`, iconSize: [12,12], iconAnchor: [6,6] }) }).addTo(map);
     }
-
     pin(laem, "Origin", "#8aa0bd");
     pin(nowPos, "Vessel", "#2f7dff");
     pin(sohar, "Sohar Port", "#2ecc71");
-
-    // Ship icon at current position
-    const shipIcon = L.divIcon({
-      className: "route-marker",
-      html: `<div style="
-        width:22px;height:10px;border-radius:3px 10px 10px 3px;
-        background:linear-gradient(90deg,#2f7dff,#19c3ff);
-        box-shadow:0 2px 8px rgba(0,0,0,.55);
-        transform:rotate(28deg);
-        position:relative;">
-        <span style="position:absolute;left:4px;top:-7px;width:3px;height:8px;background:#fff;opacity:.85"></span>
-      </div>`,
-      iconSize: [22, 14],
-      iconAnchor: [11, 7],
-    });
-    L.marker(nowPos, { icon: shipIcon }).addTo(map);
-
-    setTimeout(() => map.invalidateSize(), 200);
+    L.marker(nowPos, { icon: L.divIcon({ className: "", html: `<div style="width:22px;height:10px;border-radius:3px 10px 10px 3px;background:linear-gradient(90deg,#2f7dff,#19c3ff);box-shadow:0 2px 8px rgba(0,0,0,.55);transform:rotate(28deg)"></div>`, iconSize: [22,14], iconAnchor: [11,7] }) }).addTo(map);
+    setTimeout(() => map.invalidateSize(), 150);
   </script>
 </body>
 </html>
