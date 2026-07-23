@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1440" />
-  <title>K LINE — Toyota Land Cruiser · Sohar Port</title>
+  <title>K LINE — Land Cruiser GR Sport · Sohar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@600;700&display=swap" rel="stylesheet" />
@@ -19,7 +19,7 @@
       --cyan: #19c3ff;
       --ok: #2ecc71;
       --warn: #f0a500;
-      --navy: #0b2348;
+      --danger: #e74c3c;
       --font: "IBM Plex Sans", "Noto Sans Arabic", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -27,23 +27,20 @@
     body {
       font-family: var(--font);
       color: var(--text);
-      background: radial-gradient(1000px 500px at 15% -10%, rgba(47,125,255,.2), transparent 55%), #060d18;
+      background: #060d18;
       display: grid;
       place-items: center;
     }
-
-    /* ONE desktop canvas */
     .desk {
       width: 1440px;
       height: 900px;
       display: grid;
-      grid-template-columns: 320px 1fr 300px;
-      grid-template-rows: 64px 1fr;
+      grid-template-columns: 340px 1fr 300px;
+      grid-template-rows: 58px 1fr;
       gap: 12px;
-      padding: 14px;
+      padding: 12px;
       background: linear-gradient(180deg, #081322, #050b14);
     }
-
     .top {
       grid-column: 1 / -1;
       display: flex;
@@ -52,28 +49,23 @@
       padding: 0 16px;
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: rgba(12,24,41,.9);
+      background: rgba(12,24,41,.92);
     }
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; }
     .mark {
-      width: 40px; height: 40px; border-radius: 9px;
-      display: grid; place-items: center;
+      width: 38px; height: 38px; border-radius: 8px;
+      display: grid; place-items: center; font-size: 10px; font-weight: 700;
       background: linear-gradient(145deg,#1a4fff,#0a2a88);
-      font-size: 11px; font-weight: 700;
     }
     .live {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 12px; color: var(--muted);
+      display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted);
       border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
     }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--ok);
-      box-shadow: 0 0 0 4px rgba(46,204,113,.2);
-    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(46,204,113,.2); }
 
     .panel {
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(180deg, #12233a, #0a1524);
       overflow: hidden;
       display: flex;
@@ -81,118 +73,153 @@
       min-height: 0;
     }
     .ph {
-      padding: 10px 14px;
+      padding: 9px 12px;
       border-bottom: 1px solid var(--line);
-      font-size: 11px; letter-spacing: .7px; text-transform: uppercase; color: var(--muted);
-      display: flex; justify-content: space-between; align-items: center;
+      font-size: 10px; letter-spacing: .7px; text-transform: uppercase; color: var(--muted);
+      display: flex; justify-content: space-between;
     }
-    .pb { padding: 12px 14px; overflow: auto; flex: 1; }
+    .pb { padding: 11px 12px; overflow: auto; flex: 1; }
 
     .photo {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      height: 210px;
-      border: 1px solid var(--line);
-      background: #000;
+      position: relative; height: 168px; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--line); background: #000;
     }
     .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .badge {
       position: absolute; left: 8px; bottom: 8px;
       background: rgba(0,0,0,.65); border: 1px solid rgba(255,255,255,.2);
-      border-radius: 8px; padding: 4px 8px; font-size: 10px;
+      border-radius: 7px; padding: 3px 8px; font-size: 10px;
     }
+    .title { margin: 10px 0 2px; font-size: 15px; font-weight: 700; line-height: 1.25; }
+    .sub { color: var(--muted); font-size: 11px; margin-bottom: 8px; }
 
-    .title { margin: 12px 0 2px; font-size: 17px; font-weight: 700; line-height: 1.2; }
-    .sub { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
-
-    table.specs { width: 100%; border-collapse: collapse; font-size: 12px; }
-    table.specs td { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    table.specs { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    table.specs td { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
     table.specs td:first-child { color: var(--muted); }
     table.specs td:last-child { text-align: right; font-weight: 600; }
+    .fuel { color: #ff6b6b !important; }
 
-    .sec { margin: 14px 0 6px; font-size: 10px; letter-spacing: .7px; text-transform: uppercase; color: var(--muted); }
-    .row { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .sec { margin: 10px 0 5px; font-size: 10px; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+    .row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; font-size: 11.5px; border-bottom: 1px solid rgba(255,255,255,.05); }
     .row span:first-child { color: var(--muted); }
 
-    .center { display: grid; grid-template-rows: 1fr 110px; gap: 12px; min-height: 0; }
+    .center { display: grid; grid-template-rows: 1fr 200px; gap: 10px; min-height: 0; }
 
-    /* Map shape */
     .map-shell {
       position: relative;
-      border-radius: 26px 26px 16px 16px;
-      padding: 8px;
-      background: linear-gradient(135deg, rgba(47,125,255,.35), rgba(25,195,255,.08), rgba(11,35,72,.45));
+      border-radius: 22px;
+      padding: 7px;
+      background: linear-gradient(135deg, rgba(47,125,255,.32), rgba(25,195,255,.08), rgba(11,35,72,.45));
+      min-height: 0;
     }
     .map-frame {
       height: 100%;
-      min-height: 480px;
-      border-radius: 20px 20px 12px 12px;
+      min-height: 420px;
+      border-radius: 16px;
       overflow: hidden;
-      clip-path: polygon(0 3%, 2.5% 0, 97.5% 0, 100% 3%, 100% 93%, 97.5% 100%, 2.5% 100%, 0 93%);
-      border: 1px solid rgba(140,190,255,.35);
       position: relative;
+      border: 1px solid rgba(140,190,255,.35);
     }
     #map { width: 100%; height: 100%; background: #0a1628; }
     .leaflet-control-attribution { display: none !important; }
 
-    .prog {
-      position: absolute; top: 12px; right: 12px; z-index: 500;
-      width: 148px; padding: 12px; border-radius: 14px;
-      background: rgba(7,17,31,.88); border: 1px solid rgba(120,170,230,.3); backdrop-filter: blur(8px);
+    /* ALERT — top center of map (same place as reference) */
+    .map-alert {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 800;
+      width: min(520px, 72%);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #1a2433;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      border: 1px solid rgba(240,165,0,.45);
     }
-    .prog .l { font-size: 10px; color: var(--muted); letter-spacing: .6px; text-transform: uppercase; }
-    .prog .p { font-size: 28px; font-weight: 700; margin: 2px 0 8px; }
-    .bar { height: 7px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
-    .bar > i { display: block; height: 100%; width: 85%; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
-    .eta { margin-top: 8px; font-size: 11px; color: var(--muted); line-height: 1.35; }
-    .eta b { color: var(--text); }
+    .map-alert .bell {
+      flex: 0 0 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff4d6;
+      color: #d48806;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .map-alert .txt { font-size: 12px; line-height: 1.45; font-weight: 500; }
+    .map-alert .txt b { color: #b36b00; }
+
+    .gauge {
+      position: absolute; top: 14px; right: 14px; z-index: 700;
+      width: 118px; padding: 10px; border-radius: 14px;
+      background: rgba(7,17,31,.9); border: 1px solid rgba(120,170,230,.3);
+      text-align: center;
+    }
+    .gauge .ring {
+      width: 72px; height: 72px; margin: 0 auto 6px;
+      border-radius: 50%;
+      background: conic-gradient(#19c3ff 0 72%, rgba(255,255,255,.1) 0);
+      display: grid; place-items: center;
+    }
+    .gauge .ring span {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #0a1524; display: grid; place-items: center;
+      font-size: 16px; font-weight: 700;
+    }
+    .gauge .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .gauge .eta { margin-top: 6px; font-size: 11px; line-height: 1.3; color: var(--muted); }
+    .gauge .eta b { color: var(--text); }
 
     .pills {
-      position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 500;
-      display: flex; gap: 8px; flex-wrap: wrap;
+      position: absolute; left: 12px; bottom: 12px; z-index: 700;
+      display: flex; gap: 6px; flex-wrap: wrap;
     }
     .pill {
-      padding: 7px 11px; border-radius: 999px; font-size: 12px; font-weight: 600;
-      background: rgba(7,17,31,.85); border: 1px solid rgba(120,170,230,.35);
+      padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+      background: rgba(7,17,31,.86); border: 1px solid rgba(120,170,230,.35);
     }
     .pill strong { color: var(--cyan); }
 
-    .stats { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; }
-    .stat {
-      border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
-      background: rgba(12,24,41,.95);
+    .bottom {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 10px;
+      min-height: 0;
     }
-    .stat h4 { margin: 0 0 6px; font-size: 10px; color: var(--muted); letter-spacing: .6px; text-transform: uppercase; }
-    .stat .v { font-size: 20px; font-weight: 700; }
-    .stat small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; margin-top: 2px; }
+    .timeline { list-style: none; margin: 0; padding: 0; font-size: 11.5px; }
+    .timeline li {
+      position: relative;
+      padding: 0 0 10px 16px;
+      border-left: 2px solid rgba(47,125,255,.35);
+    }
+    .timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+    .timeline li::before {
+      content: "";
+      position: absolute; left: -5px; top: 3px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue); box-shadow: 0 0 0 3px rgba(47,125,255,.2);
+    }
+    .timeline .d { color: var(--muted); font-size: 10px; }
+    .timeline .e { font-weight: 600; }
 
-    .ship {
-      height: 150px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 10px;
-    }
+    .ship { height: 78px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 8px; }
     .ship img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .ins {
-      margin-top: 12px; border-radius: 12px; overflow: hidden;
-      border: 1px solid rgba(176,138,78,.45);
+    .status-card {
+      margin-top: 8px; padding: 10px; border-radius: 10px;
+      border: 1px solid rgba(46,204,113,.35); background: rgba(46,204,113,.08);
+      font-size: 11.5px; line-height: 1.45;
     }
-    .ins-h {
-      padding: 9px 11px; background: linear-gradient(90deg, var(--navy), #16345f);
-      display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    }
-    .ins-h img { height: 26px; }
-    .ins-h .ar { font-size: 12px; font-weight: 700; font-family: "Noto Sans Arabic", sans-serif; }
-    .ins-b { padding: 10px 11px; font-size: 12px; background: #0d1828; }
-    .ins-b p { margin: 0 0 6px; color: var(--muted); }
-    .ins-b strong { color: var(--text); }
     .btn {
-      display: flex; justify-content: center; margin-top: 8px; padding: 9px;
-      border-radius: 9px; background: linear-gradient(180deg,#e85d4c,#c0392b);
-      color: #fff; font-weight: 700; font-size: 12px; text-decoration: none;
-    }
-    .weather {
-      margin-top: 10px; padding: 10px; border-radius: 10px; border: 1px solid var(--line);
-      display: flex; justify-content: space-between; align-items: center; font-size: 12px;
+      display: flex; justify-content: center; margin-top: 10px; padding: 10px;
+      border-radius: 9px; border: 0; cursor: pointer;
+      background: linear-gradient(180deg, #2f7dff, #1a4fd6);
+      color: #fff; font-weight: 700; font-size: 12px; width: 100%;
     }
   </style>
 </head>
@@ -203,36 +230,38 @@
         <div class="mark">K LINE</div>
         <div>
           <div>Vehicle Ocean Shipment</div>
-          <div style="font-size:12px;color:var(--muted);font-weight:500">Toyota Land Cruiser · Sohar Port / ميناء صحار</div>
+          <div style="font-size:12px;color:var(--muted);font-weight:500">JUTHA MALEE · En route to Sohar Port</div>
         </div>
       </div>
-      <div class="live"><span class="dot"></span> Live tracking · Gulf of Oman</div>
+      <div class="live"><span class="dot"></span> At Sea · Arabian Sea · 16.2 kts</div>
     </header>
 
-    <!-- LEFT -->
+    <!-- LEFT: vehicle -->
     <aside class="panel">
       <div class="ph"><span>Current Vehicle</span><span style="color:var(--warn)">USED / مستخدمة</span></div>
       <div class="pb">
         <div class="photo">
-          <img src="assets/vehicle.jpg" alt="Toyota Land Cruiser at port yard" />
-          <div class="badge">Port yard photo · Land Cruiser</div>
+          <img src="assets/vehicle.jpg" alt="Toyota Land Cruiser Black Edition GR Sport" />
+          <div class="badge">Land Cruiser · Port yard</div>
         </div>
-        <h1 class="title">TOYOTA LAND CRUISER 300 V6 SPORT</h1>
-        <div class="sub">Est. value 29,000 USD · Chassis SALEWES2370787</div>
+        <h1 class="title">Toyota Land Cruiser Black Edition GR Sport 2024</h1>
+        <div class="sub">VIN JTMAB7BJ8P4061466 · 29,000 USD</div>
         <table class="specs">
+          <tr><td>VIN</td><td>JTMAB7BJ8P4061466</td></tr>
           <tr><td>Year</td><td>2024</td></tr>
           <tr><td>Color</td><td>Black</td></tr>
-          <tr><td>Body Type / نوع الهيكل</td><td>مستخدمة</td></tr>
-          <tr><td>Fuel</td><td>Petrol</td></tr>
-          <tr><td>Condition</td><td>Used / مستخدمة</td></tr>
-          <tr><td>Location</td><td>Sohar Port</td></tr>
+          <tr><td>Body Type / نوع الهيكل</td><td>SUV · مستخدمة</td></tr>
+          <tr><td>Engine</td><td>3.3L Twin Turbo</td></tr>
+          <tr><td>Fuel</td><td class="fuel">Petrol</td></tr>
+          <tr><td>Drive</td><td>4WD</td></tr>
+          <tr><td>Transmission</td><td>Automatic</td></tr>
         </table>
-        <div class="sec">Customer Details</div>
-        <div class="row"><span>Name</span><span>ABDULMALIK SHAFEEK</span></div>
-        <div class="row"><span>Civil ID</span><span>125556746</span></div>
-        <div class="row"><span>Nationality</span><span>India / الهند</span></div>
+        <div class="sec">Shipping</div>
+        <div class="row"><span>Importer</span><span>NAJJAR AUTO TRADING</span></div>
+        <div class="row"><span>From</span><span>Japan</span></div>
+        <div class="row"><span>To</span><span>Sultanate of Oman</span></div>
         <div class="row"><span>Phone</span><span>+96871924089</span></div>
-        <div class="row"><span>Destination</span><span>Sohar Port, Oman</span></div>
+        <div class="row"><span>Customer</span><span>ABDULMALIK SHAFEEK</span></div>
       </div>
     </aside>
 
@@ -241,60 +270,87 @@
       <section class="map-shell">
         <div class="map-frame">
           <div id="map"></div>
-          <div class="prog">
-            <div class="l">Voyage Progress</div>
-            <div class="p">85%</div>
-            <div class="bar"><i></i></div>
-            <div class="eta">ETA <b>Sohar Port</b><br/>30 Jun 2026 · 23:59</div>
+
+          <!-- CRITICAL: alert top-center of map -->
+          <div class="map-alert">
+            <div class="bell">!</div>
+            <div class="txt">
+              <b>2 Days Remaining to Arrival.</b>
+              Please complete vehicle registration in the system and settle all outstanding fees to ensure uninterrupted shipment processing and avoid any delays.
+            </div>
           </div>
+
+          <div class="gauge">
+            <div class="ring"><span>72%</span></div>
+            <div class="l">Progress</div>
+            <div class="eta">ETA <b>25 July 2026</b><br/>2 Days Remaining</div>
+          </div>
+
           <div class="pills">
-            <div class="pill">Origin <strong>Laem Chabang</strong></div>
-            <div class="pill">Via <strong>Arabian Sea</strong></div>
-            <div class="pill">Dest <strong>Sohar Port</strong></div>
+            <div class="pill">Nagoya <strong>7 Jul</strong></div>
+            <div class="pill">Singapore <strong>18 Jul</strong></div>
+            <div class="pill">Sohar <strong>25 Jul</strong></div>
           </div>
         </div>
       </section>
-      <section class="stats">
-        <div class="stat">
-          <h4>Voyage Progress</h4>
-          <svg width="100%" height="42" viewBox="0 0 220 42" preserveAspectRatio="none">
-            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2f7dff" stop-opacity=".5"/><stop offset="100%" stop-color="#2f7dff" stop-opacity="0"/></linearGradient></defs>
-            <path d="M0,32 C30,28 50,30 70,18 C95,4 120,12 150,10 C180,8 200,14 220,6 L220,42 L0,42 Z" fill="url(#g)"/>
-            <path d="M0,32 C30,28 50,30 70,18 C95,4 120,12 150,10 C180,8 200,14 220,6" fill="none" stroke="#19c3ff" stroke-width="2"/>
-          </svg>
+
+      <section class="bottom">
+        <div class="panel">
+          <div class="ph"><span>Voyage Timeline</span></div>
+          <div class="pb">
+            <ul class="timeline">
+              <li><div class="d">1 Jul 2026</div><div class="e">Booking confirmed · Japan</div></li>
+              <li><div class="d">7 Jul 2026</div><div class="e">Official Departure · Nagoya</div></li>
+              <li><div class="d">10 Jul 2026</div><div class="e">Passed Yokohama / Taiwan Strait</div></li>
+              <li><div class="d">18 Jul 2026</div><div class="e">Singapore Stopover</div></li>
+              <li><div class="d">19 Jul 2026</div><div class="e">Arabian Sea · En route to Sohar</div></li>
+            </ul>
+          </div>
         </div>
-        <div class="stat"><h4>Vessel Speed</h4><div class="v">12.5 kts</div><small>Steady · Gulf of Oman</small></div>
-        <div class="stat"><h4>Distance Travelled</h4><div class="v">4,820 nm</div><small>Remaining ~720 nm</small></div>
+        <div class="panel">
+          <div class="ph"><span>Vessel</span><span>JUTHA MALEE</span></div>
+          <div class="pb">
+            <div class="ship"><img src="assets/ship.jpg" alt="JUTHA MALEE RoRo" /></div>
+            <table class="specs">
+              <tr><td>Type</td><td>RoRo Car Carrier</td></tr>
+              <tr><td>Operator</td><td>Jutha Maritime Co. Ltd.</td></tr>
+              <tr><td>Flag</td><td>Thailand</td></tr>
+              <tr><td>Length / Beam</td><td>199.9 m / 32.2 m</td></tr>
+              <tr><td>Capacity</td><td>4,800 CEU</td></tr>
+            </table>
+            <div class="status-card">
+              <strong style="color:var(--ok)">At Sea — En Route to Sohar, Oman</strong><br/>
+              Position: Arabian Sea · Speed: 16.2 knots<br/>
+              ETA: 25 July 2026 (2 Days Remaining)
+            </div>
+            <button class="btn" type="button">Get Notified on Arrival</button>
+          </div>
+        </div>
       </section>
     </main>
 
-    <!-- RIGHT -->
+    <!-- RIGHT spacer column removed — use right as vessel quick card on desktop? Keep importer notes -->
     <aside class="panel">
-      <div class="ph"><span>Vessel</span><span>K LINE</span></div>
+      <div class="ph"><span>Shipment Summary</span></div>
       <div class="pb">
-        <div class="ship"><img src="assets/ship.jpg" alt="Car carrier vessel" /></div>
         <table class="specs">
-          <tr><td>Name</td><td>ATTICA BLUE</td></tr>
-          <tr><td>Type</td><td>Pure Car Carrier</td></tr>
-          <tr><td>Flag</td><td>Thailand</td></tr>
-          <tr><td>Route</td><td>Asia → Oman</td></tr>
-          <tr><td>Status</td><td style="color:var(--ok)">Underway</td></tr>
+          <tr><td>Vessel</td><td>JUTHA MALEE</td></tr>
+          <tr><td>Progress</td><td>72%</td></tr>
+          <tr><td>ETA</td><td>25 Jul 2026</td></tr>
+          <tr><td>Remaining</td><td>2 Days</td></tr>
+          <tr><td>Speed</td><td>16.2 knots</td></tr>
+          <tr><td>Position</td><td>Arabian Sea</td></tr>
+          <tr><td>Destination</td><td>Sohar Port</td></tr>
+          <tr><td>Importer</td><td>NAJJAR AUTO TRADING</td></tr>
         </table>
-        <div class="ins">
-          <div class="ins-h">
-            <img src="assets/gig-logo.png" alt="GIG" />
-            <div class="ar">الخليج العربي للتأمين</div>
-          </div>
-          <div class="ins-b">
-            <p><strong>Comprehensive</strong> · تأمين شامل</p>
-            <p>29/06/2026 → 30/06/2027</p>
-            <p>Insured: ABDULMALIK SHAFEEK</p>
-            <a class="btn" href="../endorsement-ownership/GIG-Endorsement-USED.pdf" target="_blank">DOWNLOAD INSURANCE</a>
-          </div>
-        </div>
-        <div class="weather">
-          <div><div style="font-weight:700">Sohar</div><div style="color:var(--muted)">Clear skies</div></div>
-          <div style="font-size:22px;font-weight:700">35°C</div>
+        <div class="sec">Route</div>
+        <div class="row"><span>1</span><span>Nagoya · 7 Jul</span></div>
+        <div class="row"><span>2</span><span>Yokohama</span></div>
+        <div class="row"><span>3</span><span>Taiwan Strait</span></div>
+        <div class="row"><span>4</span><span>Singapore · 18 Jul</span></div>
+        <div class="row"><span>5</span><span>Sohar Port · 25 Jul</span></div>
+        <div class="status-card" style="margin-top:12px">
+          Complete registration & settle fees before arrival to avoid delays.
         </div>
       </div>
     </aside>
@@ -302,22 +358,24 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+    const nagoya = [35.05, 136.88];
+    const singapore = [1.26, 103.85];
     const sohar = [24.382, 56.625];
-    const laem = [13.0827, 100.883];
-    const nowPos = [22.1, 59.8];
-    const map = L.map("map", { zoomControl: false, attributionControl: false, scrollWheelZoom: false }).setView([18.5, 68], 4);
+    const nowPos = [18.8, 62.5];
+    const map = L.map("map", { zoomControl: false, attributionControl: false, scrollWheelZoom: false }).setView([18, 85], 3);
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 18 }).addTo(map);
-    const route = [laem, [12.5, 78], [15.2, 65], [20.5, 62], nowPos, sohar];
+    const route = [nagoya, [34.0, 140.0], [22.0, 120.0], singapore, [8.0, 90.0], nowPos, sohar];
     L.polyline(route, { color: "#7ec8ff", weight: 3, opacity: .35, dashArray: "8 10" }).addTo(map);
-    L.polyline([laem, [12.5, 78], [15.2, 65], [20.5, 62], nowPos], { color: "#19c3ff", weight: 4, opacity: .95 }).addTo(map);
+    L.polyline([nagoya, [34.0, 140.0], [22.0, 120.0], singapore, [8.0, 90.0], nowPos], { color: "#19c3ff", weight: 4, opacity: .95 }).addTo(map);
     function pin(ll, label, color) {
-      L.marker(ll, { icon: L.divIcon({ className: "", html: `<div style="width:12px;height:12px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 0 0 5px ${color}33"></div><div style="margin-top:3px;transform:translateX(-35%);white-space:nowrap;font:600 11px IBM Plex Sans;color:#eaf2ff;text-shadow:0 1px 3px #000">${label}</div>`, iconSize: [12,12], iconAnchor: [6,6] }) }).addTo(map);
+      L.marker(ll, { icon: L.divIcon({ className: "", html: `<div style="width:11px;height:11px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 0 0 4px ${color}33"></div><div style="margin-top:2px;transform:translateX(-30%);white-space:nowrap;font:600 10px IBM Plex Sans;color:#eaf2ff;text-shadow:0 1px 3px #000">${label}</div>`, iconSize:[11,11], iconAnchor:[5,5] }) }).addTo(map);
     }
-    pin(laem, "Origin", "#8aa0bd");
+    pin(nagoya, "Nagoya", "#8aa0bd");
+    pin(singapore, "Singapore", "#f0a500");
     pin(nowPos, "Vessel", "#2f7dff");
-    pin(sohar, "Sohar Port", "#2ecc71");
-    L.marker(nowPos, { icon: L.divIcon({ className: "", html: `<div style="width:22px;height:10px;border-radius:3px 10px 10px 3px;background:linear-gradient(90deg,#2f7dff,#19c3ff);box-shadow:0 2px 8px rgba(0,0,0,.55);transform:rotate(28deg)"></div>`, iconSize: [22,14], iconAnchor: [11,7] }) }).addTo(map);
-    setTimeout(() => map.invalidateSize(), 150);
+    pin(sohar, "Sohar", "#2ecc71");
+    L.marker(nowPos, { icon: L.divIcon({ className: "", html: `<div style="width:22px;height:10px;border-radius:3px 10px 10px 3px;background:linear-gradient(90deg,#2f7dff,#19c3ff);box-shadow:0 2px 8px rgba(0,0,0,.55);transform:rotate(-10deg)"></div>`, iconSize:[22,14], iconAnchor:[11,7] }) }).addTo(map);
+    setTimeout(() => map.invalidateSize(), 120);
   </script>
 </body>
 </html>
